@@ -7,3 +7,5 @@ select
 from
     analytics_v2.analytics_orders_logs ol
 
+
+    where _airbyte_emitted_at > (select max(_airbyte_emitted_at) from analytics.`orders_logs_audit`)
