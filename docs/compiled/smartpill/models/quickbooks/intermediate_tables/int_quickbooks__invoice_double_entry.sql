@@ -1,9 +1,9 @@
 with invoice_join as (
     with invoices as (
-        select * from analytics.`quickbook_invoices`
+        select * from "datawarehouse".analytics."quickbook_invoices"
     where id in (
         select id
-        from analytics.`quickbook_invoices`
+        from "datawarehouse".analytics."quickbook_invoices"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -11,14 +11,14 @@ with invoice_join as (
 
     invoice_lines as (
         select *
-        from analytics.`quickbook_invoices_lines`
+        from "datawarehouse".analytics."quickbook_invoices_lines"
     ),
 
     items_stg as (
-        select * from analytics.`quickbook_items`
+        select * from "datawarehouse".analytics."quickbook_items"
     where id in (
         select id
-        from analytics.`quickbook_items`
+        from "datawarehouse".analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -38,10 +38,10 @@ with invoice_join as (
 
     accounts as (
         select *
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -75,7 +75,7 @@ with invoice_join as (
 
 ar_accounts as (
     select *
-    from analytics.`quickbook_accounts`
+    from "datawarehouse".analytics."quickbook_accounts"
 
     where account_type = 'Accounts Receivable'
     limit 1

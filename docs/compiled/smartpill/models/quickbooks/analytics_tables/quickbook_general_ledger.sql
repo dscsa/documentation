@@ -1,12 +1,12 @@
 
 
-with  __dbt__CTE__int_quickbooks__purchase_double_entry as (
+with  __dbt__cte__int_quickbooks__purchase_double_entry as (
 with purchase_join as (
     with purchases as (
-        select * from analytics.`quickbook_purchases`
+        select * from "datawarehouse".analytics."quickbook_purchases"
     where id in (
         select id
-        from analytics.`quickbook_purchases`
+        from "datawarehouse".analytics."quickbook_purchases"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -14,14 +14,14 @@ with purchase_join as (
 
     purchase_lines as (
         select *
-        from analytics.`quickbook_purchases_lines`
+        from "datawarehouse".analytics."quickbook_purchases_lines"
     ),
 
     items_stg as (
-        select * from analytics.`quickbook_items`
+        select * from "datawarehouse".analytics."quickbook_items"
     where id in (
         select id
-        from analytics.`quickbook_items`
+        from "datawarehouse".analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -89,13 +89,13 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__deposit_double_entry as (
+),  __dbt__cte__int_quickbooks__deposit_double_entry as (
 with deposit_join as (
     with deposits as (
-        select * from analytics.`quickbook_deposits`
+        select * from "datawarehouse".analytics."quickbook_deposits"
     where id in (
         select id
-        from analytics.`quickbook_deposits`
+        from "datawarehouse".analytics."quickbook_deposits"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -103,14 +103,14 @@ with deposit_join as (
 
     deposit_lines as (
         select *
-        from analytics.`quickbook_deposits_lines`
+        from "datawarehouse".analytics."quickbook_deposits_lines"
     ),
 
     accounts as (
-        select * from analytics.`quickbook_accounts`
+        select * from "datawarehouse".analytics."quickbook_accounts"
     where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -176,15 +176,15 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__journal_entry_double_entry as (
+),  __dbt__cte__int_quickbooks__journal_entry_double_entry as (
 /*
 Table that provides the debit and credit records of a journal entry transaction.
 */
 with journal_entries as (
-    select * from analytics.`quickbook_journal_entries`
+    select * from "datawarehouse".analytics."quickbook_journal_entries"
     where id in (
         select id
-        from analytics.`quickbook_journal_entries`
+        from "datawarehouse".analytics."quickbook_journal_entries"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -192,7 +192,7 @@ with journal_entries as (
 
 journal_entry_lines as (
     select *
-    from analytics.`quickbook_journal_entries_lines`
+    from "datawarehouse".analytics."quickbook_journal_entries_lines"
 ),
 
 final as (
@@ -217,7 +217,7 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__payment_double_entry as (
+),  __dbt__cte__int_quickbooks__payment_double_entry as (
 with payment as (
     select
         id as transaction_id,
@@ -227,10 +227,10 @@ with payment as (
         receivable_account_id,
         customer_id as customer_id,
         currency_name
-    from analytics.`quickbook_payments`
+    from "datawarehouse".analytics."quickbook_payments"
     where id in (
         select id
-        from analytics.`quickbook_payments`
+        from "datawarehouse".analytics."quickbook_payments"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -239,7 +239,7 @@ with payment as (
 ar_accounts as (
     select
         id
-    from analytics.`quickbook_accounts`
+    from "datawarehouse".analytics."quickbook_accounts"
 
     where account_type = 'Accounts Receivable'
         and is_active
@@ -282,13 +282,13 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__bill_double_entry as (
+),  __dbt__cte__int_quickbooks__bill_double_entry as (
 with bill_join as (
     with bills as (
-        select * from analytics.`quickbook_bills`
+        select * from "datawarehouse".analytics."quickbook_bills"
     where id in (
         select id
-        from analytics.`quickbook_bills`
+        from "datawarehouse".analytics."quickbook_bills"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -296,14 +296,14 @@ with bill_join as (
 
     bill_lines as (
         select *
-        from analytics.`quickbook_bills_lines`
+        from "datawarehouse".analytics."quickbook_bills_lines"
     ),
 
     items_stg as (
-        select * from analytics.`quickbook_items`
+        select * from "datawarehouse".analytics."quickbook_items"
     where id in (
         select id
-        from analytics.`quickbook_items`
+        from "datawarehouse".analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -372,13 +372,13 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__invoice_double_entry as (
+),  __dbt__cte__int_quickbooks__invoice_double_entry as (
 with invoice_join as (
     with invoices as (
-        select * from analytics.`quickbook_invoices`
+        select * from "datawarehouse".analytics."quickbook_invoices"
     where id in (
         select id
-        from analytics.`quickbook_invoices`
+        from "datawarehouse".analytics."quickbook_invoices"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -386,14 +386,14 @@ with invoice_join as (
 
     invoice_lines as (
         select *
-        from analytics.`quickbook_invoices_lines`
+        from "datawarehouse".analytics."quickbook_invoices_lines"
     ),
 
     items_stg as (
-        select * from analytics.`quickbook_items`
+        select * from "datawarehouse".analytics."quickbook_items"
     where id in (
         select id
-        from analytics.`quickbook_items`
+        from "datawarehouse".analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -413,10 +413,10 @@ with invoice_join as (
 
     accounts as (
         select *
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -450,7 +450,7 @@ with invoice_join as (
 
 ar_accounts as (
     select *
-    from analytics.`quickbook_accounts`
+    from "datawarehouse".analytics."quickbook_accounts"
 
     where account_type = 'Accounts Receivable'
     limit 1
@@ -492,23 +492,23 @@ final as (
 
 select * 
 from final
-),  __dbt__CTE__int_quickbooks__bill_payment_double_entry as (
+),  __dbt__cte__int_quickbooks__bill_payment_double_entry as (
 with bill_payment_join as (
     with bill_payments as (
-        select * from analytics.`quickbook_bill_payments`
+        select * from "datawarehouse".analytics."quickbook_bill_payments"
     where id in (
         select id
-        from analytics.`quickbook_bill_payments`
+        from "datawarehouse".analytics."quickbook_bill_payments"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
     ),
 
     accounts as (
-        select * from analytics.`quickbook_accounts`
+        select * from "datawarehouse".analytics."quickbook_accounts"
     where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -570,14 +570,14 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__payroll_check_double_entry as (
+),  __dbt__cte__int_quickbooks__payroll_check_double_entry as (
 with payroll_check as (
     select
         id as transaction_id,
         transaction_date,
         total_amount as amount,
         deposit_to_account_id
-    from analytics_v2.quickbook_payroll_checks
+    from "datawarehouse".raw.quickbook_payroll_checks
 ),
 
 final as (
@@ -598,12 +598,12 @@ final as (
 
 select *
 from final
-),  __dbt__CTE__int_quickbooks__account_classifications as (
+),  __dbt__cte__int_quickbooks__account_classifications as (
 with accounts as (
-    select * from analytics.`quickbook_accounts`
+    select * from "datawarehouse".analytics."quickbook_accounts"
     where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -700,47 +700,47 @@ from final
         currency_name,
         class_id,
         customer_id
-    from __dbt__CTE__int_quickbooks__purchase_double_entry
+    from __dbt__cte__int_quickbooks__purchase_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__deposit_double_entry
+    from __dbt__cte__int_quickbooks__deposit_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__journal_entry_double_entry
+    from __dbt__cte__int_quickbooks__journal_entry_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__payment_double_entry
+    from __dbt__cte__int_quickbooks__payment_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__bill_double_entry
+    from __dbt__cte__int_quickbooks__bill_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__invoice_double_entry
+    from __dbt__cte__int_quickbooks__invoice_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__bill_payment_double_entry
+    from __dbt__cte__int_quickbooks__bill_payment_double_entry
 
     union all
 
     select *
-    from __dbt__CTE__int_quickbooks__payroll_check_double_entry
+    from __dbt__cte__int_quickbooks__payroll_check_double_entry
 ),
 
 accounts as (
     select *
-    from __dbt__CTE__int_quickbooks__account_classifications
+    from __dbt__cte__int_quickbooks__account_classifications
 ),
 
 

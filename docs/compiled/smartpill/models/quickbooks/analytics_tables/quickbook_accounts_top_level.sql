@@ -1,8 +1,8 @@
 with recursive accounts as (
-    select * from analytics.`quickbook_accounts`
+    select * from "datawarehouse".analytics."quickbook_accounts"
     where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )

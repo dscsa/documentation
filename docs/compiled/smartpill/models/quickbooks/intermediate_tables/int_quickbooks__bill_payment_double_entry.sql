@@ -1,19 +1,19 @@
 with bill_payment_join as (
     with bill_payments as (
-        select * from analytics.`quickbook_bill_payments`
+        select * from "datawarehouse".analytics."quickbook_bill_payments"
     where id in (
         select id
-        from analytics.`quickbook_bill_payments`
+        from "datawarehouse".analytics."quickbook_bill_payments"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
     ),
 
     accounts as (
-        select * from analytics.`quickbook_accounts`
+        select * from "datawarehouse".analytics."quickbook_accounts"
     where id in (
         select id
-        from analytics.`quickbook_accounts`
+        from "datawarehouse".analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )

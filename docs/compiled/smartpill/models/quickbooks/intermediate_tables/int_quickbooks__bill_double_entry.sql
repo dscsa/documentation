@@ -1,9 +1,9 @@
 with bill_join as (
     with bills as (
-        select * from analytics.`quickbook_bills`
+        select * from "datawarehouse".analytics."quickbook_bills"
     where id in (
         select id
-        from analytics.`quickbook_bills`
+        from "datawarehouse".analytics."quickbook_bills"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -11,14 +11,14 @@ with bill_join as (
 
     bill_lines as (
         select *
-        from analytics.`quickbook_bills_lines`
+        from "datawarehouse".analytics."quickbook_bills_lines"
     ),
 
     items_stg as (
-        select * from analytics.`quickbook_items`
+        select * from "datawarehouse".analytics."quickbook_items"
     where id in (
         select id
-        from analytics.`quickbook_items`
+        from "datawarehouse".analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
