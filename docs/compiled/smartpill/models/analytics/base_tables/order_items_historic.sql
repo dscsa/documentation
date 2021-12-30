@@ -44,23 +44,66 @@ select
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
 ),oie as (
-	select
-		*,
-		'ORDER_ITEM_ADDED' as event_name,
-		item_date_added as event_date
-		from __dbt__cte__gp_order_items
-		where item_date_added is not NULL
-	union
-	select
-		*,
-		'ORDER_ITEM_DELETED' as event_name,
-		_ab_cdc_deleted_at as event_date
-		from __dbt__cte__gp_order_items
-		where _ab_cdc_deleted_at is not NULL
+	
+		select
+			*,
+			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_ADDED' as event_name,
+			item_date_added as event_date
+			from __dbt__cte__gp_order_items
+			where item_date_added is not NULL
+		union
+		select
+			*,
+			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_DELETED' as event_name,
+			_ab_cdc_deleted_at as event_date
+			from __dbt__cte__gp_order_items
+			where _ab_cdc_deleted_at is not NULL
+	
 )
 
 select distinct on (invoice_number, rx_number, event_name)
-	*,
+	_airbyte_emitted_at,
+	_airbyte_ab_id,
+	_airbyte_source,
+	invoice_number,
+	patient_id_cp,
+	rx_number,
+	groups,
+	rx_dispensed_id,
+	stock_level_initial,
+	rx_message_keys_initial,
+	patient_autofill_initial,
+	rx_autofill_initial,
+	rx_numbers_initial,
+	zscore_initial,
+	refills_dispensed_default,
+	refills_dispensed_actual,
+	days_dispensed_default,
+	days_dispensed_actual,
+	qty_dispensed_default,
+	qty_dispensed_actual,
+	price_dispensed_default,
+	price_dispensed_actual,
+	qty_pended_total,
+	qty_pended_repacks,
+	count_pended_total,
+	count_pended_repacks,
+	item_message_keys,
+	item_message_text,
+	item_type,
+	item_added_by,
+	item_date_added,
+	refill_date_last,
+	refill_date_manual,
+	refill_date_default,
+	refill_target_date,
+	refill_target_days,
+	refill_target_rxs,
+	_ab_cdc_updated_at,
+	event_name,
+	event_date,
 	md5(cast(event_name || invoice_number || rx_number as 
     varchar
 )) as unique_event_id

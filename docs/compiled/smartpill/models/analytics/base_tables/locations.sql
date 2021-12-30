@@ -119,12 +119,12 @@ from
        _airbyte_emitted_at
     from __dbt__cte__gp_patients 
 )
-select distinct on (zip_code) 
+select distinct on (id)
+    coalesce(zip_code, state) as id,
     cast(city as varchar(255)) as city, 
     cast(state as varchar(255)) as state, 
     cast(zip_code as varchar(255)) as zip_code, 
     NOW() as date_processed
 FROM locations 
-WHERE zip_code is not null
 
     and _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".analytics."locations")

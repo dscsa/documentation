@@ -105,7 +105,7 @@ select distinct on (patient_id_cp)
     birth_date,
     phone1,
     phone2,
-    CONCAT(patient_address1, ', ', patient_address2),
+    CONCAT(patient_address1, ', ', patient_address2) as patient_address,
     patient_city,
     patient_state,
     patient_zip,
@@ -116,6 +116,7 @@ select distinct on (patient_id_cp)
     payment_coupon,
     tracking_coupon,
     refills_used,
+    coalesce(pharmacy_npi, pharmacy_name) as pharmacy_id,
     NOW() as date_processed
 from __dbt__cte__gp_patients gpa
 left join grg using (patient_id_cp)

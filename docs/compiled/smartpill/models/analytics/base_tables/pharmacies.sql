@@ -54,10 +54,8 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
-)select distinct on (pharmacy_name, pharmacy_npi)
-	md5(cast(pharmacy_name || pharmacy_npi as 
-    varchar
-)) as pharmacy_hash,
+)select distinct on (pharmacy_id)
+    coalesce(pharmacy_npi, pharmacy_name) as pharmacy_id,
     pharmacy_npi,
     pharmacy_name,
     pharmacy_phone,
