@@ -1,3 +1,4 @@
+
 with gph as (
 
 
@@ -332,6 +333,118 @@ with gph as (
                     cast("refill_target_rxs" as character varying(255)) as "refill_target_rxs" 
 
             from "datawarehouse".analytics."order_items_historic"
+        )
+
+        union all
+        
+
+        (
+            select
+
+                cast('"datawarehouse".analytics."patients_status_historic"' as 
+    varchar
+) as _dbt_source_relation,
+                
+                    cast(null as integer) as "invoice_number" ,
+                    cast("event_name" as text) as "event_name" ,
+                    cast("event_date" as timestamp without time zone) as "event_date" ,
+                    cast("patient_id_cp" as integer) as "patient_id_cp" ,
+                    cast(null as integer) as "count_items" ,
+                    cast(null as integer) as "count_filled" ,
+                    cast(null as integer) as "count_nofill" ,
+                    cast(null as character varying(80)) as "order_source" ,
+                    cast(null as character varying(80)) as "order_stage_cp" ,
+                    cast(null as character varying(80)) as "order_status" ,
+                    cast(null as character varying(80)) as "invoice_doc_id" ,
+                    cast(null as character varying(80)) as "tracking_number" ,
+                    cast(null as integer) as "payment_total_default" ,
+                    cast(null as integer) as "payment_total_actual" ,
+                    cast(null as integer) as "payment_fee_default" ,
+                    cast(null as integer) as "payment_fee_actual" ,
+                    cast(null as integer) as "payment_due_default" ,
+                    cast(null as integer) as "payment_due_actual" ,
+                    cast(null as character varying(80)) as "payment_date_autopay" ,
+                    cast(null as character varying(80)) as "payment_method_actual" ,
+                    cast(null as character varying(255)) as "coupon_lines" ,
+                    cast(null as text) as "order_note" ,
+                    cast(null as character varying(5)) as "rph_check" ,
+                    cast(null as character varying(5)) as "tech_fill" ,
+                    cast("_airbyte_emitted_at" as timestamp with time zone) as "_airbyte_emitted_at" ,
+                    cast("_airbyte_ab_id" as character varying(256)) as "_airbyte_ab_id" ,
+                    cast("_ab_cdc_updated_at" as timestamp without time zone) as "_ab_cdc_updated_at" ,
+                    cast("_airbyte_source" as text) as "_airbyte_source" ,
+                    cast("unique_event_id" as text) as "unique_event_id" ,
+                    cast(null as character varying(256)) as "location_id" ,
+                    cast(null as integer) as "rx_number" ,
+                    cast(null as character varying(255)) as "drug_generic" ,
+                    cast(null as character varying(255)) as "clinic_name" ,
+                    cast(null as character varying(255)) as "provider_npi" ,
+                    cast(null as integer) as "is_refill" ,
+                    cast(null as integer) as "rx_autofill" ,
+                    cast(null as numeric(6,3)) as "sig_qty_per_day" ,
+                    cast(null as character varying(80)) as "rx_message_key" ,
+                    cast(null as integer) as "max_gsn" ,
+                    cast(null as character varying(255)) as "drug_gsns" ,
+                    cast(null as numeric(5,2)) as "refills_total" ,
+                    cast(null as numeric(5,2)) as "refills_original" ,
+                    cast(null as numeric(5,2)) as "refills_left" ,
+                    cast(null as date) as "refill_date_first" ,
+                    cast(null as date) as "refill_date_last" ,
+                    cast(null as date) as "rx_date_expired" ,
+                    cast(null as timestamp without time zone) as "rx_date_changed" ,
+                    cast(null as numeric(10,3)) as "qty_left" ,
+                    cast(null as numeric(10,3)) as "qty_original" ,
+                    cast(null as character varying(255)) as "sig_actual" ,
+                    cast(null as character varying(255)) as "sig_initial" ,
+                    cast(null as character varying(255)) as "sig_clean" ,
+                    cast(null as numeric(10,3)) as "sig_qty" ,
+                    cast(null as integer) as "sig_days" ,
+                    cast(null as numeric(10,3)) as "sig_qty_per_day_actual" ,
+                    cast(null as numeric(10,3)) as "sig_v2_qty" ,
+                    cast(null as integer) as "sig_v2_days" ,
+                    cast(null as numeric(10,3)) as "sig_v2_qty_per_day" ,
+                    cast(null as character varying(255)) as "sig_v2_unit" ,
+                    cast(null as numeric(10,3)) as "sig_v2_conf_score" ,
+                    cast(null as character varying(255)) as "sig_v2_dosages" ,
+                    cast(null as character varying(255)) as "sig_v2_scores" ,
+                    cast(null as character varying(255)) as "sig_v2_frequencies" ,
+                    cast(null as character varying(255)) as "sig_v2_durations" ,
+                    cast(null as date) as "refill_date_next" ,
+                    cast(null as date) as "refill_date_manual" ,
+                    cast(null as date) as "refill_date_default" ,
+                    cast(null as numeric(11,3)) as "qty_total" ,
+                    cast(null as character varying(80)) as "rx_source" ,
+                    cast(null as character varying(80)) as "rx_transfer" ,
+                    cast(null as character varying(255)) as "groups" ,
+                    cast(null as integer) as "rx_dispensed_id" ,
+                    cast(null as character varying(80)) as "stock_level_initial" ,
+                    cast(null as character varying(255)) as "rx_message_keys_initial" ,
+                    cast(null as integer) as "patient_autofill_initial" ,
+                    cast(null as integer) as "rx_autofill_initial" ,
+                    cast(null as character varying(255)) as "rx_numbers_initial" ,
+                    cast(null as numeric(6,3)) as "zscore_initial" ,
+                    cast(null as numeric(5,2)) as "refills_dispensed_default" ,
+                    cast(null as numeric(5,2)) as "refills_dispensed_actual" ,
+                    cast(null as integer) as "days_dispensed_default" ,
+                    cast(null as integer) as "days_dispensed_actual" ,
+                    cast(null as numeric(10,3)) as "qty_dispensed_default" ,
+                    cast(null as numeric(10,3)) as "qty_dispensed_actual" ,
+                    cast(null as numeric(5,2)) as "price_dispensed_default" ,
+                    cast(null as numeric(5,2)) as "price_dispensed_actual" ,
+                    cast(null as numeric(10,3)) as "qty_pended_total" ,
+                    cast(null as numeric(10,3)) as "qty_pended_repacks" ,
+                    cast(null as integer) as "count_pended_total" ,
+                    cast(null as integer) as "count_pended_repacks" ,
+                    cast(null as character varying(255)) as "item_message_keys" ,
+                    cast(null as character varying(255)) as "item_message_text" ,
+                    cast(null as character varying(80)) as "item_type" ,
+                    cast(null as character varying(80)) as "item_added_by" ,
+                    cast(null as timestamp without time zone) as "item_date_added" ,
+                    cast(null as timestamp without time zone) as "refill_target_date" ,
+                    cast(null as integer) as "refill_target_days" ,
+                    cast(null as character varying(255)) as "refill_target_rxs" 
+
+            from "datawarehouse".analytics."patients_status_historic"
         )
 
         
