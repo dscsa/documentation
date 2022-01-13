@@ -155,6 +155,42 @@ rh as (
     max(
       
       case
+      when event_name = 'RX_ADDED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by rx_number)
+	
+    
+      
+        as date_rx_added
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'RX_UPDATED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by rx_number)
+	
+    
+      
+        as date_rx_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
       when event_name = 'RX_TRANSFERRED'
         then event_date
       else null
@@ -260,7 +296,8 @@ oh as (
 	select distinct on (invoice_number)
 		patient_id_cp,
 		invoice_number,
-		"count_items" as "order_count_items",
+		"location_id" as "order_location_id",
+  "count_items" as "order_count_items",
   "count_filled" as "order_count_filled",
   "count_nofill" as "order_count_nofill",
   "order_source" as "order_source",
@@ -280,7 +317,6 @@ oh as (
   "order_note" as "order_note",
   "rph_check" as "order_rph_check",
   "tech_fill" as "order_tech_fill",
-  "location_id" as "order_location_id",
 		
   
     max(
