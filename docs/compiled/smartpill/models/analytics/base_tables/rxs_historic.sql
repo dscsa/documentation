@@ -314,6 +314,9 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_changed') as timestamp) as patient_date_changed,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_updated') as timestamp) as patient_date_updated,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_inactive') as varchar) as patient_inactive,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_dispensed') as timestamp) as patient_date_first_dispensed,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_rx_received') as timestamp) as patient_date_first_rx_received,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_expected_by') as timestamp) as patient_date_first_expected_by,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
@@ -321,21 +324,43 @@ from
 ),rxh as (
 
 	with grse as (
-		select
+		(select distinct on (rx_number)
+			*,
+			'RX_ADDED' as event_name,
+			rx_date_transferred as event_date
+			from __dbt__cte__gp_rxs_single gprxs
+			where (select sum(cast(event_name = 'RX_ADDED' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
+		union
+		(select distinct on (rx_number)
 			*,
 			'RX_TRANSFERRED' as event_name,
 			rx_date_transferred as event_date
-			from __dbt__cte__gp_rxs_single
+			from __dbt__cte__gp_rxs_single gprxs
 			where rx_date_transferred is not null
+				and (select sum(cast(event_name = 'RX_TRANSFERRED' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 		union
-		select
+		(select distinct on (rx_number)
 			*,
 			-- rx_date_expired - 1 YEAR will be the written date, since when the rxs is inserted
 			-- this value is populated with the current timestamp + 1 YEAR
 			'RX_WRITTEN' as event_name,
 			rx_date_expired - INTERVAL '1 year' as event_date
+			from __dbt__cte__gp_rxs_single gprxs
+			where
+				rx_gsn is not null
+				and rx_gsn <> 0
+				and rx_date_expired is not null
+				and (select sum(cast(event_name = 'RX_WRITTEN' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
+		union
+		select
+			*,
+			'RX_UPDATED' as event_name,
+			_ab_cdc_updated_at as event_date
 			from __dbt__cte__gp_rxs_single
-			where rx_gsn is not null and rx_gsn <> 0 and rx_date_expired is not null
+			where _ab_cdc_updated_at is not null
 		union
 		select
 			*,
@@ -430,7 +455,7 @@ from
 
 
 )
-select distinct on (rx_number, event_name)
+select
 	rx_number,
 	patient_id_cp,
 	drug_generic,
@@ -478,7 +503,7 @@ select distinct on (rx_number, event_name)
 	_airbyte_emitted_at as _airbyte_emitted_at,
 	_ab_cdc_updated_at as _ab_cdc_updated_at,
 	_airbyte_source,
-	md5(cast(event_name || rx_number as 
+	md5(cast(event_name || rx_number || event_date as 
     varchar
 )) as unique_event_id
 from rxh

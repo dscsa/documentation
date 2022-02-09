@@ -45,25 +45,41 @@ from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
 ),oie as (
 	
-		select
+		(select distinct on (rx_number, invoice_number)
 			*,
 			'GOODPILL' as _airbyte_source,
 			'ORDER_ITEM_ADDED' as event_name,
 			item_date_added as event_date
-			from __dbt__cte__gp_order_items
-			where item_date_added is not NULL
+			from __dbt__cte__gp_order_items gpoi
+			where item_date_added is not NULL and (
+				select 
+					sum(cast(event_name = 'ORDER_ITEM_ADDED' as int))
+				from "datawarehouse".analytics."order_items_historic" oih
+				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
 		union
 		select
 			*,
 			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_UPDATED' as event_name,
+			_ab_cdc_updated_at as event_date
+			from __dbt__cte__gp_order_items
+			where _ab_cdc_updated_at is not null
+		union
+		(select distinct on (rx_number, invoice_number)
+			*,
+			'GOODPILL' as _airbyte_source,
 			'ORDER_ITEM_DELETED' as event_name,
 			_ab_cdc_deleted_at as event_date
-			from __dbt__cte__gp_order_items
-			where _ab_cdc_deleted_at is not NULL
+			from __dbt__cte__gp_order_items gpoi
+			where _ab_cdc_deleted_at is not NULL and (
+				select 
+					sum(cast(event_name = 'ORDER_ITEM_DELETED' as int))
+				from "datawarehouse".analytics."order_items_historic" oih
+				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
 	
 )
 
-select distinct on (invoice_number, rx_number, event_name)
+select
 	_airbyte_emitted_at,
 	_airbyte_ab_id,
 	_airbyte_source,
@@ -104,11 +120,9 @@ select distinct on (invoice_number, rx_number, event_name)
 	_ab_cdc_updated_at,
 	event_name,
 	event_date,
-	md5(cast(event_name || invoice_number || rx_number as 
+	md5(cast(event_name || invoice_number || rx_number || event_date as 
     varchar
 )) as unique_event_id
 from oie
 
 	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".analytics."order_items_historic")
-
-order by invoice_number, rx_number, event_name, _airbyte_emitted_at desc

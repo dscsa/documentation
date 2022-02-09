@@ -82,6 +82,9 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_changed') as timestamp) as patient_date_changed,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_updated') as timestamp) as patient_date_updated,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_inactive') as varchar) as patient_inactive,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_dispensed') as timestamp) as patient_date_first_dispensed,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_rx_received') as timestamp) as patient_date_first_rx_received,
+    cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_first_expected_by') as timestamp) as patient_date_first_expected_by,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
@@ -116,6 +119,9 @@ select distinct on (patient_id_cp)
     payment_method_default,
     payment_coupon,
     tracking_coupon,
+    patient_date_first_rx_received as date_first_rx_received,
+    patient_date_first_dispensed as date_first_dispensed,
+    patient_date_first_expected_by as date_first_expected_by,
     refills_used,
     coalesce(pharmacy_npi, pharmacy_name) as pharmacy_id,
     NOW() as date_processed
