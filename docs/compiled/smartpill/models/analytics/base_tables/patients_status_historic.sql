@@ -58,37 +58,98 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
-),gpe as (
+),calc_statuses as (
+	with all_dates as (
+		select distinct
+			patient_id_cp,
+			order_date_added,
+			refill_date_next,
+			coalesce(lag(order_date_added, -1) over (partition by patient_id_cp order by order_date_added), now()) as next_row_order_date_added
+		from (
+			select distinct on (oh.patient_id_cp, oih.invoice_number, oih.rx_number)
+				oh.patient_id_cp,
+				coalesce(oh.event_date, rh.refill_date_next) as order_date_added,
+				coalesce(oh.event_date + interval '1 day' * oih.days_dispensed_actual, rh.refill_date_next) as refill_date_next
+			from "datawarehouse".analytics."orders_historic" oh
+			inner join "datawarehouse".analytics."order_items_historic" oih using (invoice_number)
+			inner join "datawarehouse".analytics."rxs_historic" rh using (rx_number)
+			where oh.event_name = 'ORDER_ADDED'
+			order by oh.patient_id_cp, oih.invoice_number, oih.rx_number, coalesce(oh.event_date + interval '1 day' * oih.days_dispensed_actual, rh.refill_date_next) desc
+		) t
+	)
 	select
-		*,
-		'PATIENT_ADDED' as event_name,
-		patient_date_added as event_date
+		patient_id_cp,
+		order_date_added as event_date,
+		'PATIENT_ACTIVE' as event_name,
+		null::varchar as _airbyte_ab_id,
+		order_date_added _airbyte_emitted_at,
+		order_date_added _ab_cdc_updated_at
+	from all_dates
+	union
+	select
+		patient_id_cp,
+		patient_date_added + interval '7' day as event_date,
+		'PATIENT_ACTIVE' as event_name,
+		_airbyte_ab_id,
+		_airbyte_emitted_at,
+		_ab_cdc_updated_at
 		from __dbt__cte__gp_patients
 		where patient_date_added is not null
 	union
 	select
-		*,
-		'PATIENT_REGISTERED' as event_name,
-		patient_date_registered as event_date
-		from __dbt__cte__gp_patients
-		where patient_date_registered is not null
+		patient_id_cp,
+		refill_date_next + interval '30' day as event_date,
+		'PATIENT_NEW_CHURN' as event_name,
+		null::varchar as _airbyte_ab_id,
+		refill_date_next + interval '30' day _airbyte_emitted_at,
+		refill_date_next + interval '30' day _ab_cdc_updated_at
+	from all_dates
+	where refill_date_next + interval '30' day < next_row_order_date_added
 	union
 	select
-		*,
+		patient_id_cp,
+		refill_date_next + interval '31' day as event_date,
+		'PATIENT_CHURNED' as event_name,
+		null::varchar as _airbyte_ab_id,
+		refill_date_next + interval '31' day _airbyte_emitted_at,
+		refill_date_next + interval '31' day _ab_cdc_updated_at
+	from all_dates
+	where refill_date_next + interval '31' day < next_row_order_date_added
+),
+statuses as (
+	select
+		patient_id_cp,
+		patient_date_added as event_date,
+		'PATIENT_NEW' as event_name,
+		_airbyte_ab_id,
+		_airbyte_emitted_at,
+		_ab_cdc_updated_at
+		from __dbt__cte__gp_patients
+		where patient_date_added is not null
+	union
+	select
+		patient_id_cp,
+		patient_date_updated as event_date,
 		'PATIENT_INACTIVE' as event_name,
-		patient_date_updated as event_date
+		_airbyte_ab_id,
+		_airbyte_emitted_at,
+		_ab_cdc_updated_at
 		from __dbt__cte__gp_patients
 		where patient_inactive = 'Inactive'
 	union
 	select
-		*,
+		patient_id_cp,
+		patient_date_updated as event_date,
 		'PATIENT_DECEASED' as event_name,
-		patient_date_updated as event_date
+		_airbyte_ab_id,
+		_airbyte_emitted_at,
+		_ab_cdc_updated_at
 		from __dbt__cte__gp_patients
 		where patient_inactive = 'Deceased'
 )
 
-select distinct on (patient_id_cp, event_name)
+/* select distinct on (patient_id_cp, event_name) */
+select
 	patient_id_cp,
 	event_name,
 	event_date,
@@ -96,11 +157,16 @@ select distinct on (patient_id_cp, event_name)
 	_airbyte_emitted_at,
 	_ab_cdc_updated_at,
 	'GOODPILL' as _airbyte_source,
-	md5(cast(event_name || patient_id_cp as 
+	md5(cast(concat(event_name, patient_id_cp, event_date) as 
     varchar
 )) as unique_event_id
-from
-	gpe
+from (
+	select *
+	from calc_statuses
+	union
+	select *
+	from statuses
+) gps
 
 	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".analytics."patients_status_historic")
 

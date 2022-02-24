@@ -7,15 +7,16 @@
 
 
 with psh as (
-	select
+	select distinct on (patient_id_cp)
 		patient_id_cp,
 		event_date as patient_event_date,
+		event_name as patient_event_name,
 		
   
     max(
       
       case
-      when event_name = 'PATIENT_ADDED'
+      when event_name = 'PATIENT_ACTIVE'
         then event_date
       else null
       end
@@ -25,7 +26,7 @@ with psh as (
 	
     
       
-        as date_patient_added
+        as date_patient_active
       
     
     ,
@@ -33,7 +34,7 @@ with psh as (
     max(
       
       case
-      when event_name = 'PATIENT_REGISTERED'
+      when event_name = 'PATIENT_NEW'
         then event_date
       else null
       end
@@ -43,25 +44,7 @@ with psh as (
 	
     
       
-        as date_patient_registered
-      
-    
-    ,
-  
-    max(
-      
-      case
-      when event_name = 'PATIENT_INACTIVE'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by patient_id_cp)
-	
-    
-      
-        as date_patient_inactive
+        as date_patient_new
       
     
     ,
@@ -82,10 +65,65 @@ with psh as (
         as date_patient_deceased
       
     
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'PATIENT_NEW_CHURN'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by patient_id_cp)
+	
+    
+      
+        as date_patient_new_churn
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'PATIENT_CHURNED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by patient_id_cp)
+	
+    
+      
+        as date_patient_churned
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'PATIENT_INACTIVE'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by patient_id_cp)
+	
+    
+      
+        as date_patient_inactive
+      
+    
     
   
 
 	from "datawarehouse".analytics."patients_status_historic"
+	order by patient_id_cp, patient_event_date desc
 	/* inner join "datawarehouse".analytics."goodpill_events" using (event_name) */
 ),
 
