@@ -4,13 +4,13 @@
 
 with child as (
     select class_id as from_field
-    from "datawarehouse".analytics."quickbook_journal_entries_lines"
+    from "datawarehouse".prod_analytics."quickbook_journal_entries_lines"
     where class_id is not null
 ),
 
 parent as (
     select id as to_field
-    from "datawarehouse".analytics."quickbook_classes"
+    from "datawarehouse".prod_analytics."quickbook_classes"
 )
 
 select

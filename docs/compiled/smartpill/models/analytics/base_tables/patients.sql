@@ -132,5 +132,3 @@ where
     LOWER(first_name) NOT LIKE '%user%' AND
     LOWER(last_name) NOT LIKE '%test%' AND
     LOWER(last_name) NOT LIKE '%user%'
-
-    AND _airbyte_emitted_at > (SELECT MAX(date_processed) FROM "datawarehouse".analytics."patients")

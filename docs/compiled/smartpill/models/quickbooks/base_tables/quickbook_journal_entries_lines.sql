@@ -13,7 +13,7 @@ select
     jsonb_extract_path_text(line, 'JournalEntryLineDetail','CustomerRef','value') as customer_id,
     jsonb_extract_path_text(line, 'JournalEntryLineDetail','PostingType') as posting_type,
     jsonb_extract_path_text(line, 'Description') as description
-from "datawarehouse".analytics."quickbook_journal_entries"
+from "datawarehouse".prod_analytics."quickbook_journal_entries"
 
 where
     line is not null

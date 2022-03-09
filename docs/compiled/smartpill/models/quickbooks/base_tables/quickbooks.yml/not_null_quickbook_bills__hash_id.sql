@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".analytics."quickbook_bills"
+from "datawarehouse".prod_analytics."quickbook_bills"
 where _hash_id is null
 
 

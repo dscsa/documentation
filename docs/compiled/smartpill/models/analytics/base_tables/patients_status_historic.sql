@@ -70,9 +70,9 @@ from
 				oh.patient_id_cp,
 				coalesce(oh.event_date, rh.refill_date_next) as order_date_added,
 				coalesce(oh.event_date + interval '1 day' * oih.days_dispensed_actual, rh.refill_date_next) as refill_date_next
-			from "datawarehouse".analytics."orders_historic" oh
-			inner join "datawarehouse".analytics."order_items_historic" oih using (invoice_number)
-			inner join "datawarehouse".analytics."rxs_historic" rh using (rx_number)
+			from "datawarehouse".prod_analytics."orders_historic" oh
+			inner join "datawarehouse".prod_analytics."order_items_historic" oih using (invoice_number)
+			inner join "datawarehouse".prod_analytics."rxs_historic" rh using (rx_number)
 			where oh.event_name = 'ORDER_ADDED'
 			order by oh.patient_id_cp, oih.invoice_number, oih.rx_number, coalesce(oh.event_date + interval '1 day' * oih.days_dispensed_actual, rh.refill_date_next) desc
 		) t
@@ -167,7 +167,5 @@ from (
 	select *
 	from statuses
 ) gps
-
-	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".analytics."patients_status_historic")
 
 order by patient_id_cp, event_name, _airbyte_emitted_at desc

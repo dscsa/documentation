@@ -130,5 +130,3 @@ select distinct on (id)
     cast(zip_code as varchar(255)) as zip_code, 
     NOW() as date_processed
 FROM locations 
-
-    where _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".analytics."locations")

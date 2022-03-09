@@ -73,5 +73,3 @@ from __dbt__cte__gp_rxs_single rxs1
     left join __dbt__cte__gp_rxs_single rxs2
     on (rxs1.provider_npi = rxs2.provider_npi and rxs1.rx_number < rxs2.rx_number)
 where rxs2.rx_number is null and rxs1.provider_npi is not null and rxs1.provider_npi <> ''
-
-	and rxs1._airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".analytics."providers")

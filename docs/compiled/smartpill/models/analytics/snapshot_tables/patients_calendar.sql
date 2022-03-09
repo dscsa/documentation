@@ -106,7 +106,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 1880
+    where generated_number <= 1893
     order by generated_number
 
 
@@ -141,7 +141,7 @@ select * from filtered
 	-- table with all distincts patient ids, to cross join with dates
 	pids as (
 		select distinct patient_id_cp
-		from "datawarehouse".analytics."patients"
+		from "datawarehouse".prod_analytics."patients"
 	)
 
 	-- assign to all the rows of a partition its designated event
@@ -159,8 +159,8 @@ select * from filtered
 			sum(case when psh.event_name is null then 0 else 1 end) over (partition by pids.patient_id_cp order by calendar.date_day, event_weight asc) as partition_day
 		from calendar
 		cross join pids
-		left join "datawarehouse".analytics."patients_status_historic" psh on date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
-		left join "datawarehouse".analytics."patient_events" pe on pe.event_name = psh.event_name
+		left join "datawarehouse".prod_analytics."patients_status_historic" psh on date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
+		left join "datawarehouse".prod_analytics."patient_events" pe on pe.event_name = psh.event_name
 	) t
 )
 

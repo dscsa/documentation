@@ -321,137 +321,64 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
+),  __dbt__cte__an_dates as (
+select
+	cast(jsonb_extract_path_text(_airbyte_data, 'date_id') as int) as date_id,
+	cast(jsonb_extract_path_text(_airbyte_data, 'db_date') as date) as db_date,
+	cast(jsonb_extract_path_text(_airbyte_data, 'year') as int) as year,
+	cast(jsonb_extract_path_text(_airbyte_data, 'month') as int) as month,
+	cast(jsonb_extract_path_text(_airbyte_data, 'day') as int) as day,
+	cast(jsonb_extract_path_text(_airbyte_data, 'week_of_year') as int) as week_of_year,
+	cast(jsonb_extract_path_text(_airbyte_data, 'month_name') as varchar) as month_name,
+	cast(jsonb_extract_path_text(_airbyte_data, 'day_name') as varchar) as day_name,
+	cast(jsonb_extract_path_text(_airbyte_data, 'holiday_flag') as int) as holiday_flag,
+	cast(jsonb_extract_path_text(_airbyte_data, 'weekend_flag') as int) as weekend_flag,
+	cast(jsonb_extract_path_text(_airbyte_data, 'quarter') as int) as quarter,
+	cast(jsonb_extract_path_text(_airbyte_data, 'semester') as int) as semester,
+	cast(jsonb_extract_path_text(_airbyte_data, 'date_processed') as timestamp) as date_processed
+from "datawarehouse".raw._airbyte_raw_analytics_dates
+),  __dbt__cte__an_times as (
+select
+	cast(jsonb_extract_path_text(_airbyte_data, 'time_id') as int) as time_id,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour24') as int) as hour24,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_string') as varchar) as hour24_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour12') as int) as hour12,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_string') as varchar) as hour12_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'minute') as int) as minute,
+	cast(jsonb_extract_path_text(_airbyte_data, 'minute_string') as varchar) as minute_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'second') as int) as second,
+	cast(jsonb_extract_path_text(_airbyte_data, 'second_string') as varchar) as second_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_min_string') as varchar) as hour24_min_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_full_string') as varchar) as hour24_full_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_min_string') as varchar) as hour12_min_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_full_string') as varchar) as hour12_full_string,
+	cast(jsonb_extract_path_text(_airbyte_data, 'ampm_code') as int) as ampm_code,
+	cast(jsonb_extract_path_text(_airbyte_data, 'ampm_string') as varchar) as ampm_string
+from "datawarehouse".raw._airbyte_raw_analytics_times
 ),rxh as (
 
-	with grse as (
-		(select distinct on (rx_number)
-			*,
-			'RX_ADDED' as event_name,
-			rx_date_transferred as event_date
-			from __dbt__cte__gp_rxs_single gprxs
-			where (select sum(cast(event_name = 'RX_ADDED' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
-			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
-		union
-		(select distinct on (rx_number)
-			*,
-			'RX_TRANSFERRED' as event_name,
-			rx_date_transferred as event_date
-			from __dbt__cte__gp_rxs_single gprxs
-			where rx_date_transferred is not null
-				and (select sum(cast(event_name = 'RX_TRANSFERRED' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
-			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
-		union
-		(select distinct on (rx_number)
-			*,
-			-- rx_date_expired - 1 YEAR will be the written date, since when the rxs is inserted
-			-- this value is populated with the current timestamp + 1 YEAR
-			'RX_WRITTEN' as event_name,
-			rx_date_expired - INTERVAL '1 year' as event_date
-			from __dbt__cte__gp_rxs_single gprxs
-			where
-				rx_gsn is not null
-				and rx_gsn <> 0
-				and rx_date_expired is not null
-				and (select sum(cast(event_name = 'RX_WRITTEN' as int)) from "datawarehouse".analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
-			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
-		union
-		select
-			*,
-			'RX_UPDATED' as event_name,
-			_ab_cdc_updated_at as event_date
-			from __dbt__cte__gp_rxs_single
-			where _ab_cdc_updated_at is not null
-		union
-		select
-			*,
-			'RX_DELETED' as event_name,
-			_ab_cdc_deleted_at as event_date
-			from __dbt__cte__gp_rxs_single
-			where _ab_cdc_deleted_at is not null
-	), grg as (
-		select distinct on (rx_numbers)
-			rx_numbers,
-			rx_autofill,
-			refills_total,
-			refill_date_first,
-			refill_date_last,
-			refill_date_next,
-			refill_date_manual,
-			refill_date_default,
-			qty_total,
-			sig_qty_per_day,
-			max_gsn,
-			drug_gsns
-		from __dbt__cte__gp_rxs_grouped
-		where _ab_cdc_deleted_at is null
-		order by rx_numbers, _ab_cdc_updated_at desc
-	), gp as (
-		select distinct on (patient_id_cp)
-			patient_id_cp,
-			patient_autofill
-		from __dbt__cte__gp_patients
-		where _ab_cdc_deleted_at is null
-		order by patient_id_cp, _ab_cdc_updated_at desc
-	)
 	select
-		grse.rx_number,
-		grse.patient_id_cp,
-		grse.drug_generic,
-		grse.provider_clinic as clinic_name,
-		grse.provider_npi,
+		fl.*,
 		case
-			when grg.refill_date_first < grg.refill_date_last then 1
-			else 0
-		end as is_refill,
-		case
-			when grg.rx_autofill = 1 and gp.patient_autofill = 1 then 1
-			else 0
-		end as rx_autofill,
-		grg.sig_qty_per_day,
-		grse.rx_message_key,
-		grg.max_gsn,
-		grg.drug_gsns,
-		grg.refills_total,
-		grse.refills_original,
-		grse.refills_left,
-		grse.refill_date_first,
-		grse.refill_date_last,
-		grse.rx_date_expired,
-		grse.rx_date_changed,
-		grse.qty_left,
-		grse.qty_original,
-		grse.sig_actual,
-		grse.sig_initial,
-		grse.sig_clean,
-		grse.sig_qty,
-		grse.sig_days,
-		grse.sig_qty_per_day_actual,
-		grse.sig_v2_qty,
-		grse.sig_v2_days,
-		grse.sig_v2_qty_per_day,
-		grse.sig_v2_unit,
-		grse.sig_v2_conf_score,
-		grse.sig_v2_dosages,
-		grse.sig_v2_scores,
-		grse.sig_v2_frequencies,
-		grse.sig_v2_durations,
-		grg.refill_date_next,
-		grg.refill_date_manual,
-		grg.refill_date_default,
-		grg.qty_total,
-		grse.rx_source,
-		grse.rx_transfer,
-		grse.event_name,
-		grse.event_date,
-		grse._airbyte_emitted_at,
-		grse._ab_cdc_updated_at,
-		'GOODPILL' as _airbyte_source,
-		grse._airbyte_ab_id
-	from grse
-	inner join gp using (patient_id_cp)
-	left join grg on grg.rx_numbers like CONCAT('%,', grse.rx_number ,',%')
-	where grse._ab_cdc_updated_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".analytics."rxs_historic")
-	order by rx_number, event_name, _airbyte_emitted_at desc
+			when event_type = 'WRITTEN' or event_type = 'TRANSFERRED' then concat('RX_', event_type)
+			else 'RX_UPDATED'
+		end as event_name,
+		coalesce(concat(dts.db_date, 'T', tms.hour24_full_string)::timestamp,  goodpill_event_date) as event_date,
+		prv.npi as provider_npi,
+		cli.name as clinic_name,
+		pat.goodpill_id as patient_id_cp,
+		drg.generic_name as drug_generic,
+		null::timestamp as _ab_cdc_updated_at,
+		'ANALYTICS_V1' as _airbyte_source
+	from __dbt__cte__an_fills_logs fl
+	left join __dbt__cte__an_patients pat using (patient_id)
+	left join __dbt__cte__an_providers prv using (provider_id)
+	left join __dbt__cte__an_drugs drg using (drug_id)
+	left join __dbt__cte__an_clinics cli using (clinic_id)
+	left join __dbt__cte__an_dates dts on dts.date_id = fl.event_date_id
+	left join __dbt__cte__an_times tms on tms.time_id = fl.event_time_id
+	where event_type <> 'REMOVED' or event_type <> 'DISPENSED'
+
 
 
 )

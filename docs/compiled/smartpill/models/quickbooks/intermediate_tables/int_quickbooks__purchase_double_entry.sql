@@ -1,9 +1,9 @@
 with purchase_join as (
     with purchases as (
-        select * from "datawarehouse".analytics."quickbook_purchases"
+        select * from "datawarehouse".prod_analytics."quickbook_purchases"
     where id in (
         select id
-        from "datawarehouse".analytics."quickbook_purchases"
+        from "datawarehouse".prod_analytics."quickbook_purchases"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -11,14 +11,14 @@ with purchase_join as (
 
     purchase_lines as (
         select *
-        from "datawarehouse".analytics."quickbook_purchases_lines"
+        from "datawarehouse".prod_analytics."quickbook_purchases_lines"
     ),
 
     items_stg as (
-        select * from "datawarehouse".analytics."quickbook_items"
+        select * from "datawarehouse".prod_analytics."quickbook_items"
     where id in (
         select id
-        from "datawarehouse".analytics."quickbook_items"
+        from "datawarehouse".prod_analytics."quickbook_items"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )

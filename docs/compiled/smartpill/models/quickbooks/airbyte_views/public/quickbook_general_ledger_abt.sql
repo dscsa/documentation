@@ -29,20 +29,20 @@ select
     qcu.balance as customer_balance,
     qcu.company_name as customer_company_name
 from
-    "datawarehouse".analytics."quickbook_general_ledger" qgl
-left join (select * from "datawarehouse".analytics."quickbook_classes"
+    "datawarehouse".prod_analytics."quickbook_general_ledger" qgl
+left join (select * from "datawarehouse".prod_analytics."quickbook_classes"
     where id in (
         select id
-        from "datawarehouse".analytics."quickbook_classes"
+        from "datawarehouse".prod_analytics."quickbook_classes"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )) qcl on (qcl.id = qgl.class_id)
-left join "datawarehouse".analytics."quickbook_accounts_top_level" qa on (qa.id = qgl.account_id)
-left join "datawarehouse".analytics."quickbook_accounts_top_level" qap on (qap.id = qa.top_level_id)
-left join (select * from "datawarehouse".analytics."quickbook_customers"
+left join "datawarehouse".prod."quickbook_accounts_top_level" qa on (qa.id = qgl.account_id)
+left join "datawarehouse".prod."quickbook_accounts_top_level" qap on (qap.id = qa.top_level_id)
+left join (select * from "datawarehouse".prod_analytics."quickbook_customers"
     where id in (
         select id
-        from "datawarehouse".analytics."quickbook_customers"
+        from "datawarehouse".prod_analytics."quickbook_customers"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )) qcu on (qcu.id = qgl.customer_id)

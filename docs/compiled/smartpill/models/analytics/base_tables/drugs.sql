@@ -37,5 +37,3 @@ from
     coalesce(NULLIF(gpd.price_goodrx, 0), NULLIF(gpd.price_nadac, 0), NULLIF(gpd.price_retail, 0)) * 1 as price_coalesced, 
     NOW() as date_processed
 from __dbt__cte__gp_drugs gpd
-
-where gpd._airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".analytics."drugs")

@@ -4,13 +4,13 @@
 
 with child as (
     select account_expense_account_id as from_field
-    from "datawarehouse".analytics."quickbook_purchases_lines"
+    from "datawarehouse".prod_analytics."quickbook_purchases_lines"
     where account_expense_account_id is not null
 ),
 
 parent as (
     select id as to_field
-    from "datawarehouse".analytics."quickbook_accounts"
+    from "datawarehouse".prod_analytics."quickbook_accounts"
 )
 
 select

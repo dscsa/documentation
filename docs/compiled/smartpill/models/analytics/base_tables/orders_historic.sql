@@ -133,24 +133,39 @@ from "datawarehouse".raw._airbyte_raw_analytics_locations
 ),oe as (
 	
 		select
-			*,
-			case
-				when _ab_cdc_deleted_at is not null then 'ORDER_DELETED'
-				when order_date_returned is not null then 'ORDER_RETURNED'
-				when order_date_shipped is not null then 'ORDER_SHIPPED'
-				when order_date_dispensed is not null then 'ORDER_DISPENSED'
-				when order_date_added is not null then 'ORDER_ADDED'
-			end as event_name,
-			COALESCE(
-				_ab_cdc_deleted_at,
-				order_date_returned,
-				order_date_shipped,
-				order_date_dispensed,
-				order_date_added
-			) as event_date,
-			'GOODPILL' as _airbyte_source
-		from __dbt__cte__gp_orders
-		where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".analytics."orders_historic")
+			invoice_number,
+			concat('ORDER_', event_type) as event_name,
+			goodpill_event_date as event_date,
+			pat.goodpill_id as patient_id_cp,
+			loc.zip_code as order_zip,
+			loc.state as order_state,
+			count_items,
+			count_filled,
+			count_nofill,
+			order_source,
+			order_stage_cp,
+			order_status,
+			invoice_doc_id,
+			tracking_number,
+			payment_total_default,
+			payment_total_actual,
+			payment_fee_default,
+			payment_fee_actual,
+			payment_due_default,
+			payment_due_actual,
+			payment_date_autopay,
+			payment_method_actual,
+			coupon_lines,
+			order_note,
+			rph_check,
+			tech_fill,
+			ol._airbyte_emitted_at,
+			ol._airbyte_ab_id,
+			'ANALYTICS_V1' as _airbyte_source,
+			ol.date_processed as _ab_cdc_updated_at
+		from __dbt__cte__an_orders_logs ol
+		left join __dbt__cte__an_patients pat using (patient_id)
+		left join __dbt__cte__an_locations loc using (location_id)
 	
 )
 select distinct on (invoice_number, event_name)
