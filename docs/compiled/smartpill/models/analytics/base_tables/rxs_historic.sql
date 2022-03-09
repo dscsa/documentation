@@ -225,6 +225,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'provider_phone') as varchar(10)) as provider_phone,
     cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
     cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
+	cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_added') as timestamp) as rx_date_added,
     cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
@@ -321,6 +322,32 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
+),  __dbt__cte__an_patients_daily_logs as (
+select
+	_airbyte_ab_id,
+	_airbyte_emitted_at,
+	cast(jsonb_extract_path_text(_airbyte_data, 'patient_id') as int) as patient_id,
+	cast(jsonb_extract_path_text(_airbyte_data, 'date_id') as int) as date_id,
+	cast(jsonb_extract_path_text(_airbyte_data, 'location_id') as int) as location_id,
+	cast(jsonb_extract_path_text(_airbyte_data, 'patient_log_date') as timestamp) as patient_log_date,
+	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_next_max') as date) as refill_date_next_max,
+	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_next_min') as date) as refill_date_next_min,
+	cast(jsonb_extract_path_text(_airbyte_data, 'days_overdue') as int) as days_overdue,
+	cast(jsonb_extract_path_text(_airbyte_data, 'days_lifetime') as int) as days_lifetime,
+	cast(jsonb_extract_path_text(_airbyte_data, 'rxs_count') as int) as rxs_count,
+	cast(jsonb_extract_path_text(_airbyte_data, 'rx_groups_count') as int) as rx_groups_count,
+	cast(jsonb_extract_path_text(_airbyte_data, 'is_autofill') as int) as is_autofill,
+	cast(jsonb_extract_path_text(_airbyte_data, 'refills_used_day') as int) as refills_used_day,
+	cast(jsonb_extract_path_text(_airbyte_data, 'refills_used_total') as int) as refills_used_total,
+	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_type') as varchar) as payment_card_type,
+	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_last4') as varchar) as payment_card_last4,
+	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_date_expired') as date) as payment_card_date_expired,
+	cast(jsonb_extract_path_text(_airbyte_data, 'payment_method_default') as varchar) as payment_method_default,
+	cast(jsonb_extract_path_text(_airbyte_data, 'payment_coupon') as varchar) as payment_coupon,
+	cast(jsonb_extract_path_text(_airbyte_data, 'tracking_coupon') as varchar) as tracking_coupon,
+	cast(jsonb_extract_path_text(_airbyte_data, 'modified_by') as varchar) as modified_by,
+	cast(jsonb_extract_path_text(_airbyte_data, 'date_processed') as timestamp) as date_processed
+from "datawarehouse".raw._airbyte_raw_analytics_patients_daily_logs
 ),  __dbt__cte__an_dates as (
 select
 	cast(jsonb_extract_path_text(_airbyte_data, 'date_id') as int) as date_id,
@@ -357,6 +384,15 @@ select
 from "datawarehouse".raw._airbyte_raw_analytics_times
 ),rxh as (
 
+	with pdl as (
+		select
+			p.goodpill_id as patient_id_cp,
+			pdl.refill_date_next_max,
+			d.db_date
+		from __dbt__cte__an_patients_daily_logs pdl
+		inner join __dbt__cte__an_patients p using (patient_id)
+		inner join __dbt__cte__an_dates d using (date_id)
+	)
 	select
 		fl.*,
 		case
@@ -368,6 +404,7 @@ from "datawarehouse".raw._airbyte_raw_analytics_times
 		cli.name as clinic_name,
 		pat.goodpill_id as patient_id_cp,
 		drg.generic_name as drug_generic,
+		pdl.refill_date_next_max,
 		null::timestamp as _ab_cdc_updated_at,
 		'ANALYTICS_V1' as _airbyte_source
 	from __dbt__cte__an_fills_logs fl
@@ -377,6 +414,7 @@ from "datawarehouse".raw._airbyte_raw_analytics_times
 	left join __dbt__cte__an_clinics cli using (clinic_id)
 	left join __dbt__cte__an_dates dts on dts.date_id = fl.event_date_id
 	left join __dbt__cte__an_times tms on tms.time_id = fl.event_time_id
+	left join pdl on pdl.db_date = dts.db_date and pdl.patient_id_cp = pat.goodpill_id
 	where event_type <> 'REMOVED' or event_type <> 'DISPENSED'
 
 
@@ -418,7 +456,7 @@ select
 	sig_v2_scores,
 	sig_v2_frequencies,
 	sig_v2_durations,
-	refill_date_next,
+	coalesce(refill_date_next_max, refill_date_next) as refill_date_next,
 	refill_date_manual,
 	refill_date_default,
 	qty_total,

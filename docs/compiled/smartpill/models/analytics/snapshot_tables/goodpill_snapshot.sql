@@ -10,7 +10,7 @@ with psh as (
 	select distinct on (patient_id_cp)
 		patient_id_cp,
 		event_date as patient_event_date,
-		event_name as patient_event_name,
+		event_name as patient_status,
 		
   
 

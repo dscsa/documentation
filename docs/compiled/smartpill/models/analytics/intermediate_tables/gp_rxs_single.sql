@@ -55,6 +55,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'provider_phone') as varchar(10)) as provider_phone,
     cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
     cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
+	cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_added') as timestamp) as rx_date_added,
     cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,

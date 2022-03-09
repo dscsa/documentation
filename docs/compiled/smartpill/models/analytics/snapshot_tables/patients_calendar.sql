@@ -162,6 +162,18 @@ select * from filtered
 		left join "datawarehouse".prod_analytics."patients_status_historic" psh on date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
 		left join "datawarehouse".prod_analytics."patient_events" pe on pe.event_name = psh.event_name
 	) t
+), pci as (
+	select
+		patient_id_cp,
+		date_day,
+		case
+			when pe.event_name = 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) in ('PATIENT_UNREGISTED', 'PATIENT_NO_RX') then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE')
+			when pe.event_name like '%CHURN%' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) = 'PATIENT_ACTIVE' then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN')
+			when pe.event_name like 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) like '%CHURN%' then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED')
+			else pc.event_weight_day
+		end as event_weight_day
+	from pc
+	left join "datawarehouse".prod_analytics."patient_events" pe on pc.event_weight_day = pe.event_weight
 )
 
 -- obtain the event date for each time frame
@@ -172,4 +184,4 @@ select distinct on (patient_id_cp, date_day)
 	max(event_weight_day) over (partition by patient_id_cp, extract(year from date_day), extract(week from date_day)) as event_weight_week,
 	max(event_weight_day) over (partition by patient_id_cp, extract(year from date_day), extract(month from date_day)) as event_weight_month,
 	max(event_weight_day) over (partition by patient_id_cp, extract(year from date_day)) as event_weight_year
-from pc
+from pci
