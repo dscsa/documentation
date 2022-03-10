@@ -141,7 +141,7 @@ select * from filtered
 	-- table with all distincts patient ids, to cross join with dates
 	pids as (
 		select distinct patient_id_cp
-		from "datawarehouse".prod_analytics."patients"
+		from "datawarehouse".dev_analytics."patients"
 	)
 
 	-- assign to all the rows of a partition its designated event
@@ -159,21 +159,21 @@ select * from filtered
 			sum(case when psh.event_name is null then 0 else 1 end) over (partition by pids.patient_id_cp order by calendar.date_day, event_weight asc) as partition_day
 		from calendar
 		cross join pids
-		left join "datawarehouse".prod_analytics."patients_status_historic" psh on date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
-		left join "datawarehouse".prod_analytics."patient_events" pe on pe.event_name = psh.event_name
+		left join "datawarehouse".dev_analytics."patients_status_historic" psh on date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
+		left join "datawarehouse".dev_analytics."patient_events" pe on pe.event_name = psh.event_name
 	) t
 ), pci as (
 	select
 		patient_id_cp,
 		date_day,
 		case
-			when pe.event_name = 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) in ('PATIENT_UNREGISTED', 'PATIENT_NO_RX') then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE')
-			when pe.event_name like '%CHURN%' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) = 'PATIENT_ACTIVE' then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN')
-			when pe.event_name like 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) like '%CHURN%' then (select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED')
+			when pe.event_name = 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) in ('PATIENT_UNREGISTED', 'PATIENT_NO_RX') then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE')
+			when pe.event_name like '%CHURN%' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) = 'PATIENT_ACTIVE' then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN')
+			when pe.event_name like 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) like '%CHURN%' then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED')
 			else pc.event_weight_day
 		end as event_weight_day
 	from pc
-	left join "datawarehouse".prod_analytics."patient_events" pe on pc.event_weight_day = pe.event_weight
+	left join "datawarehouse".dev_analytics."patient_events" pe on pc.event_weight_day = pe.event_weight
 )
 
 -- obtain the event date for each time frame

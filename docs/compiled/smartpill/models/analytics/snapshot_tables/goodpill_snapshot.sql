@@ -140,9 +140,9 @@ with psh as (
     
   
 
-	from "datawarehouse".prod_analytics."patients_status_historic"
+	from "datawarehouse".dev_analytics."patients_status_historic"
 	order by patient_id_cp, patient_event_date desc
-	/* inner join "datawarehouse".prod_analytics."goodpill_events" using (event_name) */
+	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 ),
 
 rh as (
@@ -246,8 +246,8 @@ rh as (
   rh."qty_total" as "rx_qty_total",
   rh."rx_source" as "rx_source",
   rh."rx_transfer" as "rx_transfer"
-	from "datawarehouse".prod_analytics."rxs_historic" rh
-	/* inner join "datawarehouse".prod_analytics."goodpill_events" using (event_name) */
+	from "datawarehouse".dev_analytics."rxs_historic" rh
+	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 	/* where rh.event_date <= coalesce(oh.event_date, NOW()) */
 	/* 	-- triple check this... */
 	/* 	and oh.event_name = 'ORDER_SHIPPED' or oh.event_name = 'ORDER_RETURNED' */
@@ -295,6 +295,24 @@ oih as (
         as date_order_item_deleted
       
     
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_UPDATED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_updated
+      
+    
     
   
 ,
@@ -329,8 +347,8 @@ oih as (
   "refill_target_date" as "item_refill_target_date",
   "refill_target_days" as "item_refill_target_days",
   "refill_target_rxs" as "item_refill_target_rxs"
-	from "datawarehouse".prod_analytics."order_items_historic" oih
-	/* inner join "datawarehouse".prod_analytics."goodpill_events" using (event_name) */
+	from "datawarehouse".dev_analytics."order_items_historic" oih
+	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 ),
 
 oh as (
@@ -431,8 +449,7 @@ oh as (
     
   
 ,
-		"location_id" as "order_location_id",
-  "count_items" as "order_count_items",
+		"count_items" as "order_count_items",
   "count_filled" as "order_count_filled",
   "count_nofill" as "order_count_nofill",
   "order_source" as "order_source",
@@ -451,9 +468,10 @@ oh as (
   "order_payment_coupon" as "order_payment_coupon",
   "order_note" as "order_note",
   "rph_check" as "order_rph_check",
-  "tech_fill" as "order_tech_fill"
-	from "datawarehouse".prod_analytics."orders_historic" oh
-	/* inner join "datawarehouse".prod_analytics."goodpill_events" using (event_name) */
+  "tech_fill" as "order_tech_fill",
+  "location_id" as "order_location_id"
+	from "datawarehouse".dev_analytics."orders_historic" oh
+	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 )
 
 select distinct on (patient_id_cp, rx_number, invoice_number)

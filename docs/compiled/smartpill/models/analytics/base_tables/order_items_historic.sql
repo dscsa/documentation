@@ -54,7 +54,7 @@ from
 			where item_date_added is not NULL and (
 				select 
 					sum(cast(event_name = 'ORDER_ITEM_ADDED' as int))
-				from "datawarehouse".prod_analytics."order_items_historic" oih
+				from "datawarehouse".dev_analytics."order_items_historic" oih
 				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
 		union
 		select
@@ -74,7 +74,7 @@ from
 			where _ab_cdc_deleted_at is not NULL and (
 				select 
 					sum(cast(event_name = 'ORDER_ITEM_DELETED' as int))
-				from "datawarehouse".prod_analytics."order_items_historic" oih
+				from "datawarehouse".dev_analytics."order_items_historic" oih
 				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
 	
 )
@@ -125,4 +125,4 @@ select
 )) as unique_event_id
 from oie
 
-	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".prod_analytics."order_items_historic")
+	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."order_items_historic")

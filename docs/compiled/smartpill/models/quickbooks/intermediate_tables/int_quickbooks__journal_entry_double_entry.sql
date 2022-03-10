@@ -2,10 +2,10 @@
 Table that provides the debit and credit records of a journal entry transaction.
 */
 with journal_entries as (
-    select * from "datawarehouse".prod_analytics."quickbook_journal_entries"
+    select * from "datawarehouse".dev_analytics."quickbook_journal_entries"
     where id in (
         select id
-        from "datawarehouse".prod_analytics."quickbook_journal_entries"
+        from "datawarehouse".dev_analytics."quickbook_journal_entries"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -13,7 +13,7 @@ with journal_entries as (
 
 journal_entry_lines as (
     select *
-    from "datawarehouse".prod_analytics."quickbook_journal_entries_lines"
+    from "datawarehouse".dev_analytics."quickbook_journal_entries_lines"
 ),
 
 final as (

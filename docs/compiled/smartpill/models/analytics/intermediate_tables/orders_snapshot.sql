@@ -100,8 +100,7 @@ select
     
   
 ,
-	"location_id" as "order_location_id",
-  "count_items" as "order_count_items",
+	"count_items" as "order_count_items",
   "count_filled" as "order_count_filled",
   "count_nofill" as "order_count_nofill",
   "order_source" as "order_source",
@@ -120,5 +119,6 @@ select
   "order_payment_coupon" as "order_payment_coupon",
   "order_note" as "order_note",
   "rph_check" as "order_rph_check",
-  "tech_fill" as "order_tech_fill"
-from "datawarehouse".prod_analytics."orders_historic" oh
+  "tech_fill" as "order_tech_fill",
+  "location_id" as "order_location_id"
+from "datawarehouse".dev_analytics."orders_historic" oh

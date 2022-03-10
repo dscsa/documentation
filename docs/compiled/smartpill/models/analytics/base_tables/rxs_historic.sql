@@ -330,7 +330,7 @@ from
 			'RX_ADDED' as event_name,
 			rx_date_added as event_date
 			from __dbt__cte__gp_rxs_single gprxs
-			where (select sum(cast(event_name = 'RX_ADDED' as int)) from "datawarehouse".prod_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+			where (select sum(cast(event_name = 'RX_ADDED' as int)) from "datawarehouse".dev_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
 			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 		union
 		(select distinct on (rx_number)
@@ -339,7 +339,7 @@ from
 			rx_date_transferred as event_date
 			from __dbt__cte__gp_rxs_single gprxs
 			where rx_date_transferred is not null
-				and (select sum(cast(event_name = 'RX_TRANSFERRED' as int)) from "datawarehouse".prod_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+				and (select sum(cast(event_name = 'RX_TRANSFERRED' as int)) from "datawarehouse".dev_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
 			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 		union
 		(select distinct on (rx_number)
@@ -353,7 +353,7 @@ from
 				rx_gsn is not null
 				and rx_gsn <> 0
 				and rx_date_expired is not null
-				and (select sum(cast(event_name = 'RX_WRITTEN' as int)) from "datawarehouse".prod_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
+				and (select sum(cast(event_name = 'RX_WRITTEN' as int)) from "datawarehouse".dev_analytics."rxs_historic" rhs where gprxs.rx_number = rhs.rx_number) = 0
 			order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 		union
 		select
@@ -452,7 +452,7 @@ from
 	from grse
 	inner join gp using (patient_id_cp)
 	left join grg on grg.rx_numbers like CONCAT('%,', grse.rx_number ,',%')
-	where grse._ab_cdc_updated_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".prod_analytics."rxs_historic")
+	where grse._ab_cdc_updated_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."rxs_historic")
 	order by rx_number, event_name, _airbyte_emitted_at desc
 
 

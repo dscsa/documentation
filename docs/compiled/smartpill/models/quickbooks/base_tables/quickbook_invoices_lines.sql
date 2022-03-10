@@ -14,7 +14,7 @@ select
     jsonb_extract_path_text(line, 'SalesItemLineDetail','UnitPrice') as sales_item_unit_price,
     jsonb_extract_path_text(line, 'Description') as description,
     jsonb_extract_path_text(line, 'LineNum') as line_num
-from "datawarehouse".prod_analytics."quickbook_invoices"
+from "datawarehouse".dev_analytics."quickbook_invoices"
 
 where
     line is not null

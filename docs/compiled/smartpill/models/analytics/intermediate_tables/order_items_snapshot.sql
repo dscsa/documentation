@@ -44,6 +44,24 @@ select
         as date_order_item_deleted
       
     
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_UPDATED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_updated
+      
+    
     
   
 ,
@@ -78,4 +96,4 @@ select
   "refill_target_date" as "item_refill_target_date",
   "refill_target_days" as "item_refill_target_days",
   "refill_target_rxs" as "item_refill_target_rxs"
-from "datawarehouse".prod_analytics."order_items_historic" oih
+from "datawarehouse".dev_analytics."order_items_historic" oih

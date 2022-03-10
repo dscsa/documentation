@@ -208,6 +208,6 @@ select distinct on (invoice_number, event_name)
 )) as unique_event_id
 from oe
 
-	where event_date > (select MAX(event_date) from "datawarehouse".prod_analytics."orders_historic")
+	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."orders_historic")
 
 order by invoice_number, event_name, event_date desc

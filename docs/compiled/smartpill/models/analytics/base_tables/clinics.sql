@@ -70,4 +70,4 @@ from
 from __dbt__cte__gp_rxs_single
 where provider_clinic IS NOT NULL AND provider_clinic <> ''
 
-	and (select COUNT(*) from "datawarehouse".prod_analytics."clinics" where name = provider_clinic) = 0
+	and (select COUNT(*) from "datawarehouse".dev_analytics."clinics" where name = provider_clinic) = 0

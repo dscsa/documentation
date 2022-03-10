@@ -7,10 +7,10 @@ with payment as (
         receivable_account_id,
         customer_id as customer_id,
         currency_name
-    from "datawarehouse".prod_analytics."quickbook_payments"
+    from "datawarehouse".dev_analytics."quickbook_payments"
     where id in (
         select id
-        from "datawarehouse".prod_analytics."quickbook_payments"
+        from "datawarehouse".dev_analytics."quickbook_payments"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )
@@ -19,7 +19,7 @@ with payment as (
 ar_accounts as (
     select
         id
-    from "datawarehouse".prod_analytics."quickbook_accounts"
+    from "datawarehouse".dev_analytics."quickbook_accounts"
 
     where account_type = 'Accounts Receivable'
         and is_active

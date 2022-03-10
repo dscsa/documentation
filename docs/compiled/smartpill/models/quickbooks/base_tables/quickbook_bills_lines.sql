@@ -16,7 +16,7 @@ select
     cast(jsonb_extract_path_text(line, 'Amount') as 
     numeric(28, 6)
 ) as amount
-from "datawarehouse".prod_analytics."quickbook_bills"
+from "datawarehouse".dev_analytics."quickbook_bills"
 
 where
     line is not null

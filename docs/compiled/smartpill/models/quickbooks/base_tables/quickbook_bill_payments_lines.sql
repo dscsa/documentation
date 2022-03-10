@@ -9,7 +9,7 @@ bill_payment as (
         cast(jsonb_extract_path_text(line, 'Amount') as 
     numeric(28, 6)
 ) as amount
-    from "datawarehouse".prod_analytics."quickbook_bill_payments"
+    from "datawarehouse".dev_analytics."quickbook_bill_payments"
     
     where 
         line is not null

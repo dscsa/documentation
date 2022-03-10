@@ -69,4 +69,4 @@ from
 from __dbt__cte__gp_patients
 where (pharmacy_npi is not NULL or pharmacy_name is not NULL)
 
-    and _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".prod_analytics."pharmacies")
+    and _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."pharmacies")

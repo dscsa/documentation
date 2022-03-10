@@ -131,4 +131,4 @@ select distinct on (id)
     NOW() as date_processed
 FROM locations 
 
-    where _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".prod_analytics."locations")
+    where _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."locations")

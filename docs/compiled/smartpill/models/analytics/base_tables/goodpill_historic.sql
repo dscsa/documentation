@@ -5,7 +5,7 @@ with gph as (
         (
             select
 
-                cast('"datawarehouse".prod_analytics."orders_historic"' as 
+                cast('"datawarehouse".dev_analytics."orders_historic"' as 
     varchar
 ) as _dbt_source_relation,
                 
@@ -13,7 +13,6 @@ with gph as (
                     cast("event_name" as text) as "event_name" ,
                     cast("event_date" as timestamp without time zone) as "event_date" ,
                     cast("patient_id_cp" as integer) as "patient_id_cp" ,
-                    cast("location_id" as character varying(255)) as "location_id" ,
                     cast("count_items" as integer) as "count_items" ,
                     cast("count_filled" as integer) as "count_filled" ,
                     cast("count_nofill" as integer) as "count_nofill" ,
@@ -39,6 +38,7 @@ with gph as (
                     cast("_ab_cdc_updated_at" as timestamp without time zone) as "_ab_cdc_updated_at" ,
                     cast("_airbyte_source" as text) as "_airbyte_source" ,
                     cast("unique_event_id" as text) as "unique_event_id" ,
+                    cast("location_id" as character varying(256)) as "location_id" ,
                     cast(null as integer) as "rx_number" ,
                     cast(null as character varying(255)) as "drug_generic" ,
                     cast(null as character varying(255)) as "clinic_name" ,
@@ -108,7 +108,7 @@ with gph as (
                     cast(null as integer) as "refill_target_days" ,
                     cast(null as character varying(255)) as "refill_target_rxs" 
 
-            from "datawarehouse".prod_analytics."orders_historic"
+            from "datawarehouse".dev_analytics."orders_historic"
         )
 
         union all
@@ -117,7 +117,7 @@ with gph as (
         (
             select
 
-                cast('"datawarehouse".prod_analytics."rxs_historic"' as 
+                cast('"datawarehouse".dev_analytics."rxs_historic"' as 
     varchar
 ) as _dbt_source_relation,
                 
@@ -125,7 +125,6 @@ with gph as (
                     cast("event_name" as text) as "event_name" ,
                     cast("event_date" as timestamp without time zone) as "event_date" ,
                     cast("patient_id_cp" as integer) as "patient_id_cp" ,
-                    cast(null as character varying(255)) as "location_id" ,
                     cast(null as integer) as "count_items" ,
                     cast(null as integer) as "count_filled" ,
                     cast(null as integer) as "count_nofill" ,
@@ -151,6 +150,7 @@ with gph as (
                     cast("_ab_cdc_updated_at" as timestamp without time zone) as "_ab_cdc_updated_at" ,
                     cast("_airbyte_source" as text) as "_airbyte_source" ,
                     cast("unique_event_id" as text) as "unique_event_id" ,
+                    cast(null as character varying(256)) as "location_id" ,
                     cast("rx_number" as integer) as "rx_number" ,
                     cast("drug_generic" as character varying(255)) as "drug_generic" ,
                     cast("clinic_name" as character varying(255)) as "clinic_name" ,
@@ -220,7 +220,7 @@ with gph as (
                     cast(null as integer) as "refill_target_days" ,
                     cast(null as character varying(255)) as "refill_target_rxs" 
 
-            from "datawarehouse".prod_analytics."rxs_historic"
+            from "datawarehouse".dev_analytics."rxs_historic"
         )
 
         union all
@@ -229,7 +229,7 @@ with gph as (
         (
             select
 
-                cast('"datawarehouse".prod_analytics."order_items_historic"' as 
+                cast('"datawarehouse".dev_analytics."order_items_historic"' as 
     varchar
 ) as _dbt_source_relation,
                 
@@ -237,7 +237,6 @@ with gph as (
                     cast("event_name" as text) as "event_name" ,
                     cast("event_date" as timestamp without time zone) as "event_date" ,
                     cast("patient_id_cp" as integer) as "patient_id_cp" ,
-                    cast(null as character varying(255)) as "location_id" ,
                     cast(null as integer) as "count_items" ,
                     cast(null as integer) as "count_filled" ,
                     cast(null as integer) as "count_nofill" ,
@@ -263,6 +262,7 @@ with gph as (
                     cast("_ab_cdc_updated_at" as timestamp without time zone) as "_ab_cdc_updated_at" ,
                     cast("_airbyte_source" as text) as "_airbyte_source" ,
                     cast("unique_event_id" as text) as "unique_event_id" ,
+                    cast(null as character varying(256)) as "location_id" ,
                     cast("rx_number" as integer) as "rx_number" ,
                     cast(null as character varying(255)) as "drug_generic" ,
                     cast(null as character varying(255)) as "clinic_name" ,
@@ -332,7 +332,7 @@ with gph as (
                     cast("refill_target_days" as integer) as "refill_target_days" ,
                     cast("refill_target_rxs" as character varying(255)) as "refill_target_rxs" 
 
-            from "datawarehouse".prod_analytics."order_items_historic"
+            from "datawarehouse".dev_analytics."order_items_historic"
         )
 
         union all
@@ -341,7 +341,7 @@ with gph as (
         (
             select
 
-                cast('"datawarehouse".prod_analytics."patients_status_historic"' as 
+                cast('"datawarehouse".dev_analytics."patients_status_historic"' as 
     varchar
 ) as _dbt_source_relation,
                 
@@ -349,7 +349,6 @@ with gph as (
                     cast("event_name" as text) as "event_name" ,
                     cast("event_date" as timestamp without time zone) as "event_date" ,
                     cast("patient_id_cp" as integer) as "patient_id_cp" ,
-                    cast(null as character varying(255)) as "location_id" ,
                     cast(null as integer) as "count_items" ,
                     cast(null as integer) as "count_filled" ,
                     cast(null as integer) as "count_nofill" ,
@@ -375,6 +374,7 @@ with gph as (
                     cast("_ab_cdc_updated_at" as timestamp without time zone) as "_ab_cdc_updated_at" ,
                     cast("_airbyte_source" as text) as "_airbyte_source" ,
                     cast("unique_event_id" as text) as "unique_event_id" ,
+                    cast(null as character varying(256)) as "location_id" ,
                     cast(null as integer) as "rx_number" ,
                     cast(null as character varying(255)) as "drug_generic" ,
                     cast(null as character varying(255)) as "clinic_name" ,
@@ -444,7 +444,7 @@ with gph as (
                     cast(null as integer) as "refill_target_days" ,
                     cast(null as character varying(255)) as "refill_target_rxs" 
 
-            from "datawarehouse".prod_analytics."patients_status_historic"
+            from "datawarehouse".dev_analytics."patients_status_historic"
         )
 
         
@@ -452,3 +452,5 @@ with gph as (
 select
 	*
 from gph
+
+	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."goodpill_historic")

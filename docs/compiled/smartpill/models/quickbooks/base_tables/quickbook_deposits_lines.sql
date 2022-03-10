@@ -11,7 +11,7 @@ select
     jsonb_extract_path_text(line, 'DepositLineDetail','ClassRef','value') as class_id,
     jsonb_extract_path_text(line, 'DepositLineDetail','CustomerRef','value') as customer_id,
     jsonb_extract_path_text(line, 'LineNum') as line_num
-from "datawarehouse".prod_analytics."quickbook_deposits"
+from "datawarehouse".dev_analytics."quickbook_deposits"
     
 where
     line is not null

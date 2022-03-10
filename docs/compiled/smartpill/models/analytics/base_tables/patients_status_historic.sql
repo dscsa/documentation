@@ -46,6 +46,24 @@ select
         as date_order_item_deleted
       
     
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_UPDATED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_updated
+      
+    
     
   
 ,
@@ -80,7 +98,7 @@ select
   "refill_target_date" as "item_refill_target_date",
   "refill_target_days" as "item_refill_target_days",
   "refill_target_rxs" as "item_refill_target_rxs"
-from "datawarehouse".prod_analytics."order_items_historic" oih
+from "datawarehouse".dev_analytics."order_items_historic" oih
 ),  __dbt__cte__orders_snapshot as (
 -- Exclude the common columns between the tables,
 --  to be called with dbt_utils.star (instead of using
@@ -184,8 +202,7 @@ select
     
   
 ,
-	"location_id" as "order_location_id",
-  "count_items" as "order_count_items",
+	"count_items" as "order_count_items",
   "count_filled" as "order_count_filled",
   "count_nofill" as "order_count_nofill",
   "order_source" as "order_source",
@@ -204,8 +221,9 @@ select
   "order_payment_coupon" as "order_payment_coupon",
   "order_note" as "order_note",
   "rph_check" as "order_rph_check",
-  "tech_fill" as "order_tech_fill"
-from "datawarehouse".prod_analytics."orders_historic" oh
+  "tech_fill" as "order_tech_fill",
+  "location_id" as "order_location_id"
+from "datawarehouse".dev_analytics."orders_historic" oh
 ),  __dbt__cte__gp_patients as (
 select
     _airbyte_emitted_at,
@@ -285,7 +303,7 @@ from
 				rh.refills_left > 0 or rh.refills_total > 0 as has_refills,
 				rh.rx_date_expired,
 				rh.refill_date_first
-			from "datawarehouse".prod_analytics."rxs_historic" rh
+			from "datawarehouse".dev_analytics."rxs_historic" rh
 			left join __dbt__cte__order_items_snapshot oih using (rx_number)
 			left join __dbt__cte__orders_snapshot oh using (invoice_number)
 			where rh.refill_date_next is not null
@@ -339,7 +357,7 @@ statuses as (
 		_ab_cdc_updated_at
 		from __dbt__cte__gp_patients gp
 		inner join (
-			select distinct patient_id_cp from "datawarehouse".prod_analytics."rxs_historic" rxs
+			select distinct patient_id_cp from "datawarehouse".dev_analytics."rxs_historic" rxs
 		) t using (patient_id_cp)
 		where patient_date_added is not null
 			and (patient_date_registered is null or date(patient_date_registered) >= date(patient_date_added))
@@ -395,6 +413,6 @@ from (
 	from statuses
 ) gps
 
-	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".prod_analytics."patients_status_historic")
+	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."patients_status_historic")
 
 order by patient_id_cp, event_name, _airbyte_emitted_at desc

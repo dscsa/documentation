@@ -41,11 +41,11 @@ select
 	prv.provider_first_name,
 	prv.provider_last_name,
 	prv.provider_phone
-from "datawarehouse".prod_analytics."goodpill_snapshot" gs
-left join "datawarehouse".prod_analytics."drugs" drg on gs.rx_drug_generic = drg.generic_name
-left join "datawarehouse".prod_analytics."locations" loc on gs.order_location_id = loc.id
-left join "datawarehouse".prod_analytics."providers" prv on gs.rx_provider_npi = prv.provider_npi
-left join "datawarehouse".prod_analytics."patients" pat on gs.patient_id_cp = pat.patient_id_cp
-left join "datawarehouse".prod_analytics."pharmacies" phr on pat.pharmacy_id = phr.pharmacy_id
+from "datawarehouse".dev_analytics."goodpill_snapshot" gs
+left join "datawarehouse".dev_analytics."drugs" drg on gs.rx_drug_generic = drg.generic_name
+left join "datawarehouse".dev_analytics."locations" loc on gs.order_location_id = loc.id
+left join "datawarehouse".dev_analytics."providers" prv on gs.rx_provider_npi = prv.provider_npi
+left join "datawarehouse".dev_analytics."patients" pat on gs.patient_id_cp = pat.patient_id_cp
+left join "datawarehouse".dev_analytics."pharmacies" phr on pat.pharmacy_id = phr.pharmacy_id
 -- at the moment, without metadata, the clinic join doesn't add info
-left join "datawarehouse".prod_analytics."clinics" cli on gs.rx_clinic_name = cli.name
+left join "datawarehouse".dev_analytics."clinics" cli on gs.rx_clinic_name = cli.name

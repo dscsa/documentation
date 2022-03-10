@@ -1,8 +1,8 @@
 with accounts as (
-    select * from "datawarehouse".prod_analytics."quickbook_accounts"
+    select * from "datawarehouse".dev_analytics."quickbook_accounts"
     where id in (
         select id
-        from "datawarehouse".prod_analytics."quickbook_accounts"
+        from "datawarehouse".dev_analytics."quickbook_accounts"
         group by id
         having _airbyte_emitted_at = max(_airbyte_emitted_at)
     )

@@ -38,4 +38,4 @@ from
     NOW() as date_processed
 from __dbt__cte__gp_drugs gpd
 
-where gpd._airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".prod_analytics."drugs")
+where gpd._airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."drugs")
