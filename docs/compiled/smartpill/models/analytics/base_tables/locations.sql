@@ -38,7 +38,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_due_actual') as int) as payment_due_actual,
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_date_autopay') as varchar(80)) as payment_date_autopay,
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_method_actual') as varchar(80)) as payment_method_actual,
-    cast(jsonb_extract_path_text(_airbyte_data, 'coupon_lines') as varchar(255)) as coupon_lines,
+    cast(jsonb_extract_path_text(_airbyte_data, 'order_payment_coupon') as varchar(255)) as order_payment_coupon,
     cast(jsonb_extract_path_text(_airbyte_data, 'order_note') as varchar(255)) as order_note,
     cast(jsonb_extract_path_text(_airbyte_data, 'priority') as int) as priority,
     cast(jsonb_extract_path_text(_airbyte_data, 'tech_fill') as varchar(5)) as tech_fill,
@@ -130,3 +130,5 @@ select distinct on (id)
     cast(zip_code as varchar(255)) as zip_code, 
     NOW() as date_processed
 FROM locations 
+
+    where _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".prod_analytics."locations")

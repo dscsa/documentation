@@ -12,8 +12,74 @@ select
 	invoice_number,
 	
   
-,
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_ADDED'
+        then event_date
+      else null
+      end
+    )
 	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_added
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_DELETED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_deleted
+      
+    
+    
+  
+,
+	"groups" as "item_groups",
+  "rx_dispensed_id" as "item_rx_dispensed_id",
+  "stock_level_initial" as "item_stock_level_initial",
+  "rx_message_keys_initial" as "item_rx_message_keys_initial",
+  "patient_autofill_initial" as "item_patient_autofill_initial",
+  "rx_autofill_initial" as "item_rx_autofill_initial",
+  "rx_numbers_initial" as "item_rx_numbers_initial",
+  "zscore_initial" as "item_zscore_initial",
+  "refills_dispensed_default" as "item_refills_dispensed_default",
+  "refills_dispensed_actual" as "item_refills_dispensed_actual",
+  "days_dispensed_default" as "item_days_dispensed_default",
+  "days_dispensed_actual" as "item_days_dispensed_actual",
+  "qty_dispensed_default" as "item_qty_dispensed_default",
+  "qty_dispensed_actual" as "item_qty_dispensed_actual",
+  "price_dispensed_default" as "item_price_dispensed_default",
+  "price_dispensed_actual" as "item_price_dispensed_actual",
+  "qty_pended_total" as "item_qty_pended_total",
+  "qty_pended_repacks" as "item_qty_pended_repacks",
+  "count_pended_total" as "item_count_pended_total",
+  "count_pended_repacks" as "item_count_pended_repacks",
+  "item_message_keys" as "item_message_keys",
+  "item_message_text" as "item_message_text",
+  "item_type" as "item_type",
+  "item_added_by" as "item_added_by",
+  "item_date_added" as "item_date_added",
+  "refill_date_last" as "item_refill_date_last",
+  "refill_date_manual" as "item_refill_date_manual",
+  "refill_date_default" as "item_refill_date_default",
+  "refill_target_date" as "item_refill_target_date",
+  "refill_target_days" as "item_refill_target_days",
+  "refill_target_rxs" as "item_refill_target_rxs"
 from "datawarehouse".prod_analytics."order_items_historic" oih
 ),  __dbt__cte__orders_snapshot as (
 -- Exclude the common columns between the tables,
@@ -27,8 +93,118 @@ select
 	invoice_number,
 	
   
-,
+    max(
+      
+      case
+      when event_name = 'ORDER_ADDED'
+        then event_date
+      else null
+      end
+    )
 	
+      over(partition by invoice_number)
+	
+    
+      
+        as date_order_added
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_DISPENSED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number)
+	
+    
+      
+        as date_order_dispensed
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_SHIPPED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number)
+	
+    
+      
+        as date_order_shipped
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_DELETED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number)
+	
+    
+      
+        as date_order_deleted
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_RETURNED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number)
+	
+    
+      
+        as date_order_returned
+      
+    
+    
+  
+,
+	"location_id" as "order_location_id",
+  "count_items" as "order_count_items",
+  "count_filled" as "order_count_filled",
+  "count_nofill" as "order_count_nofill",
+  "order_source" as "order_source",
+  "order_stage_cp" as "order_stage_cp",
+  "order_status" as "order_status",
+  "invoice_doc_id" as "order_invoice_doc_id",
+  "tracking_number" as "order_tracking_number",
+  "payment_total_default" as "order_payment_total_default",
+  "payment_total_actual" as "order_payment_total_actual",
+  "payment_fee_default" as "order_payment_fee_default",
+  "payment_fee_actual" as "order_payment_fee_actual",
+  "payment_due_default" as "order_payment_due_default",
+  "payment_due_actual" as "order_payment_due_actual",
+  "payment_date_autopay" as "order_payment_date_autopay",
+  "payment_method_actual" as "order_payment_method_actual",
+  "order_payment_coupon" as "order_payment_coupon",
+  "order_note" as "order_note",
+  "rph_check" as "order_rph_check",
+  "tech_fill" as "order_tech_fill"
 from "datawarehouse".prod_analytics."orders_historic" oh
 ),  __dbt__cte__gp_patients as (
 select
@@ -218,5 +394,7 @@ from (
 	select *
 	from statuses
 ) gps
+
+	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".prod_analytics."patients_status_historic")
 
 order by patient_id_cp, event_name, _airbyte_emitted_at desc

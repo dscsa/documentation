@@ -43,208 +43,39 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
-),  __dbt__cte__an_fills_logs as (
-select
-	_airbyte_ab_id,
-	_airbyte_emitted_at,
-	cast(jsonb_extract_path_text(_airbyte_data, 'patient_id') as int) as patient_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'event_date_id') as int) as event_date_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'event_time_id') as int) as event_time_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'event_type') as varchar(15)) as event_type,
-	cast(jsonb_extract_path_text(_airbyte_data, 'goodpill_event_date') as timestamp) as goodpill_event_date,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_number') as int) as rx_number,
-	cast(jsonb_extract_path_text(_airbyte_data, 'provider_id') as int) as provider_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'drug_id') as int) as drug_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'clinic_id') as int) as clinic_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'location_id') as int) as location_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
-	cast(jsonb_extract_path_text(_airbyte_data, 'is_refill') as int) as is_refill,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_autofill') as int) as rx_autofill,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_qty_per_day') as decimal(6,3)) as sig_qty_per_day,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_key') as varchar(80)) as rx_message_key,
-	cast(jsonb_extract_path_text(_airbyte_data, 'max_gsn') as int) as max_gsn,
-	cast(jsonb_extract_path_text(_airbyte_data, 'drug_gsns') as varchar(255)) as drug_gsns,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refills_total') as decimal(5,2)) as refills_total,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refills_original') as decimal(5,2)) as refills_original,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refills_left') as decimal(5,2)) as refills_left,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_first') as date) as refill_date_first,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_last') as date) as refill_date_last,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as date) as rx_date_expired,
-	cast(jsonb_extract_path_text(_airbyte_data, 'qty_left') as decimal(10,3)) as qty_left,
-	cast(jsonb_extract_path_text(_airbyte_data, 'qty_original') as decimal(10,3)) as qty_original,
-	cast(jsonb_extract_path_text(_airbyte_data, 'stock_level_initial') as varchar(80)) as stock_level_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_actual') as varchar(255)) as sig_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_initial') as varchar(255)) as sig_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_clean') as varchar(255)) as sig_clean,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_qty') as decimal(10,3)) as sig_qty,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_days') as int) as sig_days,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_qty_per_day_actual') as decimal(10,3)) as sig_qty_per_day_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_durations') as varchar(255)) as sig_durations,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_qtys_per_time') as varchar(255)) as sig_qtys_per_time,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_frequencies') as varchar(255)) as sig_frequencies,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_frequency_numerators') as varchar(255)) as sig_frequency_numerators,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_frequency_denominators') as varchar(255)) as sig_frequency_denominators,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_qty') as decimal(10,3)) as sig_v2_qty,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_days') as int) as sig_v2_days,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_qty_per_day') as decimal(10,3)) as sig_v2_qty_per_day,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_unit') as varchar(255)) as sig_v2_unit,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_conf_score') as decimal(10,3)) as sig_v2_conf_score,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_dosages') as varchar(255)) as sig_v2_dosages,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_scores') as varchar(255)) as sig_v2_scores,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_frequencies') as varchar(255)) as sig_v2_frequencies,
-	cast(jsonb_extract_path_text(_airbyte_data, 'sig_v2_durations') as varchar(255)) as sig_v2_durations,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_next') as date) as refill_date_next,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_manual') as date) as refill_date_manual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_default') as date) as refill_date_default,
-	cast(jsonb_extract_path_text(_airbyte_data, 'qty_total') as decimal(11,3)) as qty_total,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_source') as varchar(80)) as rx_source,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_transfer') as varchar(80)) as rx_transfer,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_keys_initial') as varchar(255)) as rx_message_keys_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'patient_autofill_initial') as int) as patient_autofill_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_autofill_initial') as int) as rx_autofill_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'rx_numbers_initial') as varchar(255)) as rx_numbers_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'zscore_initial') as decimal(6,3)) as zscore_initial,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refills_dispensed_actual') as decimal(5,2)) as refills_dispensed_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'days_dispensed_actual') as int) as days_dispensed_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'days_dispensed_actual_rx30') as int) as days_dispensed_actual_rx30,
-	cast(jsonb_extract_path_text(_airbyte_data, 'qty_dispensed_actual') as decimal(10,3)) as qty_dispensed_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'qty_dispensed_actual_rx30') as decimal(10,3)) as qty_dispensed_actual_rx30,
-	cast(jsonb_extract_path_text(_airbyte_data, 'price_dispensed_actual') as decimal(5,2)) as price_dispensed_actual,
-	cast(jsonb_extract_path_text(_airbyte_data, 'count_items') as int) as count_items,
-	cast(jsonb_extract_path_text(_airbyte_data, 'count_filled') as int) as count_filled,
-	cast(jsonb_extract_path_text(_airbyte_data, 'count_nofill') as int) as count_nofill,
-	cast(jsonb_extract_path_text(_airbyte_data, 'total_value_coalesced') as decimal(11,3)) as total_value_coalesced,
-	cast(jsonb_extract_path_text(_airbyte_data, 'unit_value_coalesced') as decimal(11,3)) as unit_value_coalesced,
-	cast(jsonb_extract_path_text(_airbyte_data, 'drug_values') as text) as drug_values,
-	cast(jsonb_extract_path_text(_airbyte_data, 'extra_data') as text) as extra_data,
-	cast(jsonb_extract_path_text(_airbyte_data, 'date_processed') as timestamp) as date_processed
-from "datawarehouse".raw._airbyte_raw_analytics_fills_logs
-),  __dbt__cte__an_patients as (
-select
-	_airbyte_ab_id,
-	_airbyte_emitted_at,
-	cast(jsonb_extract_path_text(_airbyte_data, 'patient_id') as int) as patient_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'goodpill_id') as int) as goodpill_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_registered') as timestamp) as patient_date_registered,
-	cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_added') as timestamp) as patient_date_added,
-	cast(jsonb_extract_path_text(_airbyte_data, 'fill_next') as date) as fill_next,
-	cast(jsonb_extract_path_text(_airbyte_data, 'days_overdue') as int) as days_overdue,
-	cast(jsonb_extract_path_text(_airbyte_data, 'first_name') as varchar(255)) as first_name,
-	cast(jsonb_extract_path_text(_airbyte_data, 'last_name') as varchar(255)) as last_name,
-	cast(jsonb_extract_path_text(_airbyte_data, 'birth_date') as timestamp) as birth_date,
-	cast(jsonb_extract_path_text(_airbyte_data, 'email') as varchar(255)) as email,
-	cast(jsonb_extract_path_text(_airbyte_data, 'phone_number') as varchar(255)) as phone_number,
-	cast(jsonb_extract_path_text(_airbyte_data, 'phone_number_2') as varchar(255)) as phone_number_2,
-	cast(jsonb_extract_path_text(_airbyte_data, 'address') as varchar(255)) as address,
-	cast(jsonb_extract_path_text(_airbyte_data, 'address_2') as varchar(255)) as address_2,
-	cast(jsonb_extract_path_text(_airbyte_data, 'city') as varchar(255)) as city,
-	cast(jsonb_extract_path_text(_airbyte_data, 'state') as varchar(255)) as state,
-	cast(jsonb_extract_path_text(_airbyte_data, 'zip_code') as varchar(255)) as zip_code,
-	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_type') as varchar(20)) as payment_card_type,
-	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_last4') as varchar(4)) as payment_card_last4,
-	cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_date_expired') as date) as payment_card_date_expired,
-	cast(jsonb_extract_path_text(_airbyte_data, 'payment_method_default') as varchar(50)) as payment_method_default,
-	cast(jsonb_extract_path_text(_airbyte_data, 'payment_coupon') as varchar(20)) as payment_coupon,
-	cast(jsonb_extract_path_text(_airbyte_data, 'tracking_coupon') as varchar(20)) as tracking_coupon,
-	cast(jsonb_extract_path_text(_airbyte_data, 'refills_used') as decimal(5,2)) as refills_used,
-	cast(jsonb_extract_path_text(_airbyte_data, 'date_processed') as timestamp) as date_processed
-from "datawarehouse".raw._airbyte_raw_analytics_patients
-),  __dbt__cte__an_dates as (
-select
-	cast(jsonb_extract_path_text(_airbyte_data, 'date_id') as int) as date_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'db_date') as date) as db_date,
-	cast(jsonb_extract_path_text(_airbyte_data, 'year') as int) as year,
-	cast(jsonb_extract_path_text(_airbyte_data, 'month') as int) as month,
-	cast(jsonb_extract_path_text(_airbyte_data, 'day') as int) as day,
-	cast(jsonb_extract_path_text(_airbyte_data, 'week_of_year') as int) as week_of_year,
-	cast(jsonb_extract_path_text(_airbyte_data, 'month_name') as varchar) as month_name,
-	cast(jsonb_extract_path_text(_airbyte_data, 'day_name') as varchar) as day_name,
-	cast(jsonb_extract_path_text(_airbyte_data, 'holiday_flag') as int) as holiday_flag,
-	cast(jsonb_extract_path_text(_airbyte_data, 'weekend_flag') as int) as weekend_flag,
-	cast(jsonb_extract_path_text(_airbyte_data, 'quarter') as int) as quarter,
-	cast(jsonb_extract_path_text(_airbyte_data, 'semester') as int) as semester,
-	cast(jsonb_extract_path_text(_airbyte_data, 'date_processed') as timestamp) as date_processed
-from "datawarehouse".raw._airbyte_raw_analytics_dates
-),  __dbt__cte__an_times as (
-select
-	cast(jsonb_extract_path_text(_airbyte_data, 'time_id') as int) as time_id,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour24') as int) as hour24,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_string') as varchar) as hour24_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour12') as int) as hour12,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_string') as varchar) as hour12_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'minute') as int) as minute,
-	cast(jsonb_extract_path_text(_airbyte_data, 'minute_string') as varchar) as minute_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'second') as int) as second,
-	cast(jsonb_extract_path_text(_airbyte_data, 'second_string') as varchar) as second_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_min_string') as varchar) as hour24_min_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour24_full_string') as varchar) as hour24_full_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_min_string') as varchar) as hour12_min_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'hour12_full_string') as varchar) as hour12_full_string,
-	cast(jsonb_extract_path_text(_airbyte_data, 'ampm_code') as int) as ampm_code,
-	cast(jsonb_extract_path_text(_airbyte_data, 'ampm_string') as varchar) as ampm_string
-from "datawarehouse".raw._airbyte_raw_analytics_times
 ),oie as (
 	
-		-- query the goodpill data obtained with airbyte,
-		-- to try and fetch missing columns from the v1 warehouse
-		with gpoi as (
-			select distinct on (rx_number, invoice_number)
-				*				
-			from __dbt__cte__gp_order_items
-			order by rx_number, invoice_number, _airbyte_emitted_at desc
-		)
+		(select distinct on (rx_number, invoice_number)
+			*,
+			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_ADDED' as event_name,
+			item_date_added as event_date
+			from __dbt__cte__gp_order_items gpoi
+			where item_date_added is not NULL and (
+				select 
+					sum(cast(event_name = 'ORDER_ITEM_ADDED' as int))
+				from "datawarehouse".prod_analytics."order_items_historic" oih
+				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
+		union
 		select
-			fl._airbyte_emitted_at as _airbyte_emitted_at,
-			fl._airbyte_ab_id,
-			'ANALYTICS_V1' as _airbyte_source,
-			fl.invoice_number,
-			pat.goodpill_id as patient_id_cp,
-			fl.rx_number,
-			gpoi.groups,
-			gpoi.rx_dispensed_id,
-			fl.stock_level_initial,
-			fl.rx_message_keys_initial,
-			fl.patient_autofill_initial,
-			fl.rx_autofill_initial,
-			fl.rx_numbers_initial,
-			fl.zscore_initial,
-			gpoi.refills_dispensed_default,
-			gpoi.refills_dispensed_actual,
-			gpoi.days_dispensed_default,
-			gpoi.days_dispensed_actual,
-			gpoi.qty_dispensed_default,
-			gpoi.qty_dispensed_actual,
-			gpoi.price_dispensed_default,
-			gpoi.price_dispensed_actual,
-			gpoi.qty_pended_total,
-			gpoi.qty_pended_repacks,
-			gpoi.count_pended_total,
-			gpoi.count_pended_repacks,
-			gpoi.item_message_keys,
-			gpoi.item_message_text,
-			gpoi.item_type,
-			gpoi.item_added_by,
-			gpoi.item_date_added,
-			fl.refill_date_last,
-			fl.refill_date_manual,
-			fl.refill_date_default,
-			gpoi.refill_target_date,
-			gpoi.refill_target_days,
-			gpoi.refill_target_rxs,
-			fl.date_processed as _ab_cdc_updated_at,
-			case
-				when event_type = 'ADDED' then 'ORDER_ITEM_ADDED'
-				when event_type = 'REMOVED' then 'ORDER_ITEM_DELETED'
-				else 'ORDER_ITEM_UPDATED'
-			end as event_name,
-			coalesce(concat(dts.db_date, 'T', tms.hour24_full_string)::timestamp,  goodpill_event_date) as event_date
-		from __dbt__cte__an_fills_logs fl
-		left join __dbt__cte__an_patients pat using (patient_id)
-		left join gpoi using (invoice_number, rx_number)
-		left join __dbt__cte__an_dates dts on dts.date_id = fl.event_date_id
-		left join __dbt__cte__an_times tms on tms.time_id = fl.event_time_id
-		where fl.event_type = 'ADDED' or fl.event_type = 'REMOVED'
+			*,
+			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_UPDATED' as event_name,
+			_ab_cdc_updated_at as event_date
+			from __dbt__cte__gp_order_items
+			where _ab_cdc_updated_at is not null
+		union
+		(select distinct on (rx_number, invoice_number)
+			*,
+			'GOODPILL' as _airbyte_source,
+			'ORDER_ITEM_DELETED' as event_name,
+			_ab_cdc_deleted_at as event_date
+			from __dbt__cte__gp_order_items gpoi
+			where _ab_cdc_deleted_at is not NULL and (
+				select 
+					sum(cast(event_name = 'ORDER_ITEM_DELETED' as int))
+				from "datawarehouse".prod_analytics."order_items_historic" oih
+				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
 	
 )
 
@@ -293,3 +124,5 @@ select
     varchar
 )) as unique_event_id
 from oie
+
+	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".prod_analytics."order_items_historic")

@@ -44,7 +44,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_due_actual') as int) as payment_due_actual,
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_date_autopay') as varchar(80)) as payment_date_autopay,
     cast(jsonb_extract_path_text(_airbyte_data, 'payment_method_actual') as varchar(80)) as payment_method_actual,
-    cast(jsonb_extract_path_text(_airbyte_data, 'coupon_lines') as varchar(255)) as coupon_lines,
+    cast(jsonb_extract_path_text(_airbyte_data, 'order_payment_coupon') as varchar(255)) as order_payment_coupon,
     cast(jsonb_extract_path_text(_airbyte_data, 'order_note') as varchar(255)) as order_note,
     cast(jsonb_extract_path_text(_airbyte_data, 'priority') as int) as priority,
     cast(jsonb_extract_path_text(_airbyte_data, 'tech_fill') as varchar(5)) as tech_fill,
@@ -133,39 +133,44 @@ from "datawarehouse".raw._airbyte_raw_analytics_locations
 ),oe as (
 	
 		select
-			invoice_number,
-			concat('ORDER_', event_type) as event_name,
-			goodpill_event_date as event_date,
-			pat.goodpill_id as patient_id_cp,
-			loc.zip_code as order_zip,
-			loc.state as order_state,
-			count_items,
-			count_filled,
-			count_nofill,
-			order_source,
-			order_stage_cp,
-			order_status,
-			invoice_doc_id,
-			tracking_number,
-			payment_total_default,
-			payment_total_actual,
-			payment_fee_default,
-			payment_fee_actual,
-			payment_due_default,
-			payment_due_actual,
-			payment_date_autopay,
-			payment_method_actual,
-			coupon_lines,
-			order_note,
-			rph_check,
-			tech_fill,
-			ol._airbyte_emitted_at,
-			ol._airbyte_ab_id,
-			'ANALYTICS_V1' as _airbyte_source,
-			ol.date_processed as _ab_cdc_updated_at
-		from __dbt__cte__an_orders_logs ol
-		left join __dbt__cte__an_patients pat using (patient_id)
-		left join __dbt__cte__an_locations loc using (location_id)
+			*,
+			'ORDER_DELETED' as event_name,
+			_ab_cdc_deleted_at as event_date,
+			'GOODPILL' as _airbyte_source
+		from __dbt__cte__gp_orders
+		where _ab_cdc_deleted_at is not null
+		union
+		select
+			*,
+			'ORDER_RETURNED' as event_name,
+			order_date_returned as event_date,
+			'GOODPILL' as _airbyte_source
+		from __dbt__cte__gp_orders
+		where order_date_returned is not null
+		union
+		select
+			*,
+			'ORDER_SHIPPED' as event_name,
+			order_date_shipped as event_date,
+			'GOODPILL' as _airbyte_source
+		from __dbt__cte__gp_orders
+		where order_date_shipped is not null
+		union
+		select
+			*,
+			'ORDER_DISPENSED' as event_name,
+			order_date_dispensed as event_date,
+			'GOODPILL' as _airbyte_source
+		from __dbt__cte__gp_orders
+		where order_date_dispensed is not null
+		union
+		select
+			*,
+			'ORDER_ADDED' as event_name,
+			order_date_added as event_date,
+			'GOODPILL' as _airbyte_source
+		from __dbt__cte__gp_orders
+		where order_date_added is not null
 	
 )
 select distinct on (invoice_number, event_name)
@@ -190,7 +195,7 @@ select distinct on (invoice_number, event_name)
 	payment_due_actual,
 	payment_date_autopay,
 	payment_method_actual,
-	coupon_lines,
+	order_payment_coupon,
 	order_note,
 	rph_check,
 	tech_fill,
@@ -202,4 +207,7 @@ select distinct on (invoice_number, event_name)
     varchar
 )) as unique_event_id
 from oe
-order by invoice_number, event_name, _airbyte_emitted_at desc
+
+	where event_date > (select MAX(event_date) from "datawarehouse".prod_analytics."orders_historic")
+
+order by invoice_number, event_name, event_date desc
