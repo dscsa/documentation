@@ -45,17 +45,13 @@ from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
 ),oie as (
 	
-		(select distinct on (rx_number, invoice_number)
+		select distinct on (rx_number, invoice_number)
 			*,
 			'GOODPILL' as _airbyte_source,
 			'ORDER_ITEM_ADDED' as event_name,
 			item_date_added as event_date
 			from __dbt__cte__gp_order_items gpoi
-			where item_date_added is not NULL and (
-				select 
-					sum(cast(event_name = 'ORDER_ITEM_ADDED' as int))
-				from "datawarehouse".dev_analytics."order_items_historic" oih
-				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
+			where item_date_added is not NULL
 		union
 		select
 			*,
@@ -65,17 +61,13 @@ from
 			from __dbt__cte__gp_order_items
 			where _ab_cdc_updated_at is not null
 		union
-		(select distinct on (rx_number, invoice_number)
+		select distinct on (rx_number, invoice_number)
 			*,
 			'GOODPILL' as _airbyte_source,
 			'ORDER_ITEM_DELETED' as event_name,
 			_ab_cdc_deleted_at as event_date
 			from __dbt__cte__gp_order_items gpoi
-			where _ab_cdc_deleted_at is not NULL and (
-				select 
-					sum(cast(event_name = 'ORDER_ITEM_DELETED' as int))
-				from "datawarehouse".dev_analytics."order_items_historic" oih
-				where gpoi.rx_number = oih.rx_number and gpoi.invoice_number = oih.invoice_number) = 0)
+			where _ab_cdc_deleted_at is not NULL
 	
 )
 
@@ -125,4 +117,4 @@ select
 )) as unique_event_id
 from oie
 
-	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."order_items_historic")
+	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."order_items_historic")

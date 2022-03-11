@@ -204,6 +204,24 @@ rh as (
         as date_rx_transferred
       
     
+    ,
+  
+    max(
+      
+      case
+      when rh.event_name = 'RX_ADDED'
+        then rh.event_date
+      else null
+      end
+    )
+	
+      over(partition by rx_number)
+	
+    
+      
+        as date_rx_added
+      
+    
     
   
 ,
@@ -481,9 +499,7 @@ left join rh using (patient_id_cp)
 left join oih using (rx_number, patient_id_cp)
 left join oh using (invoice_number, patient_id_cp)
 where
-	coalesce(rh.rx_event_date, NOW()) <= coalesce(oh.order_event_date, NOW())
-	and date_order_item_deleted is null
-	and date_order_deleted is null
+	coalesce(rh.rx_event_date, NOW()) <= coalesce(oih.item_event_date, NOW())
 order by
 	patient_id_cp,
 	rx_number,
