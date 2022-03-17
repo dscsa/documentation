@@ -6,12 +6,12 @@
 
 
 
-with psh as (
-	select distinct on (patient_id_cp)
-		patient_id_cp,
-		event_date as patient_event_date,
-		event_name as patient_status,
-		
+with  __dbt__cte__patients_max_events as (
+select
+	patient_id_cp,
+	event_date as patient_event_date,
+	event_name as patient_status,
+	
   
     max(
       
@@ -140,17 +140,19 @@ with psh as (
     
   
 
-	from "datawarehouse".dev_analytics."patients_status_historic"
-	order by patient_id_cp, patient_event_date desc
-	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
-),
+from "datawarehouse".dev_analytics."patients_status_historic"
+),  __dbt__cte__rxs_max_events as (
+-- Exclude the common columns between the tables,
+--  to be called with dbt_utils.star (instead of using
+--  the * operator to select all columns).
 
-rh as (
-	select
-		rh.patient_id_cp,
-		event_date as rx_event_date,
-		rh.rx_number,
-		
+
+
+select
+	rh.patient_id_cp,
+	event_date as rx_event_date,
+	rh.rx_number,
+	
   
     max(
       
@@ -225,7 +227,7 @@ rh as (
     
   
 ,
-		rh."drug_generic" as "rx_drug_generic",
+	rh."drug_generic" as "rx_drug_generic",
   rh."clinic_name" as "rx_clinic_name",
   rh."provider_npi" as "rx_provider_npi",
   rh."is_refill" as "rx_is_refill",
@@ -264,20 +266,19 @@ rh as (
   rh."qty_total" as "rx_qty_total",
   rh."rx_source" as "rx_source",
   rh."rx_transfer" as "rx_transfer"
-	from "datawarehouse".dev_analytics."rxs_historic" rh
-	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
-	/* where rh.event_date <= coalesce(oh.event_date, NOW()) */
-	/* 	-- triple check this... */
-	/* 	and oh.event_name = 'ORDER_SHIPPED' or oh.event_name = 'ORDER_RETURNED' */
-),
+from "datawarehouse".dev_analytics."rxs_historic" rh
+),  __dbt__cte__order_items_max_events as (
+-- Exclude the common columns between the tables,
+--  to be called with dbt_utils.star (instead of using
+--  the * operator to select all columns).
 
-oih as (
-	select
-		patient_id_cp,
-		event_date as item_event_date,
-		rx_number,
-		invoice_number,
-		
+
+select
+	patient_id_cp,
+	event_date as item_event_date,
+	rx_number,
+	invoice_number,
+	
   
     max(
       
@@ -334,7 +335,7 @@ oih as (
     
   
 ,
-		"groups" as "item_groups",
+	"groups" as "item_groups",
   "rx_dispensed_id" as "item_rx_dispensed_id",
   "stock_level_initial" as "item_stock_level_initial",
   "rx_message_keys_initial" as "item_rx_message_keys_initial",
@@ -365,16 +366,18 @@ oih as (
   "refill_target_date" as "item_refill_target_date",
   "refill_target_days" as "item_refill_target_days",
   "refill_target_rxs" as "item_refill_target_rxs"
-	from "datawarehouse".dev_analytics."order_items_historic" oih
-	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
-),
+from "datawarehouse".dev_analytics."order_items_historic" oih
+),  __dbt__cte__orders_max_events as (
+-- Exclude the common columns between the tables,
+--  to be called with dbt_utils.star (instead of using
+--  the * operator to select all columns).
 
-oh as (
-	select
-		patient_id_cp,
-		event_date as order_event_date,
-		invoice_number,
-		
+
+select
+	patient_id_cp,
+	event_date as order_event_date,
+	invoice_number,
+	
   
     max(
       
@@ -467,7 +470,7 @@ oh as (
     
   
 ,
-		"count_items" as "order_count_items",
+	"count_items" as "order_count_items",
   "count_filled" as "order_count_filled",
   "count_nofill" as "order_count_nofill",
   "order_source" as "order_source",
@@ -488,8 +491,37 @@ oh as (
   "rph_check" as "order_rph_check",
   "tech_fill" as "order_tech_fill",
   "location_id" as "order_location_id"
-	from "datawarehouse".dev_analytics."orders_historic" oh
+from "datawarehouse".dev_analytics."orders_historic" oh
+),psh as (
+	select distinct on (patient_id_cp)
+		*
+	from __dbt__cte__patients_max_events
+	order by patient_id_cp, patient_event_date desc
+),
+
+rh as (
+	select
+		*
+	from __dbt__cte__rxs_max_events rh
 	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
+	/* where rh.event_date <= coalesce(oh.event_date, NOW()) */
+	/* 	-- triple check this... */
+	/* 	and oh.event_name = 'ORDER_SHIPPED' or oh.event_name = 'ORDER_RETURNED' */
+),
+
+oih as (
+	select
+		*
+	from __dbt__cte__order_items_max_events oih
+	where date_order_item_deleted is null or date_order_item_deleted < date_order_item_added
+	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
+),
+
+oh as (
+	select
+		*
+	from __dbt__cte__orders_max_events oh
+	where date_order_deleted is null
 )
 
 select distinct on (patient_id_cp, rx_number, invoice_number)
@@ -505,5 +537,6 @@ order by
 	rx_number,
 	invoice_number,
 	rx_event_date desc,
+	item_event_date desc,
 	order_event_date desc
 	/* coalesce(order_event_date, item_event_date, rx_event_date, patient_event_date) desc */

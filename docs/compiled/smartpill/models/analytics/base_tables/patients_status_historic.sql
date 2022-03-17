@@ -1,5 +1,5 @@
 
-with  __dbt__cte__order_items_snapshot as (
+with  __dbt__cte__order_items_max_events as (
 -- Exclude the common columns between the tables,
 --  to be called with dbt_utils.star (instead of using
 --  the * operator to select all columns).
@@ -99,7 +99,7 @@ select
   "refill_target_days" as "item_refill_target_days",
   "refill_target_rxs" as "item_refill_target_rxs"
 from "datawarehouse".dev_analytics."order_items_historic" oih
-),  __dbt__cte__orders_snapshot as (
+),  __dbt__cte__orders_max_events as (
 -- Exclude the common columns between the tables,
 --  to be called with dbt_utils.star (instead of using
 --  the * operator to select all columns).
@@ -304,8 +304,8 @@ from
 				rh.rx_date_expired,
 				rh.refill_date_first
 			from "datawarehouse".dev_analytics."rxs_historic" rh
-			left join __dbt__cte__order_items_snapshot oih using (rx_number)
-			left join __dbt__cte__orders_snapshot oh using (invoice_number)
+			left join __dbt__cte__order_items_max_events oih using (rx_number) 
+			left join __dbt__cte__orders_max_events oh using (invoice_number) 
 			where rh.refill_date_next is not null
 			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added
 		) t
