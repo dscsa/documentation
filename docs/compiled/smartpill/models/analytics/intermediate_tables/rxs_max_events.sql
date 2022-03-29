@@ -8,6 +8,7 @@ select
 	rh.patient_id_cp,
 	event_date as rx_event_date,
 	rh.rx_number,
+	first_value(provider_npi) over (partition by rx_number order by event_date desc) as rx_provider_npi,
 	
   
     max(
@@ -85,7 +86,6 @@ select
 ,
 	rh."drug_generic" as "rx_drug_generic",
   rh."clinic_name" as "rx_clinic_name",
-  rh."provider_npi" as "rx_provider_npi",
   rh."is_refill" as "rx_is_refill",
   rh."rx_autofill" as "rx_autofill",
   rh."sig_qty_per_day" as "rx_sig_qty_per_day",

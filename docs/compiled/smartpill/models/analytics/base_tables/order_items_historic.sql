@@ -44,31 +44,29 @@ select
 from
     "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
 ),oie as (
-	
-		select distinct on (rx_number, invoice_number)
-			*,
-			'GOODPILL' as _airbyte_source,
-			'ORDER_ITEM_ADDED' as event_name,
-			item_date_added as event_date
-			from __dbt__cte__gp_order_items gpoi
-			where item_date_added is not NULL
-		union
-		select
-			*,
-			'GOODPILL' as _airbyte_source,
-			'ORDER_ITEM_UPDATED' as event_name,
-			_ab_cdc_updated_at as event_date
-			from __dbt__cte__gp_order_items
-			where _ab_cdc_updated_at is not null
-		union
-		select distinct on (rx_number, invoice_number)
-			*,
-			'GOODPILL' as _airbyte_source,
-			'ORDER_ITEM_DELETED' as event_name,
-			_ab_cdc_deleted_at as event_date
-			from __dbt__cte__gp_order_items gpoi
-			where _ab_cdc_deleted_at is not NULL
-	
+	select distinct on (rx_number, invoice_number)
+		*,
+		'GOODPILL' as _airbyte_source,
+		'ORDER_ITEM_ADDED' as event_name,
+		item_date_added as event_date
+		from __dbt__cte__gp_order_items gpoi
+		where item_date_added is not NULL
+	union
+	select
+		*,
+		'GOODPILL' as _airbyte_source,
+		'ORDER_ITEM_UPDATED' as event_name,
+		_ab_cdc_updated_at as event_date
+		from __dbt__cte__gp_order_items
+		where _ab_cdc_updated_at is not null
+	union
+	select distinct on (rx_number, invoice_number)
+		*,
+		'GOODPILL' as _airbyte_source,
+		'ORDER_ITEM_DELETED' as event_name,
+		_ab_cdc_deleted_at as event_date
+		from __dbt__cte__gp_order_items gpoi
+		where _ab_cdc_deleted_at is not NULL
 )
 
 select

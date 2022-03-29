@@ -152,6 +152,7 @@ select
 	rh.patient_id_cp,
 	event_date as rx_event_date,
 	rh.rx_number,
+	first_value(provider_npi) over (partition by rx_number order by event_date desc) as rx_provider_npi,
 	
   
     max(
@@ -229,7 +230,6 @@ select
 ,
 	rh."drug_generic" as "rx_drug_generic",
   rh."clinic_name" as "rx_clinic_name",
-  rh."provider_npi" as "rx_provider_npi",
   rh."is_refill" as "rx_is_refill",
   rh."rx_autofill" as "rx_autofill",
   rh."sig_qty_per_day" as "rx_sig_qty_per_day",
@@ -513,7 +513,7 @@ oih as (
 	select
 		*
 	from __dbt__cte__order_items_max_events oih
-	where date_order_item_deleted is null or date_order_item_deleted < date_order_item_added
+	where date_order_item_deleted is null or date_order_item_deleted < date_order_item_updated
 	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 ),
 
@@ -536,6 +536,7 @@ order by
 	patient_id_cp,
 	rx_number,
 	invoice_number,
+	patient_event_date desc,
 	rx_event_date desc,
 	item_event_date desc,
 	order_event_date desc
