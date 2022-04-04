@@ -61,24 +61,6 @@ select
     max(
       
       case
-      when event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by patient_id_cp)
-	
-    
-      
-        as date_patient_churned_no_fillable_rx
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'PATIENT_DECEASED'
         then event_date
       else null
@@ -90,6 +72,24 @@ select
     
       
         as date_patient_deceased
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by patient_id_cp)
+	
+    
+      
+        as date_patient_churned_no_fillable_rx
       
     
     ,

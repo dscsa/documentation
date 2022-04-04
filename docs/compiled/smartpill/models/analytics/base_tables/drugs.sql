@@ -25,7 +25,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from 
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_drugs
+    "datawarehouse".dev_analytics."raw_gp_drugs"
 )select distinct on (generic_name)
     gpd.drug_generic as generic_name,
     gpd.drug_brand as brand_name,

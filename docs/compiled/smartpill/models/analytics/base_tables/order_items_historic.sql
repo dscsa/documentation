@@ -42,7 +42,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items
+    "datawarehouse".dev_analytics."raw_gp_order_items"
 ),oie as (
 	select distinct on (rx_number, invoice_number)
 		*,

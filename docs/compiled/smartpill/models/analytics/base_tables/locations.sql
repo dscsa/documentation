@@ -48,7 +48,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_orders
+    "datawarehouse".dev_analytics."raw_gp_orders"
 ),  __dbt__cte__gp_patients as (
 select
     _airbyte_emitted_at,
@@ -107,7 +107,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
+    "datawarehouse".dev_analytics."raw_gp_patients"
 ),locations AS (
     select 
         order_city as city, 

@@ -27,4 +27,6 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from 
+	-- There's no intermediate table for gp_rxs_grouped
+	-- since it's Full Refresh/Overwrite on the airbyte side.
     "datawarehouse".raw._airbyte_raw_goodpill_gp_rxs_grouped

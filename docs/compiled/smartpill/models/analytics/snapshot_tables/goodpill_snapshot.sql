@@ -70,24 +70,6 @@ select
     max(
       
       case
-      when event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by patient_id_cp)
-	
-    
-      
-        as date_patient_churned_no_fillable_rx
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'PATIENT_DECEASED'
         then event_date
       else null
@@ -99,6 +81,24 @@ select
     
       
         as date_patient_deceased
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by patient_id_cp)
+	
+    
+      
+        as date_patient_churned_no_fillable_rx
       
     
     ,
@@ -301,24 +301,6 @@ select
     max(
       
       case
-      when event_name = 'ORDER_ITEM_DELETED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_deleted
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'ORDER_ITEM_UPDATED'
         then event_date
       else null
@@ -330,6 +312,24 @@ select
     
       
         as date_order_item_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_DELETED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_deleted
       
     
     

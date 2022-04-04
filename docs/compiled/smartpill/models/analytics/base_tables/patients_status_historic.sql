@@ -33,24 +33,6 @@ select
     max(
       
       case
-      when event_name = 'ORDER_ITEM_DELETED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_deleted
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'ORDER_ITEM_UPDATED'
         then event_date
       else null
@@ -62,6 +44,24 @@ select
     
       
         as date_order_item_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_DELETED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_deleted
       
     
     
@@ -282,7 +282,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
+    "datawarehouse".dev_analytics."raw_gp_patients"
 ),calc_statuses as (
 	with all_dates as (
 		select distinct

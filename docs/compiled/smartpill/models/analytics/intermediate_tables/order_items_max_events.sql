@@ -31,24 +31,6 @@ select
     max(
       
       case
-      when event_name = 'ORDER_ITEM_DELETED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_deleted
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'ORDER_ITEM_UPDATED'
         then event_date
       else null
@@ -60,6 +42,24 @@ select
     
       
         as date_order_item_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_DELETED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_deleted
       
     
     

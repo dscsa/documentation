@@ -70,7 +70,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from 
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_rxs_single
+    "datawarehouse".dev_analytics."raw_gp_rxs_single"
 ),  __dbt__cte__gp_rxs_grouped as (
 select
     _airbyte_emitted_at,
@@ -101,6 +101,8 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from 
+	-- There's no intermediate table for gp_rxs_grouped
+	-- since it's Full Refresh/Overwrite on the airbyte side.
     "datawarehouse".raw._airbyte_raw_goodpill_gp_rxs_grouped
 ),  __dbt__cte__gp_patients as (
 select
@@ -160,7 +162,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_patients
+    "datawarehouse".dev_analytics."raw_gp_patients"
 ),rxh as (
 with grse as (
 	(select distinct on (rx_number)
