@@ -304,48 +304,46 @@ from
 				rh.rx_date_expired,
 				rh.refill_date_first
 			from "datawarehouse".dev_analytics."rxs_historic" rh
-			left join __dbt__cte__order_items_max_events oih using (rx_number) 
-			left join __dbt__cte__orders_max_events oh using (invoice_number) 
-			where rh.refill_date_next is not null
+			left join __dbt__cte__order_items_max_events oih using (rx_number)
+			left join __dbt__cte__orders_max_events oh using (invoice_number)
 			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added
 		) t
 	)
 	select
 		patient_id_cp,
-		least(date_order_added + interval '1' day, refill_date_first) as event_date,
+		coalesce(date_order_added + interval '1' day, refill_date_first) as event_date,
 		'PATIENT_ACTIVE' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
 		date_order_added as _ab_cdc_updated_at
 	from all_dates
-	where date_order_added is not null or (has_refills
-		and refill_date_next is not null)
+	where date_order_added is not null or has_refills
 	union
 	select
 		patient_id_cp,
-		refill_date_next as event_date,
+		coalesce(refill_date_next, date_order_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_OTHER' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
 		date_order_added as _ab_cdc_updated_at
 	from all_dates
-	where refill_date_next is not null
-		and refill_date_next < next_row_order_date_added
+	where
+		coalesce(refill_date_next, date_order_added + interval '4' month) < next_row_order_date_added
 		and date_order_shipped < next_row_order_date_added
-		and has_refills and rx_date_expired <= refill_date_next 
+		and has_refills and rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month)
 	union
 	select
 		patient_id_cp,
-		refill_date_next as event_date,
+		coalesce(refill_date_next, date_order_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_NO_FILLABLE_RX' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
 		date_order_added as _ab_cdc_updated_at
 	from all_dates
-	where refill_date_next is not null
-		and refill_date_next < next_row_order_date_added
+	where
+		coalesce(refill_date_next, date_order_added + interval '4' month) < next_row_order_date_added
 		and date_order_shipped < next_row_order_date_added
-		and not (has_refills or rx_date_expired <= refill_date_next)
+		and not (has_refills or rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month))
 ),
 statuses as (
 	select

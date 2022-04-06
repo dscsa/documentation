@@ -5,6 +5,11 @@ select
 	pew.event_name as event_name_week,
 	pem.event_name as event_name_month,
 	pey.event_name as event_name_year,
+	phr.pharmacy_npi,
+    phr.pharmacy_name,
+    phr.pharmacy_phone,
+    phr.pharmacy_fax,
+    phr.pharmacy_address,
 	p."patient_date_registered" as "patient_date_registered",
   p."patient_date_added" as "patient_date_added",
   p."fill_next" as "patient_fill_next",
@@ -36,3 +41,4 @@ inner join "datawarehouse".dev_analytics."patient_events" ped on pc.event_weight
 inner join "datawarehouse".dev_analytics."patient_events" pew on pc.event_weight_week = pew.event_weight
 inner join "datawarehouse".dev_analytics."patient_events" pem on pc.event_weight_month = pem.event_weight
 inner join "datawarehouse".dev_analytics."patient_events" pey on pc.event_weight_year = pey.event_weight
+left join "datawarehouse".dev_analytics."pharmacies" phr on p.pharmacy_id = phr.pharmacy_id
