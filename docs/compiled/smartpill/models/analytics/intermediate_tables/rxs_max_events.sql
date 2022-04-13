@@ -8,7 +8,7 @@ select
 	rh.patient_id_cp,
 	event_date as rx_event_date,
 	rh.rx_number,
-	first_value(provider_npi) over (partition by rx_number order by event_date desc) as rx_provider_npi,
+	first_value(provider_npi) over (partition by rx_number order by event_date desc nulls last) as rx_provider_npi,
 	
   
     max(

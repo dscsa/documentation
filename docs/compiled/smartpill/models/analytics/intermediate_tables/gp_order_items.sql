@@ -37,6 +37,8 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
+    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 from
     "datawarehouse".dev_analytics."raw_gp_order_items"

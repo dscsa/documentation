@@ -152,7 +152,7 @@ select
 	rh.patient_id_cp,
 	event_date as rx_event_date,
 	rh.rx_number,
-	first_value(provider_npi) over (partition by rx_number order by event_date desc) as rx_provider_npi,
+	first_value(provider_npi) over (partition by rx_number order by event_date desc nulls last) as rx_provider_npi,
 	
   
     max(
@@ -531,7 +531,7 @@ left join rh using (patient_id_cp)
 left join oih using (rx_number, patient_id_cp)
 left join oh using (invoice_number, patient_id_cp)
 where
-	coalesce(rh.rx_event_date, NOW()) <= coalesce(oih.item_event_date, NOW())
+	coalesce(rh.rx_event_date, NOW()) <= coalesce(oih.item_event_date, NOW()) + interval '1' day
 order by
 	patient_id_cp,
 	rx_number,

@@ -40,7 +40,9 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
+    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 from
     "datawarehouse".dev_analytics."raw_gp_order_items"
 ),oie as (
@@ -56,9 +58,9 @@ from
 		*,
 		'GOODPILL' as _airbyte_source,
 		'ORDER_ITEM_UPDATED' as event_name,
-		_ab_cdc_updated_at as event_date
+		updated_at as event_date
 		from __dbt__cte__gp_order_items
-		where _ab_cdc_updated_at is not null
+		where updated_at is not null
 	union
 	select distinct on (rx_number, invoice_number)
 		*,

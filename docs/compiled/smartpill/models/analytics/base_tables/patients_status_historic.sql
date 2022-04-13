@@ -411,6 +411,6 @@ from (
 	from statuses
 ) gps
 
-	where _airbyte_emitted_at > (select MAX(_airbyte_emitted_at) from "datawarehouse".dev_analytics."patients_status_historic")
+	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."patients_status_historic")
 
-order by patient_id_cp, event_name, _airbyte_emitted_at desc
+order by patient_id_cp, event_name, event_date desc

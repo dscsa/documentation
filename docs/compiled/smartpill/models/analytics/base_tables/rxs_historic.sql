@@ -196,9 +196,9 @@ with grse as (
 	select
 		*,
 		'RX_UPDATED' as event_name,
-		_ab_cdc_updated_at as event_date
+		updated_at as event_date
 		from __dbt__cte__gp_rxs_single
-		where _ab_cdc_updated_at is not null
+		where updated_at is not null
 	union
 	select
 		*,
