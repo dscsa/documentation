@@ -1,5 +1,7 @@
 select
 	gs.*,
+	cg.meta_group as clinic_meta_group,
+	cg.meta_template as clinic_meta_template,
 	drg.brand_name as drug_brand,
 	drg.price30 as drug_price30,
 	drg.price90 as drug_price90,
@@ -27,8 +29,6 @@ select
 	pat.payment_card_last4 as patient_payment_card_last4,
 	pat.payment_card_date_expired as patient_payment_card_date_expired,
 	pat.payment_method_default as patient_payment_method_default,
-	pat.payment_coupon as patient_payment_coupon,
-	pat.tracking_coupon as patient_tracking_coupon,
 	pat.refills_used as patient_refills_used,
 	pat.date_first_rx_received as patient_date_first_rx_received,
 	pat.date_first_dispensed as patient_date_first_dispensed,
@@ -38,8 +38,6 @@ select
     phr.pharmacy_phone,
     phr.pharmacy_fax,
     phr.pharmacy_address,
-	prv.provider_first_name,
-	prv.provider_last_name,
 	prv.provider_phone
 from "datawarehouse".dev_analytics."goodpill_snapshot" gs
 left join "datawarehouse".dev_analytics."drugs" drg on gs.rx_drug_generic = drg.generic_name
@@ -47,5 +45,4 @@ left join "datawarehouse".dev_analytics."locations" loc on gs.order_location_id 
 left join "datawarehouse".dev_analytics."providers" prv on gs.rx_provider_npi = prv.provider_npi
 left join "datawarehouse".dev_analytics."patients" pat on gs.patient_id_cp = pat.patient_id_cp
 left join "datawarehouse".dev_analytics."pharmacies" phr on pat.pharmacy_id = phr.pharmacy_id
--- at the moment, without metadata, the clinic join doesn't add info
-left join "datawarehouse".dev_analytics."clinics" cli on gs.rx_clinic_name = cli.name
+left join "datawarehouse".dev_analytics."clinics_groups" cg on gs.clinic_coalesced_name ilike concat('%', cg.meta_group, '%')

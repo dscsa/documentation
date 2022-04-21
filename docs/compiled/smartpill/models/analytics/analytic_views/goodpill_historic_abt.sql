@@ -44,5 +44,3 @@ left join "datawarehouse".dev_analytics."locations" loc on gph.location_id = loc
 left join "datawarehouse".dev_analytics."providers" prv on gph.provider_npi = prv.provider_npi
 left join "datawarehouse".dev_analytics."patients" pat on gph.patient_id_cp = pat.patient_id_cp
 left join "datawarehouse".dev_analytics."pharmacies" phr on pat.pharmacy_id = phr.pharmacy_id
--- at the moment, without metadata, the clinic join doesn't add info
-left join "datawarehouse".dev_analytics."clinics" cli on gph.clinic_name = cli.name

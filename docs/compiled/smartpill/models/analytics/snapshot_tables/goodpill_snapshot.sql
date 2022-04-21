@@ -492,21 +492,98 @@ select
   "tech_fill" as "order_tech_fill",
   "location_id" as "order_location_id"
 from "datawarehouse".dev_analytics."orders_historic" oh
+),  __dbt__cte__clinics_providers_max_events as (
+-- Exclude the common columns between the tables,
+--  to be called with dbt_utils.star (instead of using
+--  the * operator to select all columns).
+
+
+
+select
+	
+  
+    max(
+      
+      case
+      when cph.event_name = 'CLINIC_META_ADDED'
+        then cph.event_date
+      else null
+      end
+    )
+	
+      over(partition by (coupon_code, clinic_regular_name, npi_number, provider_name))
+	
+    
+      
+        as date_clinic_meta_added
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when cph.event_name = 'CLINIC_META_UPDATED'
+        then cph.event_date
+      else null
+      end
+    )
+	
+      over(partition by (coupon_code, clinic_regular_name, npi_number, provider_name))
+	
+    
+      
+        as date_clinic_meta_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when cph.event_name = 'CLINIC_META_DELETED'
+        then cph.event_date
+      else null
+      end
+    )
+	
+      over(partition by (coupon_code, clinic_regular_name, npi_number, provider_name))
+	
+    
+      
+        as date_clinic_meta_deleted
+      
+    
+    
+  
+,
+	cph."coupon_code" as "clinic_coupon_code",
+  cph."clinic_regular_name" as "clinic_regular_name",
+  cph."npi_number" as "clinic_npi_number",
+  cph."provider_name" as "clinic_provider_name",
+  cph."clinic_name" as "clinic_name",
+  cph."updated_at" as "clinic_updated_at",
+  cph."event_date" as "clinic_event_date"
+from "datawarehouse".dev_analytics."clinics_providers_historic" cph
 ),psh as (
+	-- join with dimension patient right away, to join later with clinics
 	select distinct on (patient_id_cp)
-		*
-	from __dbt__cte__patients_max_events
+		pme.*,
+		p.payment_coupon as patient_payment_coupon,
+		p.tracking_coupon as patient_tracking_coupon
+	from __dbt__cte__patients_max_events pme
+	left join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)
 	order by patient_id_cp, patient_event_date desc
 ),
 
 rh as (
 	select
-		*
+		rh.*,
+		-- join with dimension provider right away, to join later with clinics
+		p.provider_first_name,
+		p.provider_last_name
 	from __dbt__cte__rxs_max_events rh
-	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
-	/* where rh.event_date <= coalesce(oh.event_date, NOW()) */
-	/* 	-- triple check this... */
-	/* 	and oh.event_name = 'ORDER_SHIPPED' or oh.event_name = 'ORDER_RETURNED' */
+	left join "datawarehouse".dev_analytics."providers" p on rh.rx_provider_npi = p.provider_npi
 ),
 
 oih as (
@@ -514,7 +591,6 @@ oih as (
 		*
 	from __dbt__cte__order_items_max_events oih
 	where date_order_item_deleted is null or date_order_item_deleted < date_order_item_updated
-	/* inner join "datawarehouse".dev_analytics."goodpill_events" using (event_name) */
 ),
 
 oh as (
@@ -522,14 +598,31 @@ oh as (
 		*
 	from __dbt__cte__orders_max_events oh
 	where date_order_deleted is null
+),
+
+cph as (
+	select
+		*
+	from __dbt__cte__clinics_providers_max_events
 )
 
 select distinct on (patient_id_cp, rx_number, invoice_number)
-	*
+	*,
+	coalesce(clinic_name, rh.rx_clinic_name) as clinic_coalesced_name
 from psh
 left join rh using (patient_id_cp)
 left join oih using (rx_number, patient_id_cp)
 left join oh using (invoice_number, patient_id_cp)
+left join cph on 
+	(
+		cph.clinic_coupon_code = coalesce(psh.patient_payment_coupon, psh.patient_tracking_coupon)
+		or cph.clinic_regular_name = rh.rx_clinic_name
+		or cph.clinic_npi_number = rh.rx_provider_npi
+		or cph.clinic_provider_name = concat(trim(rh.provider_first_name), ' ', trim(rh.provider_last_name))
+	) and (
+		cph.date_clinic_meta_added <= rh.rx_event_date
+		and (cph.date_clinic_meta_deleted is null or cph.date_clinic_meta_deleted > rh.rx_event_date)
+	)
 where
 	coalesce(rh.rx_event_date, NOW()) <= coalesce(oih.item_event_date, NOW()) + interval '1' day
 order by
@@ -539,5 +632,9 @@ order by
 	patient_event_date desc,
 	rx_event_date desc,
 	item_event_date desc,
-	order_event_date desc
-	/* coalesce(order_event_date, item_event_date, rx_event_date, patient_event_date) desc */
+	order_event_date desc,
+	-- prioritize table for clinic name instead of timestamps or last event
+	clinic_coupon_code desc nulls last,
+	clinic_npi_number desc nulls last,
+	clinic_regular_name desc nulls last,
+	clinic_provider_name desc nulls last
