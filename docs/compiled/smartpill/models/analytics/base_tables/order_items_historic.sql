@@ -46,13 +46,14 @@ select
 from
     "datawarehouse".dev_analytics."raw_gp_order_items"
 ),oie as (
-	select distinct on (rx_number, invoice_number)
+	(select distinct on (rx_number, invoice_number)
 		*,
 		'GOODPILL' as _airbyte_source,
 		'ORDER_ITEM_ADDED' as event_name,
 		item_date_added as event_date
 		from __dbt__cte__gp_order_items gpoi
-		where item_date_added is not NULL
+		where item_date_added is not null
+		order by rx_number, invoice_number, item_date_added desc)
 	union
 	select
 		*,

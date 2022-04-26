@@ -170,6 +170,10 @@ with grse as (
 		'RX_ADDED' as event_name,
 		rx_date_added as event_date
 		from __dbt__cte__gp_rxs_single gprxs
+		where rx_date_added is not null
+		
+			and (select count(*) from "datawarehouse".dev_analytics."rxs_historic" where rx_number = gprxs.rx_number and event_name = 'RX_ADDED' and event_date is not null) = 0
+		
 		order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 	union
 	(select distinct on (rx_number)
@@ -345,3 +349,5 @@ select
 from rxh
 
 	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."rxs_historic")
+		-- have to include by hand RX_ADDED event, since the timestamp can be backfilled in goodpill
+		or event_name = 'RX_ADDED'
