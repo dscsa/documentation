@@ -9,6 +9,8 @@ select
 	drg.price_goodrx as drug_price_goodrx,
 	drg.price_nadac as drug_price_nadac,
 	drg.price_coalesced as drug_price_coalesced,
+	drg.qty_repack as drug_qty_repack,
+    drg.count_ndcs as drug_count_ndcs,
 	loc.city as location_city,
 	loc.state as location_state,
 	loc.zip_code as location_zip_code,
