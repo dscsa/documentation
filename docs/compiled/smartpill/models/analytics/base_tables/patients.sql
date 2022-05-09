@@ -104,6 +104,7 @@ select distinct on (patient_id_cp)
     patient_id_cp,
     patient_date_registered,
     patient_date_added,
+    patient_date_changed,
     grg.fill_next,
     extract(day from (NOW() - grg.fill_next)) as days_overdue,
     first_name,
@@ -126,6 +127,7 @@ select distinct on (patient_id_cp)
     patient_date_first_expected_by as date_first_expected_by,
     refills_used,
     coalesce(pharmacy_npi, pharmacy_name) as pharmacy_id,
+	patient_inactive,
     NOW() as date_processed
 from __dbt__cte__gp_patients gpa
 left join grg using (patient_id_cp)
@@ -136,3 +138,5 @@ where
     LOWER(last_name) NOT LIKE '%user%'
 
     AND _airbyte_emitted_at > (SELECT MAX(date_processed) FROM "datawarehouse".dev_analytics."patients")
+
+order by patient_id_cp, patient_date_changed desc

@@ -167,7 +167,7 @@ select * from filtered
 		patient_id_cp,
 		date_day,
 		case
-			when pe.event_name = 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) in ('PATIENT_UNREGISTED', 'PATIENT_NO_RX') then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE')
+			when pe.event_name = 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) in ('PATIENT_UNREGISTERED', 'PATIENT_NO_RX') then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE')
 			when pe.event_name like '%CHURN%' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) = 'PATIENT_ACTIVE' then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN')
 			when pe.event_name like 'PATIENT_ACTIVE' and lag(pe.event_name, 1) over (partition by pc.patient_id_cp) like '%CHURN%' then (select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED')
 			else pc.event_weight_day

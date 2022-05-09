@@ -239,25 +239,30 @@ from
 			date_order_shipped,
 			refill_date_next,
 			refill_date_first,
-			coalesce(lag(date_order_added, -1) over (partition by patient_id_cp order by date_order_added), now()) as next_row_order_date_added
+			coalesce(lag(date_order_added, -1) over (partition by patient_id_cp order by date_order_added), now()) as next_row_order_date_added,
+			patient_date_changed,
+			patient_inactive
 		from (
-			select distinct on (rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added)
+			select distinct on (rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added, patient_date_changed)
 				rh.patient_id_cp,
 				oh.date_order_added as date_order_added,
 				oh.date_order_shipped as date_order_shipped,
 				rh.refill_date_next as refill_date_next,
 				rh.refills_left > 0 or rh.refills_total > 0 as has_refills,
 				rh.rx_date_expired,
-				rh.refill_date_first
+				rh.refill_date_first,
+				p.patient_date_changed,
+				p.patient_inactive is not null as patient_inactive
 			from "datawarehouse".dev_analytics."rxs_historic" rh
-			left join __dbt__cte__order_items_max_events oih using (rx_number)
-			left join __dbt__cte__orders_max_events oh using (invoice_number)
-			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added
+			inner join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)
+			left join __dbt__cte__order_items_max_events oih using (rx_number, patient_id_cp)
+			left join __dbt__cte__orders_max_events oh using (invoice_number, patient_id_cp)
+			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added, patient_date_changed
 		) t
 	)
-	select
+	select distinct
 		patient_id_cp,
-		coalesce(date_order_added + interval '1' day, refill_date_first) as event_date,
+		coalesce(date_order_added, refill_date_first) as event_date,
 		'PATIENT_ACTIVE' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
@@ -265,31 +270,33 @@ from
 	from all_dates
 	where date_order_added is not null or has_refills
 	union
-	select
+	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next, date_order_added + interval '4' month) as event_date,
+		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_OTHER' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
 		date_order_added as _ab_cdc_updated_at
 	from all_dates
 	where
-		coalesce(refill_date_next, date_order_added + interval '4' month) < next_row_order_date_added
+		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) < next_row_order_date_added
 		and date_order_shipped < next_row_order_date_added
 		and has_refills and rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month)
+		and (not patient_inactive or coalesce(refill_date_next, date_order_added + interval '4' month) < patient_date_changed)
 	union
-	select
+	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next, date_order_added + interval '4' month) as event_date,
+		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_NO_FILLABLE_RX' as event_name,
 		null::varchar as _airbyte_ab_id,
 		date_order_added as _airbyte_emitted_at,
 		date_order_added as _ab_cdc_updated_at
 	from all_dates
 	where
-		coalesce(refill_date_next, date_order_added + interval '4' month) < next_row_order_date_added
+		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) < next_row_order_date_added
 		and date_order_shipped < next_row_order_date_added
 		and not (has_refills or rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month))
+		and (not patient_inactive or coalesce(refill_date_next, date_order_added + interval '4' month) < patient_date_changed)
 ),
 statuses as (
 	select
@@ -307,14 +314,23 @@ statuses as (
 			and (patient_date_registered is null or date(patient_date_registered) >= date(patient_date_added))
 	union
 	select
-		patient_id_cp,
-		patient_date_registered as event_date,
+		gp.patient_id_cp,
+		patient_date_added as event_date,
 		'PATIENT_NO_RX' as event_name,
 		_airbyte_ab_id,
 		_airbyte_emitted_at,
 		_ab_cdc_updated_at
-		from __dbt__cte__gp_patients
+		from __dbt__cte__gp_patients gp
+		left join (
+			select
+				patient_id_cp,
+				min(event_date) as min_rx_date_added
+			from "datawarehouse".dev_analytics."rxs_historic" rxs
+			where event_name = 'RX_ADDED'
+			group by patient_id_cp
+		) r on r.patient_id_cp = gp.patient_id_cp
 		where patient_date_registered is not null
+			and (r.patient_id_cp is null or patient_date_added < min_rx_date_added)
 	union
 	select
 		patient_id_cp,
