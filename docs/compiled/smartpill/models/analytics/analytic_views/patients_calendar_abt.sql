@@ -12,6 +12,7 @@ select
     phr.pharmacy_address,
 	p."patient_date_registered" as "patient_date_registered",
   p."patient_date_added" as "patient_date_added",
+  p."patient_date_changed" as "patient_date_changed",
   p."fill_next" as "patient_fill_next",
   p."days_overdue" as "patient_days_overdue",
   p."first_name" as "patient_first_name",
@@ -34,6 +35,7 @@ select
   p."date_first_expected_by" as "patient_date_first_expected_by",
   p."refills_used" as "patient_refills_used",
   p."pharmacy_id" as "patient_pharmacy_id",
+  p."patient_inactive" as "patient_inactive",
   p."date_processed" as "patient_date_processed"
 from "datawarehouse".dev_analytics."patients_calendar" pc
 inner join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)

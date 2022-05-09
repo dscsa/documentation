@@ -73,8 +73,14 @@ select
 	rh.patient_id_cp,
 	event_date as rx_event_date,
 	rh.rx_number,
-	first_value(provider_npi) over (partition by rx_number order by event_date desc nulls last) as rx_provider_npi,
-	
+	first_value(provider_npi) over (
+		partition by rx_number
+		order by case when provider_npi is not null then 0 else 1 end, event_date desc nulls last
+	) as rx_provider_npi,
+	first_value(drug_generic) over (
+		partition by rx_number
+		order by case when drug_generic is not null then 0 else 1 end, event_date desc nulls last
+	) as rx_drug_generic,
     max(  
       case
       when rh.event_name = 'RX_UPDATED'
@@ -106,7 +112,6 @@ select
       else null
       end
     ) over(partition by rx_number) as rx_date_added ,
-	rh."drug_generic" as "rx_drug_generic",
 	rh."clinic_name" as "rx_clinic_name",
 	rh."is_refill" as "rx_is_refill",
 	rh."rx_autofill" as "rx_autofill",
@@ -162,24 +167,6 @@ select
     max(
       
       case
-      when event_name = 'ORDER_ITEM_ADDED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_added
-      
-    
-    ,
-  
-    max(
-      
-      case
       when event_name = 'ORDER_ITEM_UPDATED'
         then event_date
       else null
@@ -191,6 +178,24 @@ select
     
       
         as date_order_item_updated
+      
+    
+    ,
+  
+    max(
+      
+      case
+      when event_name = 'ORDER_ITEM_ADDED'
+        then event_date
+      else null
+      end
+    )
+	
+      over(partition by invoice_number, rx_number)
+	
+    
+      
+        as date_order_item_added
       
     
     ,

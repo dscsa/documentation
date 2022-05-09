@@ -195,14 +195,18 @@ with grse as (
 			rx_gsn is not null
 			and rx_gsn <> 0
 			and rx_date_expired is not null
+			-- make sure this written date does not break the incremental filter
+			-- due to a problem with rx_date_expired 
+			and rx_date_expired - INTERVAL '1 year' < updated_at
 		order by rx_number, _airbyte_emitted_at, _ab_cdc_updated_at)
 	union
-	select
+	(select distinct on (rx_number, date(updated_at))
 		*,
 		'RX_UPDATED' as event_name,
 		updated_at as event_date
 		from __dbt__cte__gp_rxs_single
 		where updated_at is not null
+		order by rx_number, date(updated_at), updated_at desc)
 	union
 	select
 		*,

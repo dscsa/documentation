@@ -4,6 +4,9 @@ with  __dbt__cte__gp_order_items as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
+	_ab_cdc_deleted_at,
+	updated_at,
+	created_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
     cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
@@ -39,10 +42,7 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_date') as timestamp) as refill_target_date,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at,
-    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
-    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
+    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at
 from
     "datawarehouse".dev_analytics."raw_gp_order_items"
 ),oie as (
