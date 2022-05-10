@@ -41,3 +41,5 @@ from
 from __dbt__cte__gp_drugs gpd
 
 where gpd._airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."drugs")
+
+order by generic_name, updated_at desc

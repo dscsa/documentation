@@ -113,14 +113,14 @@ from
         order_city as city, 
         order_state as state, 
         order_zip as zip_code,
-        _airbyte_emitted_at
+        updated_at
     from __dbt__cte__gp_orders
     UNION
     select 
        patient_city as city,
        patient_state as state,
        patient_zip as zip_code,
-       _airbyte_emitted_at
+       patient_date_updated as updated_at
     from __dbt__cte__gp_patients 
 )
 select distinct on (id)
@@ -131,4 +131,6 @@ select distinct on (id)
     NOW() as date_processed
 FROM locations 
 
-    where _airbyte_emitted_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."locations")
+    where updated_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."locations")
+
+order by coalesce(zip_code, state), updated_at desc

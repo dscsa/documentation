@@ -137,6 +137,6 @@ where
     LOWER(last_name) NOT LIKE '%test%' AND
     LOWER(last_name) NOT LIKE '%user%'
 
-    AND _airbyte_emitted_at > (SELECT MAX(date_processed) FROM "datawarehouse".dev_analytics."patients")
+    AND patient_date_updated > (SELECT MAX(date_processed) FROM "datawarehouse".dev_analytics."patients")
 
-order by patient_id_cp, patient_date_changed desc
+order by patient_id_cp, patient_date_updated desc
