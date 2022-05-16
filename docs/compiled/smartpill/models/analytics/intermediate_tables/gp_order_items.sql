@@ -39,4 +39,4 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 from
-    "datawarehouse".raw._airbyte_raw_goodpill_gp_orders
+    "datawarehouse".raw._airbyte_raw_goodpill_gp_order_items

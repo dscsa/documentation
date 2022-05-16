@@ -238,8 +238,9 @@ oi as (
 		"item_message_text" as "item_message_text",
 		"item_type" as "item_type",
 		"item_added_by" as "item_added_by",
-		"item_added_by" as "date_order_item_added",
 		"item_date_added" as "item_date_added",
+		"updated_at" as "item_date_updated",
+		"updated_at" as "date_item_updated",
 		"refill_date_last" as "item_refill_date_last",
 		"refill_date_manual" as "item_refill_date_manual",
 		"refill_date_default" as "item_refill_date_default",
@@ -249,7 +250,7 @@ oi as (
 	from "datawarehouse".dev_analytics."order_items" oi
 ),
 
-oh as (
+o as (
   select
 	  patient_id_cp,
 	  invoice_number,
@@ -293,7 +294,7 @@ select distinct on (patient_id_cp, rx_number, invoice_number)
 from psh
 left join rh using (patient_id_cp)
 left join oi using (rx_number, patient_id_cp)
-left join oh using (invoice_number, patient_id_cp)
+left join o using (invoice_number, patient_id_cp)
 left join cph on
 	(
 		cph.clinic_coupon_code = coalesce(psh.patient_payment_coupon, psh.patient_tracking_coupon)
@@ -305,7 +306,8 @@ left join cph on
 		and (cph.date_clinic_meta_deleted is null or cph.date_clinic_meta_deleted > rh.rx_event_date)
 	)
 where
-	coalesce(rh.rx_event_date, now()) <= coalesce(oh.date_order_dispensed)
+	coalesce(rh.rx_event_date, now()) <= o.date_order_dispensed
+	or coalesce(rh.rx_event_date, now()) <= oi.item_date_added + interval '1' day
 order by
 	patient_id_cp,
 	rx_number,
