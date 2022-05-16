@@ -1,14 +1,9 @@
 
 
--- depends_on: __dbt__cte__gp_orders
-
-with  __dbt__cte__gp_orders as (
+with __dbt__cte__gp_orders as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
-	created_at,
-	updated_at,
-	_ab_cdc_deleted_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_wc') as int) as patient_id_wc,
@@ -49,54 +44,14 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'priority') as int) as priority,
     cast(jsonb_extract_path_text(_airbyte_data, 'tech_fill') as varchar(5)) as tech_fill,
     cast(jsonb_extract_path_text(_airbyte_data, 'rph_check') as varchar(5)) as rph_check,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at
 from
-    "datawarehouse".dev_analytics."raw_gp_orders"
-),oe as (
-	select
-		*,
-		'ORDER_DELETED' as event_name,
-		_ab_cdc_deleted_at as event_date,
-		'GOODPILL' as _airbyte_source
-	from __dbt__cte__gp_orders
-	where _ab_cdc_deleted_at is not null
-	union
-	select
-		*,
-		'ORDER_RETURNED' as event_name,
-		order_date_returned as event_date,
-		'GOODPILL' as _airbyte_source
-	from __dbt__cte__gp_orders
-	where order_date_returned is not null
-	union
-	select
-		*,
-		'ORDER_SHIPPED' as event_name,
-		order_date_shipped as event_date,
-		'GOODPILL' as _airbyte_source
-	from __dbt__cte__gp_orders
-	where order_date_shipped is not null
-	union
-	select
-		*,
-		'ORDER_DISPENSED' as event_name,
-		order_date_dispensed as event_date,
-		'GOODPILL' as _airbyte_source
-	from __dbt__cte__gp_orders
-	where order_date_dispensed is not null
-	union
-	select
-		*,
-		'ORDER_ADDED' as event_name,
-		order_date_added as event_date,
-		'GOODPILL' as _airbyte_source
-	from __dbt__cte__gp_orders
-	where order_date_added is not null
-)
-select distinct on (invoice_number, event_name)
+    "datawarehouse".raw._airbyte_raw_goodpill_gp_orders
+)-- depends_on: __dbt__cte__gp_orders
+
+select distinct on (invoice_number)
 	invoice_number,
-	event_name,
-	event_date,
 	patient_id_cp,
 	coalesce(order_zip, order_state) as location_id,
 	count_items,
@@ -119,15 +74,13 @@ select distinct on (invoice_number, event_name)
 	order_note,
 	rph_check,
 	tech_fill,
+	order_date_returned,
+	order_date_shipped,
+	order_date_dispensed,
+	order_date_added,
+	order_date_changed,
+	updated_at,
 	_airbyte_emitted_at,
-	_airbyte_ab_id,
-	_ab_cdc_updated_at,
-	_airbyte_source,
-	md5(cast(event_name || invoice_number as 
-    varchar
-)) as unique_event_id
-from oe
-
-	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."orders_historic")
-
-order by invoice_number, event_name, event_date desc
+	_airbyte_ab_id
+	from __dbt__cte__gp_orders
+order by invoice_number, updated_at desc

@@ -1,176 +1,5 @@
 
-with  __dbt__cte__order_items_max_events as (
--- Exclude the common columns between the tables,
---  to be called with dbt_utils.star (instead of using
---  the * operator to select all columns).
-
-
-select
-	patient_id_cp,
-	event_date as item_event_date,
-	rx_number,
-	invoice_number,
-	
-  
-    max(
-      
-      case
-      when event_name = 'ORDER_ITEM_UPDATED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_updated
-      
-    
-    ,
-  
-    max(
-      
-      case
-      when event_name = 'ORDER_ITEM_ADDED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_added
-      
-    
-    ,
-  
-    max(
-      
-      case
-      when event_name = 'ORDER_ITEM_DELETED'
-        then event_date
-      else null
-      end
-    )
-	
-      over(partition by invoice_number, rx_number)
-	
-    
-      
-        as date_order_item_deleted
-      
-    
-    
-  
-,
-	"groups" as "item_groups",
-  "rx_dispensed_id" as "item_rx_dispensed_id",
-  "stock_level_initial" as "item_stock_level_initial",
-  "rx_message_keys_initial" as "item_rx_message_keys_initial",
-  "patient_autofill_initial" as "item_patient_autofill_initial",
-  "rx_autofill_initial" as "item_rx_autofill_initial",
-  "rx_numbers_initial" as "item_rx_numbers_initial",
-  "zscore_initial" as "item_zscore_initial",
-  "refills_dispensed_default" as "item_refills_dispensed_default",
-  "refills_dispensed_actual" as "item_refills_dispensed_actual",
-  "days_dispensed_default" as "item_days_dispensed_default",
-  "days_dispensed_actual" as "item_days_dispensed_actual",
-  "qty_dispensed_default" as "item_qty_dispensed_default",
-  "qty_dispensed_actual" as "item_qty_dispensed_actual",
-  "price_dispensed_default" as "item_price_dispensed_default",
-  "price_dispensed_actual" as "item_price_dispensed_actual",
-  "qty_pended_total" as "item_qty_pended_total",
-  "qty_pended_repacks" as "item_qty_pended_repacks",
-  "count_pended_total" as "item_count_pended_total",
-  "count_pended_repacks" as "item_count_pended_repacks",
-  "item_message_keys" as "item_message_keys",
-  "item_message_text" as "item_message_text",
-  "item_type" as "item_type",
-  "item_added_by" as "item_added_by",
-  "item_date_added" as "item_date_added",
-  "refill_date_last" as "item_refill_date_last",
-  "refill_date_manual" as "item_refill_date_manual",
-  "refill_date_default" as "item_refill_date_default",
-  "refill_target_date" as "item_refill_target_date",
-  "refill_target_days" as "item_refill_target_days",
-  "refill_target_rxs" as "item_refill_target_rxs"
-from "datawarehouse".dev_analytics."order_items_historic" oih
-),  __dbt__cte__orders_max_events as (
--- Exclude the common columns between the tables,
---  to be called with dbt_utils.star (instead of using
---  the * operator to select all columns).
-
-
-select
-	patient_id_cp,
-	event_date as order_event_date,
-	invoice_number,
-
-    max(
-      case
-      when event_name = 'ORDER_ADDED'
-        then event_date
-      else null
-      end
-    ) over(partition by invoice_number) as date_order_added,
-    max(
-      case
-      when event_name = 'ORDER_DISPENSED'
-        then event_date
-      else null
-      end
-    ) over(partition by invoice_number) as date_order_dispensed,
-    max(
-	case
-      when event_name = 'ORDER_SHIPPED'
-        then event_date
-      else null
-      end
-    ) over(partition by invoice_number) as date_order_shipped,
-  
-    max(
-      case
-      when event_name = 'ORDER_DELETED'
-        then event_date
-      else null
-      end
-    ) over(partition by invoice_number) as date_order_deleted,
-    max(
-      case
-      when event_name = 'ORDER_RETURNED'
-        then event_date
-      else null
-      end
-    ) over(partition by invoice_number) as date_order_returned ,
-
-	"count_items" as "order_count_items",
-	"count_filled" as "order_count_filled",
-	"count_nofill" as "order_count_nofill",
-	"order_source" as "order_source",
-	"order_stage_cp" as "order_stage_cp",
-	"order_status" as "order_status",
-	"invoice_doc_id" as "order_invoice_doc_id",
-	"tracking_number" as "order_tracking_number",
-	"payment_total_default" as "order_payment_total_default",
-	"payment_total_actual" as "order_payment_total_actual",
-	"payment_fee_default" as "order_payment_fee_default",
-	"payment_fee_actual" as "order_payment_fee_actual",
-	"payment_due_default" as "order_payment_due_default",
-	"payment_due_actual" as "order_payment_due_actual",
-	"payment_date_autopay" as "order_payment_date_autopay",
-	"payment_method_actual" as "order_payment_method_actual",
-	"order_payment_coupon" as "order_payment_coupon",
-	"order_note" as "order_note",
-	"rph_check" as "order_rph_check",
-	"tech_fill" as "order_tech_fill",
-	"location_id" as "order_location_id"
-
-from "datawarehouse".dev_analytics."orders_historic" oh
-),  __dbt__cte__gp_patients as (
+with  __dbt__cte__gp_patients as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
@@ -235,18 +64,18 @@ from
 			patient_id_cp,
 			has_refills,
 			rx_date_expired,
-			date_order_added,
-			date_order_shipped,
+			order_date_added,
+			order_date_shipped,
 			refill_date_next,
 			refill_date_first,
-			coalesce(lag(date_order_added, -1) over (partition by patient_id_cp order by date_order_added), now()) as next_row_order_date_added,
+			coalesce(lag(order_date_added, -1) over (partition by patient_id_cp order by order_date_added), now()) as next_row_order_date_added,
 			patient_date_changed,
 			patient_inactive
 		from (
-			select distinct on (rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added, patient_date_changed)
+			select distinct on (rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.order_date_added, patient_date_changed)
 				rh.patient_id_cp,
-				oh.date_order_added as date_order_added,
-				oh.date_order_shipped as date_order_shipped,
+				oh.order_date_added as order_date_added,
+				oh.order_date_shipped as order_date_shipped,
 				rh.refill_date_next as refill_date_next,
 				rh.refills_left > 0 or rh.refills_total > 0 as has_refills,
 				rh.rx_date_expired,
@@ -255,48 +84,48 @@ from
 				p.patient_inactive is not null as patient_inactive
 			from "datawarehouse".dev_analytics."rxs_historic" rh
 			inner join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)
-			left join __dbt__cte__order_items_max_events oih using (rx_number, patient_id_cp)
-			left join __dbt__cte__orders_max_events oh using (invoice_number, patient_id_cp)
-			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.date_order_added, patient_date_changed
+			left join "datawarehouse".dev_analytics."order_items" oi using (rx_number, patient_id_cp)
+			left join "datawarehouse".dev_analytics."orders" oh using (invoice_number, patient_id_cp)
+			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.event_date, oh.order_date_added, patient_date_changed
 		) t
 	)
 	select distinct
 		patient_id_cp,
-		coalesce(date_order_added, refill_date_first) as event_date,
+		coalesce(order_date_added, refill_date_first) as event_date,
 		'PATIENT_ACTIVE' as event_name,
 		null::varchar as _airbyte_ab_id,
-		date_order_added as _airbyte_emitted_at,
-		date_order_added as _ab_cdc_updated_at
+		order_date_added as _airbyte_emitted_at,
+		order_date_added as _ab_cdc_updated_at
 	from all_dates
-	where date_order_added is not null or has_refills
+	where order_date_added is not null or has_refills
 	union
 	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) as event_date,
+		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_OTHER' as event_name,
 		null::varchar as _airbyte_ab_id,
-		date_order_added as _airbyte_emitted_at,
-		date_order_added as _ab_cdc_updated_at
+		order_date_added as _airbyte_emitted_at,
+		order_date_added as _ab_cdc_updated_at
 	from all_dates
 	where
-		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) < next_row_order_date_added
-		and date_order_shipped < next_row_order_date_added
-		and has_refills and rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month)
-		and (not patient_inactive or coalesce(refill_date_next, date_order_added + interval '4' month) < patient_date_changed)
+		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) < next_row_order_date_added
+		and order_date_shipped < next_row_order_date_added
+		and has_refills and rx_date_expired <= coalesce(refill_date_next, order_date_added + interval '4' month)
+		and (not patient_inactive or coalesce(refill_date_next, order_date_added + interval '4' month) < patient_date_changed)
 	union
 	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) as event_date,
+		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) as event_date,
 		'PATIENT_CHURNED_NO_FILLABLE_RX' as event_name,
 		null::varchar as _airbyte_ab_id,
-		date_order_added as _airbyte_emitted_at,
-		date_order_added as _ab_cdc_updated_at
+		order_date_added as _airbyte_emitted_at,
+		order_date_added as _ab_cdc_updated_at
 	from all_dates
 	where
-		coalesce(refill_date_next + interval '1' day, date_order_added + interval '4' month) < next_row_order_date_added
-		and date_order_shipped < next_row_order_date_added
-		and not (has_refills or rx_date_expired <= coalesce(refill_date_next, date_order_added + interval '4' month))
-		and (not patient_inactive or coalesce(refill_date_next, date_order_added + interval '4' month) < patient_date_changed)
+		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) < next_row_order_date_added
+		and order_date_shipped < next_row_order_date_added
+		and not (has_refills or rx_date_expired <= coalesce(refill_date_next, order_date_added + interval '4' month))
+		and (not patient_inactive or coalesce(refill_date_next, order_date_added + interval '4' month) < patient_date_changed)
 ),
 statuses as (
 	select

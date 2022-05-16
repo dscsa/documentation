@@ -1,12 +1,9 @@
 
 
-with  __dbt__cte__gp_order_items as (
+with __dbt__cte__gp_order_items as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
-	_ab_cdc_deleted_at,
-	updated_at,
-	created_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
     cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
@@ -42,40 +39,12 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_date') as timestamp) as refill_target_date,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
     cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 from
-    "datawarehouse".dev_analytics."raw_gp_order_items"
-),oie as (
-	(select distinct on (rx_number, invoice_number)
-		*,
-		'GOODPILL' as _airbyte_source,
-		'ORDER_ITEM_ADDED' as event_name,
-		item_date_added as event_date
-		from __dbt__cte__gp_order_items gpoi
-		where item_date_added is not null
-		order by rx_number, invoice_number, item_date_added desc)
-	union
-	select
-		*,
-		'GOODPILL' as _airbyte_source,
-		'ORDER_ITEM_UPDATED' as event_name,
-		updated_at as event_date
-		from __dbt__cte__gp_order_items
-		where updated_at is not null
-	union
-	select distinct on (rx_number, invoice_number)
-		*,
-		'GOODPILL' as _airbyte_source,
-		'ORDER_ITEM_DELETED' as event_name,
-		_ab_cdc_deleted_at as event_date
-		from __dbt__cte__gp_order_items gpoi
-		where _ab_cdc_deleted_at is not NULL
-)
-
-select
-	_airbyte_emitted_at,
-	_airbyte_ab_id,
-	_airbyte_source,
+    "datawarehouse".raw._airbyte_raw_goodpill_gp_orders
+)select distinct on (invoice_number, rx_number)
+	concat(invoice_number, '_', rx_number) item_id,
 	invoice_number,
 	patient_id_cp,
 	rx_number,
@@ -110,12 +79,9 @@ select
 	refill_target_date,
 	refill_target_days,
 	refill_target_rxs,
-	_ab_cdc_updated_at,
-	event_name,
-	event_date,
-	md5(cast(event_name || invoice_number || rx_number || event_date as 
-    varchar
-)) as unique_event_id
-from oie
-
-	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."order_items_historic")
+	updated_at,
+	created_at,
+	_airbyte_emitted_at,
+	_airbyte_ab_id
+from __dbt__cte__gp_order_items gpoi
+order by invoice_number, rx_number, updated_at desc

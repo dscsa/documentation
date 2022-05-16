@@ -1,5 +1,16 @@
 
-with __dbt__cte__gp_rxs_single as (
+
+with  __dbt__cte__gp_providers as (
+select
+	_airbyte_emitted_at,
+	cast(jsonb_extract_path_text(_airbyte_data, 'npi') as varchar) as npi,
+	cast(jsonb_extract_path_text(_airbyte_data, 'first_name') as varchar) as first_name,
+	cast(jsonb_extract_path_text(_airbyte_data, 'last_name') as varchar) as last_name,
+	cast(jsonb_extract_path_text(_airbyte_data, 'first_rx_sent_date') as timestamp) as first_rx_sent_date,
+	cast(jsonb_extract_path_text(_airbyte_data, 'last_rx_sent_date') as timestamp) as last_rx_sent_date
+from
+	"datawarehouse".raw._airbyte_raw_goodpill_gp_providers
+),  __dbt__cte__gp_rxs_single as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
@@ -64,17 +75,35 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 from 
     "datawarehouse".dev_analytics."raw_gp_rxs_single"
-)select distinct on (provider_npi)
-    rxs1.provider_npi,
-    rxs1.provider_first_name,
-    rxs1.provider_last_name,
-    rxs1.provider_phone,
-    NOW() as date_processed
-from __dbt__cte__gp_rxs_single rxs1
-    left join __dbt__cte__gp_rxs_single rxs2
-    on (rxs1.provider_npi = rxs2.provider_npi and rxs1.rx_number < rxs2.rx_number)
-where rxs2.rx_number is null and rxs1.provider_npi is not null and rxs1.provider_npi <> ''
+),gp_provider as (
+	select distinct on (npi)
+		npi as provider_npi,
+		first_name as provider_first_name,
+		last_name as provider_last_name,
+		first_rx_sent_date as provider_first_rx_sent_date,
+		last_rx_sent_date as provider_last_rx_sent_date
+	from
+		__dbt__cte__gp_providers
+	order by npi, _airbyte_emitted_at desc
+),
 
-	and rxs1.updated_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."providers")
+-- Since the gp_providers table is missing the provider phone,
+-- search it in gp_rxs_single
+rx_provider as (
+	select distinct on (provider_npi)
+		rxs1.provider_npi,
+		rxs1.provider_phone,
+		now() as date_processed
+	from __dbt__cte__gp_rxs_single rxs1
+		left join __dbt__cte__gp_rxs_single rxs2
+		on (rxs1.provider_npi = rxs2.provider_npi and rxs1.rx_number < rxs2.rx_number)
+	where rxs2.rx_number is null and rxs1.provider_npi is not null and rxs1.provider_npi <> ''
+	
+		and rxs1.updated_at > (select MAX(date_processed) from "datawarehouse".dev_analytics."providers")
+	
+	order by provider_npi, rxs1.updated_at desc
+)
 
-order by provider_npi, rxs1.updated_at desc
+select
+	*
+from gp_provider inner join rx_provider using (provider_npi)

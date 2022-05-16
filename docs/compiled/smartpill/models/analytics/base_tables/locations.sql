@@ -3,9 +3,6 @@ WITH  __dbt__cte__gp_orders as (
 select
     _airbyte_emitted_at,
     _airbyte_ab_id,
-	created_at,
-	updated_at,
-	_ab_cdc_deleted_at,
     cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
     cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_wc') as int) as patient_id_wc,
@@ -46,9 +43,10 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'priority') as int) as priority,
     cast(jsonb_extract_path_text(_airbyte_data, 'tech_fill') as varchar(5)) as tech_fill,
     cast(jsonb_extract_path_text(_airbyte_data, 'rph_check') as varchar(5)) as rph_check,
-    cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at
 from
-    "datawarehouse".dev_analytics."raw_gp_orders"
+    "datawarehouse".raw._airbyte_raw_goodpill_gp_orders
 ),  __dbt__cte__gp_patients as (
 select
     _airbyte_emitted_at,
