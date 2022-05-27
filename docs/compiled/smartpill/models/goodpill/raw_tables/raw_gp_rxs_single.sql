@@ -11,7 +11,7 @@ with r as (
 		cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
 		cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
 	from
-		"datawarehouse".raw._airbyte_raw_goodpill_gp_rxs_single
+		"datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_single
 )
 
 select distinct on (pkey, created_at, updated_at, _ab_cdc_updated_at, _ab_cdc_deleted_at)

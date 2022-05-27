@@ -14,7 +14,7 @@ with final as (
     signed
  ) as is_subclass
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_classes
+        "datawarehouse"."raw"._airbyte_raw_quickbook_classes
 )
 select
     *,

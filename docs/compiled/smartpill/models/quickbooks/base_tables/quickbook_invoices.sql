@@ -19,7 +19,7 @@ with final as (
         STR_TO_DATE(jsonb_extract_path_text(_airbyte_data, 'DueDate'), '%Y-%m-%dT%H:%i:%s.%fZ') as due_date,
         jsonb_extract_path(_airbyte_data, 'Line') as line
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_invoices
+        "datawarehouse"."raw"._airbyte_raw_quickbook_invoices
 )
 select
     *,

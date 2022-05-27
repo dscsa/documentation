@@ -13,7 +13,7 @@ with final as (
         STR_TO_DATE(jsonb_extract_path_text(_airbyte_data, 'TxnDate'), '%Y-%m-%dT%H:%i:%s.%fZ') as transaction_date,
         jsonb_extract_path(_airbyte_data, 'Line') as line
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_deposits
+        "datawarehouse"."raw"._airbyte_raw_quickbook_deposits
 )
 select
     *,

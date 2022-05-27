@@ -18,7 +18,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'CustomerRef','value') as customer_id,
         jsonb_extract_path(_airbyte_data, 'Line') as line
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_payments
+        "datawarehouse"."raw"._airbyte_raw_quickbook_payments
 )
 select
     *,

@@ -26,7 +26,7 @@ with final as (
     numeric(28, 6)
 ) as taxable
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_customers
+        "datawarehouse"."raw"._airbyte_raw_quickbook_customers
 )
 select
     *,

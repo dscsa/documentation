@@ -577,7 +577,7 @@ with payroll_check as (
         transaction_date,
         total_amount as amount,
         deposit_to_account_id
-    from "datawarehouse".raw.quickbook_payroll_checks
+    from "datawarehouse"."raw".quickbook_payroll_checks
 ),
 
 final as (

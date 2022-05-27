@@ -18,7 +18,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'PrivateNote') as private_note,
         jsonb_extract_path(_airbyte_data, 'Line') as line
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_bills
+        "datawarehouse"."raw"._airbyte_raw_quickbook_bills
 )
 select
     *,

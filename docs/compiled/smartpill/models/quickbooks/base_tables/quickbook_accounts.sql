@@ -27,7 +27,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') currency_name,
         jsonb_extract_path_text(_airbyte_data, 'Description') description
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_accounts
+        "datawarehouse"."raw"._airbyte_raw_quickbook_accounts
 )
 select
     *,

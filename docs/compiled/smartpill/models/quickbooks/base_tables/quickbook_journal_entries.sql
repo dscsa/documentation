@@ -13,7 +13,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'PrivateNote') as private_note,
         STR_TO_DATE(jsonb_extract_path_text(_airbyte_data, 'TxnDate'), '%Y-%m-%dT%H:%i:%s.%fZ') as transaction_date
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_journal_entries
+        "datawarehouse"."raw"._airbyte_raw_quickbook_journal_entries
 )
 select
     *,

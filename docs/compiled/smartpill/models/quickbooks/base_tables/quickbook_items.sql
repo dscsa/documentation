@@ -33,7 +33,7 @@ with final as (
     signed
  ) as unit_price
     from
-        "datawarehouse".raw._airbyte_raw_quickbook_items
+        "datawarehouse"."raw"._airbyte_raw_quickbook_items
 )
 select
     *,
