@@ -28,8 +28,8 @@ with purchase_join as (
     ),
 
     items as (
-        select 
-            item.*, 
+        select
+            item.*,
             parent.expense_account_id as parent_expense_account_id,
             parent.income_account_id as parent_income_account_id
         from items_stg item
@@ -51,7 +51,7 @@ with purchase_join as (
         account_expense_class_id as class_id,
         coalesce(purchases.customer_id, purchase_lines.account_expense_customer_id) as customer_id
     from purchases
-    
+
     inner join purchase_lines
         on purchases._hash_id = purchase_lines._purchase_hash_id
 
@@ -135,8 +135,8 @@ with deposit_join as (
         currency_name,
         deposit_lines.class_id
     from deposits
-    
-    inner join deposit_lines 
+
+    inner join deposit_lines
         on deposits._hash_id = deposit_lines._deposit_hash_id
 
     cross join uf_accounts
@@ -276,7 +276,7 @@ final as (
         null as class_id,
         customer_id
     from payment
-    
+
     cross join ar_accounts
 )
 
@@ -310,8 +310,8 @@ with bill_join as (
     ),
 
     items as (
-        select 
-            item.*, 
+        select
+            item.*,
             parent.expense_account_id as parent_expense_account_id,
             parent.income_account_id as parent_income_account_id
         from items_stg item
@@ -322,7 +322,7 @@ with bill_join as (
     )
 
     select
-        bills.id as transaction_id, 
+        bills.id as transaction_id,
         bills.transaction_date,
         bill_lines.amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
@@ -332,7 +332,7 @@ with bill_join as (
         coalesce(bill_lines.account_expense_class_id, bill_lines.item_expense_class_id) as class_id
         -- bills.vendor_id
     from bills
-    
+
     inner join bill_lines
         on bills._hash_id = bill_lines._bill_hash_id
 
@@ -341,7 +341,7 @@ with bill_join as (
 ),
 
 final as (
-    select 
+    select
         transaction_id,
         transaction_date,
         -- vendor_id,
@@ -400,8 +400,8 @@ with invoice_join as (
     ),
 
     items as (
-        select 
-            item.*, 
+        select
+            item.*,
             parent.expense_account_id as parent_expense_account_id,
             parent.income_account_id as parent_income_account_id
         from items_stg item
@@ -444,7 +444,7 @@ with invoice_join as (
     left join items
         on invoice_lines.sales_item_item_id = items.id
 
-    where coalesce(invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id) is not null 
+    where coalesce(invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id) is not null
 
 ),
 
@@ -490,7 +490,7 @@ final as (
     cross join ar_accounts
 )
 
-select * 
+select *
 from final
 ),  __dbt__cte__int_quickbooks__bill_payment_double_entry as (
 with bill_payment_join as (
@@ -518,7 +518,7 @@ with bill_payment_join as (
         select
             id as account_id
         from accounts
-        
+
         where account_type = 'Accounts Payable'
             and is_active
     )
@@ -610,7 +610,7 @@ with accounts as (
 ),
 
 classification_fix as (
-    select 
+    select
         id,
         account_number,
         is_sub_account,
@@ -663,7 +663,7 @@ classification_add as (
 ),
 
 adjusted_balances as (
-    select 
+    select
         *,
         (balance * multiplier) as adjusted_balance
     from classification_add
@@ -757,7 +757,7 @@ adjusted_gl as (
         -- accounts.account_sub_type,
         accounts.financial_statement_helper,
         -- accounts.balance as account_current_balance,
-        accounts.classification as account_classification, 
+        accounts.classification as account_classification,
         gl_union.transaction_type,
         gl_union.transaction_source,
         gl_union.currency_name,

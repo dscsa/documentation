@@ -8,7 +8,7 @@ with recursive accounts as (
     )
 ),
 tree as (
-    select id, 
+    select id,
            parent_account_id,
            name,
            fully_qualified_name,

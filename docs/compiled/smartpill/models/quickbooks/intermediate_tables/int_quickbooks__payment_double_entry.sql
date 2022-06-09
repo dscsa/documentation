@@ -56,7 +56,7 @@ final as (
         null as class_id,
         customer_id
     from payment
-    
+
     cross join ar_accounts
 )
 

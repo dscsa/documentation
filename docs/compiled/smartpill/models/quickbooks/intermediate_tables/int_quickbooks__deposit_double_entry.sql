@@ -43,8 +43,8 @@ with deposit_join as (
         currency_name,
         deposit_lines.class_id
     from deposits
-    
-    inner join deposit_lines 
+
+    inner join deposit_lines
         on deposits._hash_id = deposit_lines._deposit_hash_id
 
     cross join uf_accounts

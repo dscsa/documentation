@@ -23,7 +23,7 @@ with bill_payment_join as (
         select
             id as account_id
         from accounts
-        
+
         where account_type = 'Accounts Payable'
             and is_active
     )

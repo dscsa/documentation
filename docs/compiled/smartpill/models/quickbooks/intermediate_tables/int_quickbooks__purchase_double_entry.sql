@@ -25,8 +25,8 @@ with purchase_join as (
     ),
 
     items as (
-        select 
-            item.*, 
+        select
+            item.*,
             parent.expense_account_id as parent_expense_account_id,
             parent.income_account_id as parent_income_account_id
         from items_stg item
@@ -48,7 +48,7 @@ with purchase_join as (
         account_expense_class_id as class_id,
         coalesce(purchases.customer_id, purchase_lines.account_expense_customer_id) as customer_id
     from purchases
-    
+
     inner join purchase_lines
         on purchases._hash_id = purchase_lines._purchase_hash_id
 

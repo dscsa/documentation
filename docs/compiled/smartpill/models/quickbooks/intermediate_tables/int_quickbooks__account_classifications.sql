@@ -9,7 +9,7 @@ with accounts as (
 ),
 
 classification_fix as (
-    select 
+    select
         id,
         account_number,
         is_sub_account,
@@ -62,7 +62,7 @@ classification_add as (
 ),
 
 adjusted_balances as (
-    select 
+    select
         *,
         (balance * multiplier) as adjusted_balance
     from classification_add

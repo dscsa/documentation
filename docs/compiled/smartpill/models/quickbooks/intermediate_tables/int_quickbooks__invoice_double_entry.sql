@@ -25,8 +25,8 @@ with invoice_join as (
     ),
 
     items as (
-        select 
-            item.*, 
+        select
+            item.*,
             parent.expense_account_id as parent_expense_account_id,
             parent.income_account_id as parent_income_account_id
         from items_stg item
@@ -69,7 +69,7 @@ with invoice_join as (
     left join items
         on invoice_lines.sales_item_item_id = items.id
 
-    where coalesce(invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id) is not null 
+    where coalesce(invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id) is not null
 
 ),
 
@@ -115,5 +115,5 @@ final as (
     cross join ar_accounts
 )
 
-select * 
+select *
 from final

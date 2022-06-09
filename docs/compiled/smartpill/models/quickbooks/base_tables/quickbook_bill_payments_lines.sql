@@ -11,7 +11,7 @@ bill_payment as (
 ) as amount
     from "datawarehouse".dev_analytics."quickbook_bill_payments"
     
-    where 
+    where
         line is not null
         and 
     true
