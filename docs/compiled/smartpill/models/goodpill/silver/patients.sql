@@ -103,7 +103,7 @@ select distinct on (patient_id_cp)
     patient_date_updated,
     now() as date_processed
 from patients
-left join "datawarehouse".dev_analytics."clinics_meta_coupons" as cmc on patients.payment_coupon = cmc.coupon_code
+left join "datawarehouse".dev_analytics."clinics_meta_coupons" as cmc on patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
 where
     lower(first_name) not like '%test%'
     and lower(first_name) not like '%user%'

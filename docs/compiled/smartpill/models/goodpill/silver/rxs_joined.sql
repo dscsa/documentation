@@ -72,8 +72,8 @@ select distinct on (rs.rx_number, rs.updated_at)
     c_normal_names.clinic_normalized_name as clinic_normalized_name,
     c_npi.clinic_name as clinic_name_provider_npi,
     c_provider_names.clinic_name as clinic_name_provider_name
-from "datawarehouse".dev_analytics."rxs_single" as rs
-left join rxs_grouped_unnested as rg on (rs.rx_number = cast(rg.rx_number as int))
+from rxs_grouped_unnested as rg
+left join "datawarehouse".dev_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
 left join "datawarehouse".dev_analytics."clinics_meta_normalized_names" as c_normal_names on c_normal_names.clinic_name = rs.clinic_name
 left join "datawarehouse".dev_analytics."clinics_meta_npi_numbers" as c_npi on c_npi.npi_number = rs.provider_npi
 left join
@@ -86,7 +86,7 @@ order by
     rs.rx_number,
     rs.updated_at,
     -- prioritize the rxs_single that was updated before the group was created
-    rs.updated_at <= rg.created_at + interval '1' day desc,
+    rs.updated_at <= rg.created_at desc,
     rg.created_at desc,
     c_npi.updated_at desc,
     c_provider_names.updated_at desc

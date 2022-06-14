@@ -41,8 +41,8 @@ with goodpill_snapshot as (
                 end
             ) over(partition by patient_id_cp) as date_patient_churned_other,
             p.clinic_name_coupon as patient_clinic_name_coupon
-        from "datawarehouse".dev_analytics."patients_status_historic" as pme
-        left join "datawarehouse".dev_analytics."patients" as p using (patient_id_cp)
+        from "datawarehouse".dev_analytics."patients" as p
+        left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, patient_event_date desc
     ),
 
@@ -50,7 +50,10 @@ with goodpill_snapshot as (
         select
             rh.patient_id_cp,
             rh.rx_number,
-            rh.rx_numbers,
+            first_value(rx_numbers) over (
+                partition by rx_number
+                order by updated_at desc nulls last
+            ) as rx_numbers,
             rh.best_rx_number,
             first_value(provider_npi) over (
                 partition by rx_number
@@ -199,7 +202,7 @@ with goodpill_snapshot as (
         from "datawarehouse".dev_analytics."orders"
     )
 
-    select distinct on (patient_id_cp, rx_numbers, invoice_number)
+    select distinct on (patient_id_cp, rx_number, invoice_number)
         *,
         coalesce(
             patient_clinic_name_coupon,
@@ -208,17 +211,15 @@ with goodpill_snapshot as (
             rx_clinic_name_provider_name,
             rh.rx_clinic_name
         ) as clinic_coalesced_name,
-        greatest(patient_event_date, rh.group_created_at, item_date_updated, order_date_updated) as updated_at
+        greatest(rh.group_created_at, item_date_updated, order_date_updated) as updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
     left join o using (invoice_number, patient_id_cp)
     order by
         patient_id_cp,
-        rx_numbers,
+        rx_number,
         invoice_number,
-        -- prioritize rxs_single rows which match best_rx_number
-        best_rx_number = rx_number desc,
         -- prioritize rxs which were updated before the order was dispensed
         rh.group_created_at <= o.date_order_dispensed desc,
         patient_event_date desc,
