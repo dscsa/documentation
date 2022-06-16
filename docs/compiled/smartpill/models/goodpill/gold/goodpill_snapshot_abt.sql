@@ -200,15 +200,22 @@ with goodpill_snapshot as (
             order_zip as order_zip,
             updated_at as order_date_updated
         from "datawarehouse".dev_analytics."orders"
+    ),
+
+    cnn as (
+        select distinct
+            clinic_name,
+            clinic_normalized_name
+        from "datawarehouse".dev_analytics."clinics_meta_normalized_names"
     )
 
     select distinct on (patient_id_cp, rx_number, invoice_number)
         *,
         coalesce(
-            patient_clinic_name_coupon,
+            cnn.clinic_normalized_name,
             rx_clinic_name_provider_npi,
-            rx_clinic_normalized_name,
             rx_clinic_name_provider_name,
+            patient_clinic_name_coupon,
             rh.rx_clinic_name
         ) as clinic_coalesced_name,
         greatest(rh.group_created_at, item_date_updated, order_date_updated) as updated_at
@@ -216,6 +223,12 @@ with goodpill_snapshot as (
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
     left join o using (invoice_number, patient_id_cp)
+    left join cnn on coalesce(
+            rx_clinic_name_provider_npi,
+            rx_clinic_name_provider_name,
+            patient_clinic_name_coupon,
+            rh.rx_clinic_name
+        ) = cnn.clinic_name
     order by
         patient_id_cp,
         rx_number,
