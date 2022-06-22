@@ -105,7 +105,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 1992
+    where generated_number <= 1998
     order by generated_number
 
 
