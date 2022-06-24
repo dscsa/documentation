@@ -105,7 +105,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 1998
+    where generated_number <= 2000
     order by generated_number
 
 
@@ -243,6 +243,7 @@ select
   p."first_name" as "patient_first_name",
   p."last_name" as "patient_last_name",
   p."birth_date" as "patient_birth_date",
+  p."language" as "patient_language",
   p."phone1" as "patient_phone1",
   p."phone2" as "patient_phone2",
   p."patient_address" as "patient_address",
@@ -266,6 +267,25 @@ select
   p."pharmacy_fax" as "patient_pharmacy_fax",
   p."pharmacy_address" as "patient_pharmacy_address",
   p."patient_inactive" as "patient_inactive",
+  p."patient_id_wc" as "patient_id_wc",
+  p."email" as "patient_email",
+  p."patient_autofill" as "patient_autofill",
+  p."patient_note" as "patient_note",
+  p."initial_invoice_number" as "patient_initial_invoice_number",
+  p."allergies_none" as "patient_allergies_none",
+  p."allergies_cephalosporins" as "patient_allergies_cephalosporins",
+  p."allergies_sulfa" as "patient_allergies_sulfa",
+  p."allergies_aspirin" as "patient_allergies_aspirin",
+  p."allergies_penicillin" as "patient_allergies_penicillin",
+  p."allergies_erythromycin" as "patient_allergies_erythromycin",
+  p."allergies_codeine" as "patient_allergies_codeine",
+  p."allergies_nsaids" as "patient_allergies_nsaids",
+  p."allergies_salicylates" as "patient_allergies_salicylates",
+  p."allergies_azithromycin" as "patient_allergies_azithromycin",
+  p."allergies_amoxicillin" as "patient_allergies_amoxicillin",
+  p."allergies_tetracycline" as "patient_allergies_tetracycline",
+  p."allergies_other" as "patient_allergies_other",
+  p."medications_other" as "patient_medications_other",
   p."patient_date_updated" as "patient_date_updated",
   p."date_processed" as "patient_date_processed"
 from patients_calendar
