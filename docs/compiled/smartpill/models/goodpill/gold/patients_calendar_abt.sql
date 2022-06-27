@@ -105,7 +105,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2000
+    where generated_number <= 2003
     order by generated_number
 
 
@@ -257,9 +257,9 @@ select
   p."clinic_name_coupon" as "patient_clinic_name_coupon",
   p."payment_coupon" as "patient_payment_coupon",
   p."tracking_coupon" as "patient_tracking_coupon",
-  p."date_first_rx_received" as "patient_date_first_rx_received",
-  p."date_first_dispensed" as "patient_date_first_dispensed",
-  p."date_first_expected_by" as "patient_date_first_expected_by",
+  p."patient_date_first_rx_received" as "patient_date_first_rx_received",
+  p."patient_date_first_dispensed" as "patient_date_first_dispensed",
+  p."patient_date_first_expected_by" as "patient_date_first_expected_by",
   p."refills_used" as "patient_refills_used",
   p."pharmacy_npi" as "patient_pharmacy_npi",
   p."pharmacy_name" as "patient_pharmacy_name",
