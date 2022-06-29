@@ -1,20 +1,20 @@
 with calc_statuses as (
 	with all_dates as (
-		select distinct
+		select
 			patient_id_cp,
 			has_refills,
 			rx_date_expired,
-			order_date_added,
-			order_date_shipped,
-			refill_date_next,
+			coalesce(order_date_added, refill_date_first) as order_date_added,
+			coalesce(order_date_shipped, refill_date_first) as order_date_shipped,
+			coalesce(refill_date_next, refill_date_first) as refill_date_next,
 			refill_date_first,
 			coalesce(lag(order_date_added, -1) over (partition by patient_id_cp order by order_date_added), now()) as next_row_order_date_added,
 			patient_date_changed,
 			patient_inactive
 		from (
-			select distinct on (rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.updated_at, oh.order_date_added, patient_date_changed)
+			select
 				rh.patient_id_cp,
-				oh.order_date_added as order_date_added,
+				coalesce(oh.order_date_added, rh.refill_date_first) as order_date_added,
 				oh.order_date_shipped as order_date_shipped,
 				rh.refill_date_next as refill_date_next,
 				rh.refills_left > 0 or rh.refills_total > 0 as has_refills,
@@ -26,7 +26,6 @@ with calc_statuses as (
 			inner join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)
 			left join "datawarehouse".dev_analytics."order_items" oi using (rx_number, patient_id_cp)
 			left join "datawarehouse".dev_analytics."orders" oh using (invoice_number, patient_id_cp)
-			order by rh.patient_id_cp, rh.rx_number, rh.refill_date_next, rh.updated_at, oh.order_date_added, patient_date_changed
 		) t
 	)
 	select distinct
@@ -34,28 +33,36 @@ with calc_statuses as (
 		coalesce(order_date_added, refill_date_first) as event_date,
 		'PATIENT_ACTIVE' as event_name
 	from all_dates
-	where order_date_added is not null or has_refills
+	where order_date_added is not null or (has_refills and refill_date_first is not null)
 	union
 	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) as event_date,
+		case
+			when refill_date_next > next_row_order_date_added then refill_date_next + interval '1' day
+			else order_date_added + interval '4' month
+		end as event_date,
 		'PATIENT_CHURNED_OTHER' as event_name
 	from all_dates
 	where
 		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) < next_row_order_date_added
 		and order_date_shipped < next_row_order_date_added
-		and has_refills and rx_date_expired <= coalesce(refill_date_next, order_date_added + interval '4' month)
+		and order_date_added + interval '4' month < next_row_order_date_added
+		and (has_refills and rx_date_expired >= coalesce(refill_date_next, order_date_added + interval '4' month))
 		and (not patient_inactive or coalesce(refill_date_next, order_date_added + interval '4' month) < patient_date_changed)
 	union
 	select distinct
 		patient_id_cp,
-		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) as event_date,
+		case
+			when refill_date_next > next_row_order_date_added then refill_date_next + interval '1' day
+			else order_date_added + interval '4' month
+		end as event_date,
 		'PATIENT_CHURNED_NO_FILLABLE_RX' as event_name
 	from all_dates
 	where
 		coalesce(refill_date_next + interval '1' day, order_date_added + interval '4' month) < next_row_order_date_added
 		and order_date_shipped < next_row_order_date_added
-		and not (has_refills or rx_date_expired <= coalesce(refill_date_next, order_date_added + interval '4' month))
+		and order_date_added + interval '4' month < next_row_order_date_added
+		and not (has_refills and rx_date_expired >= coalesce(refill_date_next, order_date_added + interval '4' month))
 		and (not patient_inactive or coalesce(refill_date_next, order_date_added + interval '4' month) < patient_date_changed)
 ),
 statuses as (
