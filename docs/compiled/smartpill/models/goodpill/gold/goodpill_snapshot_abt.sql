@@ -1,10 +1,10 @@
 with goodpill_snapshot as (
     with psh as (
         -- join with dimension patient right away, to join later with clinics
-        select
+        select distinct on (patient_id_cp)
             patient_id_cp,
-            event_date as patient_event_date,
-            event_name as patient_status,
+            event_date as dwh_patient_event_date,
+            event_name as dwh_patient_status,
             max(
                 case
                     when event_name = 'PATIENT_ACTIVE' then event_date
@@ -43,7 +43,7 @@ with goodpill_snapshot as (
             pat.clinic_name_coupon as patient_clinic_name_coupon
         from "datawarehouse".dev_analytics."patients" as pat
         left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
-        order by patient_id_cp, patient_event_date desc
+        order by patient_id_cp, event_date desc
     ),
 
     rh as (
@@ -54,7 +54,7 @@ with goodpill_snapshot as (
                 partition by rx_number
                 order by updated_at desc nulls last
             ) as rx_numbers,
-            best_rx_number,
+            best_rx_number as rx_best_rx_number,
             first_value(provider_npi) over (
                 partition by rx_number
                 order by case when provider_npi is not null then 0 else 1 end, updated_at desc nulls last
@@ -233,7 +233,7 @@ with goodpill_snapshot as (
             patient_clinic_name_coupon,
             rh.rx_clinic_name
         ) as clinic_coalesced_name,
-        greatest(rh.group_created_at, item_date_updated, order_date_updated) as updated_at
+        greatest(rh.group_created_at, item_date_updated, order_date_updated) as dwh_updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
@@ -250,7 +250,6 @@ with goodpill_snapshot as (
         order_invoice_number,
         -- prioritize rxs which were updated before the order was dispensed
         rh.group_created_at <= o.order_date_dispensed desc,
-        patient_event_date desc,
         rh.group_created_at desc
 )
 
