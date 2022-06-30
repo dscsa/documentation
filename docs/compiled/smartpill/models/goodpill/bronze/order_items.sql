@@ -3,7 +3,6 @@ with order_items as (
         _airbyte_emitted_at,
         _airbyte_ab_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice_number,
-        cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_number') as int) as rx_number,
         cast(jsonb_extract_path_text(_airbyte_data, 'groups') as varchar(255)) as groups,
@@ -43,12 +42,42 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'item_type') as varchar(80)) as item_type,
         cast(jsonb_extract_path_text(_airbyte_data, 'item_added_by') as varchar(80)) as item_added_by,
         cast(jsonb_extract_path_text(_airbyte_data, 'item_date_added') as timestamp) as item_date_added,
+        cast(jsonb_extract_path_text(_airbyte_data, 'item_date_changed') as timestamp) as item_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_last') as timestamp) as refill_date_last,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_manual') as timestamp) as refill_date_manual,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_default') as timestamp) as refill_date_default,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_date') as timestamp) as refill_target_date,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
+        cast(jsonb_extract_path_text(_airbyte_data, 'add_user_id') as int) as add_user_id,
+        cast(jsonb_extract_path_text(_airbyte_data, 'chg_user_id') as int) as chg_user_id,
+        cast(jsonb_extract_path_text(_airbyte_data, 'count_lines') as int) as count_lines,
+        cast(jsonb_extract_path_text(_airbyte_data, 'drug_generic_pended') as varchar(255)) as drug_generic_pended,
+        cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_days_before') as decimal(10, 3)
+        ) as sync_to_date_days_before,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_days_change') as decimal(10, 3)
+        ) as sync_to_date_days_change,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_max_days_default') as decimal(10, 3)
+        ) as sync_to_date_max_days_default,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_max_days_default_rxs') as varchar(255)
+        ) as sync_to_date_max_days_default_rxs,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_min_days_refills') as decimal(10, 3)
+        ) as sync_to_date_min_days_refills,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_min_days_refills_rxs') as varchar(255)
+        ) as sync_to_date_min_days_refills_rxs,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_min_days_stock') as decimal(10, 3)
+        ) as sync_to_date_min_days_stock,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'sync_to_date_min_days_stock_rxs') as varchar(255)
+        ) as sync_to_date_min_days_stock_rxs,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
     from
@@ -60,13 +89,13 @@ select
     invoice_number,
     patient_id_cp,
     rx_number,
-    groups,
+    nullif(groups, '') as groups,
     rx_dispensed_id,
-    stock_level_initial,
-    rx_message_keys_initial,
+    nullif(stock_level_initial, '') as stock_level_initial,
+    nullif(rx_message_keys_initial, '') as rx_message_keys_initial,
     patient_autofill_initial,
     rx_autofill_initial,
-    rx_numbers_initial,
+    nullif(rx_numbers_initial, '') as rx_numbers_initial,
     zscore_initial,
     refills_dispensed_default,
     refills_dispensed_actual,
@@ -80,17 +109,31 @@ select
     qty_pended_repacks,
     count_pended_total,
     count_pended_repacks,
-    item_message_keys,
-    item_message_text,
-    item_type,
-    item_added_by,
+    nullif(item_message_keys, '') as item_message_keys,
+    nullif(item_message_text, '') as item_message_text,
+    nullif(item_type, '') as item_type,
+    nullif(item_added_by, '') as item_added_by,
     item_date_added,
+    item_date_changed,
     refill_date_last,
     refill_date_manual,
     refill_date_default,
     refill_target_date,
     refill_target_days,
-    refill_target_rxs,
+    nullif(refill_target_rxs, '') as refill_target_rxs,
+    add_user_id,
+    chg_user_id,
+    count_lines,
+    drug_generic_pended,
+    drug_name,
+    sync_to_date_days_before,
+    sync_to_date_days_change,
+    sync_to_date_max_days_default,
+    sync_to_date_max_days_default_rxs,
+    sync_to_date_min_days_refills,
+    sync_to_date_min_days_refills_rxs,
+    sync_to_date_min_days_stock,
+    sync_to_date_min_days_stock_rxs,
     updated_at,
     created_at,
     _airbyte_emitted_at,

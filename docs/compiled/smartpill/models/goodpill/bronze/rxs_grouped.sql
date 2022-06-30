@@ -8,6 +8,7 @@ with rxs_grouped as (
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
         cast(jsonb_extract_path_text(_airbyte_data, 'sig_qty_per_day') as decimal(6, 3)) as sig_qty_per_day,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_keys') as varchar(255)) as rx_message_keys,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_date') as timestamp) as rx_message_date,
         cast(jsonb_extract_path_text(_airbyte_data, 'max_gsn') as int) as max_gsn,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_gsns') as varchar(255)) as drug_gsns,
         cast(jsonb_extract_path_text(_airbyte_data, 'refills_total') as decimal(5, 2)) as refills_total,
@@ -30,7 +31,32 @@ with rxs_grouped as (
 )
 
 select
-    *
+    _airbyte_emitted_at,
+    _airbyte_ab_id,
+    patient_id_cp,
+    nullif(drug_generic, '') as drug_generic,
+    nullif(drug_brand, '') as drug_brand,
+    nullif(drug_name, '') as drug_name,
+    sig_qty_per_day,
+    nullif(rx_message_keys, '') as rx_message_keys,
+    rx_message_date,
+    max_gsn,
+    nullif(drug_gsns, '') as drug_gsns,
+    refills_total,
+    qty_total,
+    rx_autofill,
+    refill_date_first,
+    refill_date_last,
+    refill_date_next,
+    refill_date_manual,
+    refill_date_default,
+    best_rx_number,
+    nullif(rx_numbers, '') as rx_numbers,
+    nullif(rx_sources, '') as rx_sources,
+    rx_date_changed,
+    rx_date_expired,
+    rx_date_transferred,
+    created_at
 from rxs_grouped
 
     where created_at > (select max(created_at) from "datawarehouse".dev_analytics."rxs_grouped")

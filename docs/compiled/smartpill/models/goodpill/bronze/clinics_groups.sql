@@ -11,9 +11,9 @@ with raw_goodpill_clinics_meta_groups as (
 
 select distinct on (meta_group)
     id,
-    meta_group,
-    meta_template,
-    commentary,
+    nullif(meta_group, '') as meta_group,
+    nullif(meta_template, '') as meta_template,
+    nullif(commentary, '') as commentary,
     created_at,
     updated_at
 from

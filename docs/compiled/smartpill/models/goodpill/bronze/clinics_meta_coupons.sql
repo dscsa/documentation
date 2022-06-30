@@ -13,5 +13,12 @@ with clinic_coupons as (
 )
 
 select
-    *
+    _airbyte_emitted_at,
+    _airbyte_ab_id,
+    id,
+    nullif(coupon_code, '') as coupon_code,
+    nullif(clinic_name, '') as clinic_name,
+    nullif(commentary, '') as commentary,
+    created_at,
+    updated_at
 from clinic_coupons

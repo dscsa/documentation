@@ -14,5 +14,13 @@ with clinics as (
 )
 
 select
-    *
+    _airbyte_emitted_at,
+    _airbyte_ab_id,
+    id,
+    nullif(npi_number, '') as npi_number,
+    nullif(provider_name, '') as provider_name,
+    nullif(clinic_name, '') as clinic_name,
+    nullif(commentary, '') as commentary,
+    created_at,
+    updated_at
 from clinics

@@ -1,5 +1,3 @@
-
-
 with rxs_single as (
     select
         _airbyte_emitted_at,
@@ -11,6 +9,7 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_key') as varchar(80)) as rx_message_key,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_text') as varchar(255)) as rx_message_text,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_date') as timestamp) as rx_message_date,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_gsn') as int) as rx_gsn,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_gsns') as varchar(255)) as drug_gsns,
         cast(jsonb_extract_path_text(_airbyte_data, 'refills_left') as decimal(5, 2)) as refills_left,
@@ -67,6 +66,16 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_added') as timestamp) as rx_date_added,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_phone') as varchar(10)
+        ) as transfer_pharmacy_phone,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_name') as varchar(255)
+        ) as transfer_pharmacy_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_fax') as varchar(10)) as transfer_pharmacy_fax,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_address') as varchar(255)
+        ) as transfer_pharmacy_address,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
     from
@@ -74,7 +83,70 @@ with rxs_single as (
 )
 
 select
-    *
+    _airbyte_emitted_at,
+    _airbyte_ab_id,
+    rx_number,
+    patient_id_cp,
+    nullif(drug_generic, '') as drug_generic,
+    nullif(drug_brand, '') as drug_brand,
+    nullif(drug_name, '') as drug_name,
+    nullif(rx_message_key, '') as rx_message_key,
+    nullif(rx_message_text, '') as rx_message_text,
+    rx_message_date,
+    rx_gsn,
+    nullif(drug_gsns, '') as drug_gsns,
+    refills_left,
+    refills_original,
+    qty_left,
+    qty_original,
+    nullif(sig_actual, '') as sig_actual,
+    nullif(sig_initial, '') as sig_initial,
+    nullif(sig_clean, '') as sig_clean,
+    sig_qty,
+    sig_v1_qty,
+    sig_v1_days,
+    sig_v1_qty_per_day,
+    sig_days,
+    sig_qty_per_day_default,
+    sig_qty_per_day_actual,
+    nullif(sig_durations, '') as sig_durations,
+    nullif(sig_qtys_per_time, '') as sig_qtys_per_time,
+    nullif(sig_frequencies, '') as sig_frequencies,
+    nullif(sig_frequency_numerators, '') as sig_frequency_numerators,
+    nullif(sig_frequency_denominators, '') as sig_frequency_denominators,
+    sig_v2_qty,
+    sig_v2_days,
+    sig_v2_qty_per_day,
+    nullif(sig_v2_unit, '') as sig_v2_unit,
+    sig_v2_conf_score,
+    nullif(sig_v2_dosages, '') as sig_v2_dosages,
+    nullif(sig_v2_scores, '') as sig_v2_scores,
+    nullif(sig_v2_frequencies, '') as sig_v2_frequencies,
+    nullif(sig_v2_durations, '') as sig_v2_durations,
+    rx_autofill,
+    refill_date_first,
+    refill_date_last,
+    refill_date_manual,
+    refill_date_default,
+    rx_status,
+    nullif(rx_stage, '') as rx_stage,
+    nullif(rx_source, '') as rx_source,
+    nullif(rx_transfer, '') as rx_transfer,
+    rx_date_transferred,
+    nullif(provider_npi, '') as provider_npi,
+    nullif(provider_first_name, '') as provider_first_name,
+    nullif(provider_last_name, '') as provider_last_name,
+    nullif(clinic_name, '') as clinic_name,
+    nullif(provider_phone, '') as provider_phone,
+    rx_date_changed,
+    rx_date_expired,
+    rx_date_added,
+    nullif(transfer_pharmacy_phone, '') as transfer_pharmacy_phone,
+    nullif(transfer_pharmacy_name, '') as transfer_pharmacy_name,
+    nullif(transfer_pharmacy_fax, '') as transfer_pharmacy_fax,
+    nullif(transfer_pharmacy_address, '') as transfer_pharmacy_address,
+    created_at,
+    updated_at
 from rxs_single
 
     where updated_at > (select max(updated_at) from "datawarehouse".dev_analytics."rxs_single")

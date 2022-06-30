@@ -30,9 +30,9 @@ with raw_goodpill_gp_drugs as (
 )
 
 select
-    drug_generic as generic_name,
-    drug_brand as brand_name,
-    drug_gsns,
+    nullif(drug_generic, '') as generic_name,
+    nullif(drug_brand, '') as drug_brand,
+    nullif(drug_gsns, '') as drug_gsns,
     drug_ordered,
     price30,
     price90,
@@ -44,9 +44,9 @@ select
     days_min,
     count_ndcs,
     max_inventory,
-    message_display,
-    message_verified,
-    message_destroyed,
+    nullif(message_display, '') as message_display,
+    nullif(message_verified, '') as message_verified,
+    nullif(message_destroyed, '') as message_destroyed,
     coalesce(nullif(price_goodrx, 0), nullif(price_nadac, 0), nullif(price_retail, 0)) as price_coalesced,
     created_at,
     updated_at

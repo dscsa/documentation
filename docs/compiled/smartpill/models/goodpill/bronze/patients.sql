@@ -54,6 +54,7 @@ with patients as (
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_changed') as timestamp) as patient_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_updated') as timestamp) as patient_date_updated,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_inactive') as varchar) as patient_inactive,
+        cast(jsonb_extract_path_text(_airbyte_data, 'initial_invoice_number') as int) as initial_invoice_number,
         cast(
             jsonb_extract_path_text(_airbyte_data, 'patient_date_first_dispensed') as timestamp
         ) as patient_date_first_dispensed,
@@ -69,45 +70,67 @@ with patients as (
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_patients
 )
 
-select distinct on (patient_id_cp)
-    patient_id_cp,
-    patient_date_registered,
-    patient_date_added,
-    patient_date_changed,
-    first_name,
-    last_name,
-    birth_date,
-    phone1,
-    phone2,
-    concat(patient_address1, ', ', patient_address2) as patient_address,
-    patient_city,
-    patient_state,
-    patient_zip,
-    payment_card_type,
-    payment_card_last4,
-    payment_card_date_expired,
-    payment_method_default,
-    clinic_name as clinic_name_coupon,
-    payment_coupon,
-    tracking_coupon,
-    patient_date_first_rx_received as date_first_rx_received,
-    patient_date_first_dispensed as date_first_dispensed,
-    patient_date_first_expected_by as date_first_expected_by,
-    refills_used,
-    pharmacy_npi,
-    pharmacy_name,
-    pharmacy_phone,
-    pharmacy_fax,
-    pharmacy_address,
-    patient_inactive,
-    patient_date_updated,
+select distinct on (patients.patient_id_cp)
+    patients.patient_id_cp,
+    patients.patient_date_registered,
+    patients.patient_date_added,
+    patients.patient_date_changed,
+    nullif(patients.first_name, '') as first_name,
+    nullif(patients.last_name, '') as last_name,
+    patients.birth_date,
+    nullif(patients.language, '') as "language",
+    nullif(patients.phone1, '') as phone1,
+    nullif(patients.phone2, '') as phone2,
+    concat(patients.patient_address1, ', ', patients.patient_address2) as patient_address,
+    nullif(patients.patient_city, '') as patient_city,
+    nullif(patients.patient_state, '') as patient_state,
+    nullif(patients.patient_zip, '') as patient_zip,
+    nullif(patients.payment_card_type, '') as payment_card_type,
+    nullif(patients.payment_card_last4, '') as payment_card_last4,
+    patients.payment_card_date_expired,
+    nullif(patients.payment_method_default, '') as payment_method_default,
+    cmc.clinic_name as clinic_name_coupon,
+    nullif(patients.payment_coupon, '') as payment_coupon,
+    nullif(patients.tracking_coupon, '') as tracking_coupon,
+    patients.patient_date_first_rx_received,
+    patients.patient_date_first_dispensed,
+    patients.patient_date_first_expected_by,
+    patients.refills_used,
+    nullif(patients.pharmacy_npi, '') as pharmacy_npi,
+    nullif(patients.pharmacy_name, '') as pharmacy_name,
+    nullif(patients.pharmacy_phone, '') as pharmacy_phone,
+    nullif(patients.pharmacy_fax, '') as pharmacy_fax,
+    nullif(patients.pharmacy_address, '') as pharmacy_address,
+    nullif(patients.patient_inactive, '') as patient_inactive,
+    patients.patient_id_wc,
+    nullif(patients.email, '') as email,
+    patients.patient_autofill,
+    nullif(patients.patient_note, '') as patient_note,
+    patients.initial_invoice_number,
+    nullif(patients.allergies_none, '') as allergies_none,
+    nullif(patients.allergies_cephalosporins, '') as allergies_cephalosporins,
+    nullif(patients.allergies_sulfa, '') as allergies_sulfa,
+    nullif(patients.allergies_aspirin, '') as allergies_aspirin,
+    nullif(patients.allergies_penicillin, '') as allergies_penicillin,
+    nullif(patients.allergies_erythromycin, '') as allergies_erythromycin,
+    nullif(patients.allergies_codeine, '') as allergies_codeine,
+    nullif(patients.allergies_nsaids, '') as allergies_nsaids,
+    nullif(patients.allergies_salicylates, '') as allergies_salicylates,
+    nullif(patients.allergies_azithromycin, '') as allergies_azithromycin,
+    nullif(patients.allergies_amoxicillin, '') as allergies_amoxicillin,
+    nullif(patients.allergies_tetracycline, '') as allergies_tetracycline,
+    nullif(patients.allergies_other, '') as allergies_other,
+    nullif(patients.medications_other, '') as medications_other,
+    patients.patient_date_updated,
     now() as date_processed
 from patients
-left join "datawarehouse".dev_analytics."clinics_meta_coupons" as cmc on patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
+left join
+    "datawarehouse".dev_analytics."clinics_meta_coupons" as cmc on
+        patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
 where
-    lower(first_name) not like '%test%'
-    and lower(first_name) not like '%user%'
-    and lower(last_name) not like '%test%'
-    and lower(last_name) not like '%user%'
+    lower(patients.first_name) not like '%test%'
+    and lower(patients.first_name) not like '%user%'
+    and lower(patients.last_name) not like '%test%'
+    and lower(patients.last_name) not like '%user%'
 
-order by patient_id_cp, patient_date_updated desc
+order by patients.patient_id_cp, patients.patient_date_updated desc
