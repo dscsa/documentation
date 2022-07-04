@@ -1,0 +1,28 @@
+with final as (
+    select
+        jsonb_extract_path_text(_airbyte_data, 'Id') as id,
+        cast(jsonb_extract_path_text(_airbyte_data, 'MetaData','CreateTime') as timestamp) as created_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'MetaData','LastUpdatedTime') as timestamp) as updated_at,
+        _airbyte_emitted_at,
+        jsonb_extract_path_text(_airbyte_data, 'AccountRef','value') as account_id,
+        jsonb_extract_path_text(_airbyte_data, 'DocNumber') as doc_number,
+        jsonb_extract_path_text(_airbyte_data, 'Credit') as credit,
+        jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'TotalAmt') as decimal) as total_amount,
+        jsonb_extract_path_text(_airbyte_data, 'PaymentType') as payment_type,
+        cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date,
+        jsonb_extract_path_text(_airbyte_data, 'EntityRef','value') as entity_id,
+        jsonb_extract_path_text(_airbyte_data, 'EntityRef','type') as entity_type,
+        jsonb_extract_path(_airbyte_data, 'Line') as line
+    from
+        "datawarehouse"."raw"._airbyte_raw_quickbooks_purchases
+)
+select
+    *,
+	case when entity_type = 'Customer' then entity_id else null end as customer_id,
+    md5("id" || '-' || "_airbyte_emitted_at") as _hash_id
+from
+    final
+
+where
+    _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."purchases")

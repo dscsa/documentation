@@ -22,8 +22,6 @@ select distinct on (pkey, created_at, updated_at, _ab_cdc_updated_at, _ab_cdc_de
 from
 	r
 
-	where greatest(created_at, updated_at, _ab_cdc_deleted_at) >= (select max(greatest(created_at, updated_at, date(_ab_cdc_deleted_at))) from "datawarehouse".dev_analytics."raw_gp_rxs_single")
-
 order by
 	pkey,
 	created_at desc,
