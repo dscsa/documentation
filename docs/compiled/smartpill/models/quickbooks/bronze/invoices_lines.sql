@@ -15,4 +15,4 @@ cross join jsonb_array_elements(line) as _airbyte_nested_data
 where
     line is not null
 
-    and _airbyte_emitted_at >= (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."invoices")
+    and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."invoices")
