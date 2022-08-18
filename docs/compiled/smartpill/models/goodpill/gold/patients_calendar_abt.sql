@@ -59,6 +59,9 @@ with rawdata as (
      + 
     
     p10.generated_number * power(2, 10)
+     + 
+    
+    p11.generated_number * power(2, 11)
     
     
     + 1
@@ -98,6 +101,9 @@ with rawdata as (
      cross join 
     
     p as p10
+     cross join 
+    
+    p as p11
     
     
 
@@ -105,7 +111,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2041
+    where generated_number <= 2055
     order by generated_number
 
 

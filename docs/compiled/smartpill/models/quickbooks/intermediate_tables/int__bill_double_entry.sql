@@ -3,6 +3,7 @@ with bill_join as (
         select distinct on (id)
             *
         from "datawarehouse".dev_quickbooks."bills"
+        order by id, _airbyte_emitted_at desc
     ),
 
     bill_lines as (
