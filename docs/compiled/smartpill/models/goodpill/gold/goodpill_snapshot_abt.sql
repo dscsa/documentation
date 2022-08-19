@@ -2,48 +2,49 @@ with goodpill_snapshot as (
     with psh as (
         -- join with dimension patient right away, to join later with clinics
         select distinct on (patient_id_cp)
-            patient_id_cp,
-            event_date as dwh_patient_event_date,
-            event_name as dwh_patient_status,
+            pat.patient_id_cp,
+            pme.event_date as dwh_patient_event_date,
+            pme.event_name as dwh_patient_status,
             max(
                 case
-                    when event_name = 'PATIENT_ACTIVE' then event_date
+                    when pme.event_name = 'PATIENT_ACTIVE' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_active,
             max(
                 case
-                    when event_name = 'PATIENT_NO_RX' then event_date
+                    when pme.event_name = 'PATIENT_NO_RX' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_no_rx,
             max(
                 case
-                    when event_name = 'PATIENT_UNREGISTERED' then event_date
+                    when pme.event_name = 'PATIENT_UNREGISTERED' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_unregistered,
             max(
                 case
-                    when event_name = 'PATIENT_DECEASED' then event_date
+                    when pme.event_name = 'PATIENT_DECEASED' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_deceased,
             max(
                 case
-                    when event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX' then event_date
+                    when pme.event_name = 'PATIENT_CHURNED_NO_FILLABLE_RX' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_no_fillable_rx,
             max(
                 case
-                    when event_name = 'PATIENT_INACTIVE' then event_date
+                    when pme.event_name = 'PATIENT_INACTIVE' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_inactive,
             max(
                 case
-                    when event_name = 'PATIENT_CHURNED_OTHER' then event_date
+                    when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other,
-            pat.clinic_name_coupon as patient_clinic_name_coupon
+            clinics.clinic_name_cp as patient_clinic_name_coupon
         from "datawarehouse".dev_analytics."patients" as pat
+        left join "datawarehouse".dev_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
         left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
-        order by patient_id_cp, event_date desc
+        order by patient_id_cp, pme.event_date desc
     ),
 
     rh as (
@@ -120,9 +121,7 @@ with goodpill_snapshot as (
             created_at as rx_created_at,
             updated_at as rx_updated_at,
             group_created_at as group_created_at,
-            clinic_normalized_name as rx_clinic_normalized_name,
-            clinic_name_provider_npi as rx_clinic_name_provider_npi,
-            clinic_name_provider_name as rx_clinic_name_provider_name
+            rx_clinic_name_cp
         from "datawarehouse".dev_analytics."rxs_joined"
     ),
 
@@ -166,7 +165,9 @@ with goodpill_snapshot as (
             refill_target_rxs as item_refill_target_rxs,
             add_user_id as item_add_user_id,
             chg_user_id as item_chg_user_id,
-            count_lines as item_count_lines
+            count_lines as item_count_lines,
+            repacked_by as item_repacked_by,
+            repacked_at as item_repacked_at
         from "datawarehouse".dev_analytics."order_items"
     ),
 
@@ -215,35 +216,19 @@ with goodpill_snapshot as (
             order_zip as order_zip,
             updated_at as order_date_updated
         from "datawarehouse".dev_analytics."orders"
-    ),
-
-    cnn as (
-        select distinct
-            clinic_name,
-            clinic_normalized_name
-        from "datawarehouse".dev_analytics."clinics_meta_normalized_names"
     )
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
         *,
         coalesce(
-            cnn.clinic_normalized_name,
-            rx_clinic_name_provider_npi,
-            rx_clinic_name_provider_name,
-            patient_clinic_name_coupon,
-            rh.rx_clinic_name
+            psh.patient_clinic_name_coupon,
+            rh.rx_clinic_name_cp
         ) as clinic_coalesced_name,
-        greatest(rh.group_created_at, item_date_updated, order_date_updated) as dwh_updated_at
+        greatest(rh.group_created_at, oi.item_date_updated, o.order_date_updated) as dwh_updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
     left join o using (order_invoice_number, patient_id_cp)
-    left join cnn on coalesce(
-            rx_clinic_name_provider_npi,
-            rx_clinic_name_provider_name,
-            patient_clinic_name_coupon,
-            rh.rx_clinic_name
-        ) = cnn.clinic_name
     order by
         patient_id_cp,
         rx_number,
@@ -255,8 +240,23 @@ with goodpill_snapshot as (
 
 select
     gds.*,
-    clinics_groups.meta_group as clinic_meta_group,
-    clinics_groups.meta_template as clinic_meta_template,
+    clinics.clinic_name_cp,
+    clinics.clinic_rx_date_added_first,
+    clinics.clinic_rx_date_added_last,
+    clinics.verified as clinic_verified,
+    dw_clinics.clinic_id as dw_clinic_id,
+    dw_clinics.clinic_name_cp as dw_clinic_name_cp,
+    dw_clinics.clinic_address as dw_clinic_address,
+    dw_clinics.clinic_street as dw_clinic_street,
+    dw_clinics.clinic_city as dw_clinic_city,
+    dw_clinics.clinic_state as dw_clinic_state,
+    dw_clinics.clinic_zip as dw_clinic_zip,
+    dw_clinics.clinic_phone as dw_clinic_phone,
+    dw_clinics.clinic_id_sf as dw_clinic_id_sf,
+    dw_clinics_groups.clinic_group_id as dw_clinic_group_id,
+    dw_clinics_groups.clinic_group_name as dw_clinic_group_name,
+    dw_clinics_groups.clinic_group_id_sf as dw_clinic_group_id_sf,
+    dw_clinics_groups.clinic_group_domain as dw_clinic_group_domain,
     drugs.drug_brand,
     drugs.drug_gsns,
     drugs.price30 as drug_price30,
@@ -267,8 +267,13 @@ select
     drugs.price_coalesced as drug_price_coalesced,
     drugs.qty_repack as drug_qty_repack,
     drugs.count_ndcs as drug_count_ndcs,
+    providers.provider_id as provider_id,
+    providers.verified as provider_verified,
     providers.first_rx_sent_date as provider_first_rx_sent_date,
     providers.last_rx_sent_date as provider_last_rx_sent_date,
+    dw_providers.provider_name as dw_provider_name,
+    dw_providers.provider_phone as dw_provider_phone,
+    dw_providers.provider_id_sf as dw_provider_id_sf,
     patients.patient_date_registered as patient_date_registered,
     patients.patient_date_added as patient_date_added,
     patients.first_name as patient_first_name,
@@ -284,6 +289,7 @@ select
     patients.payment_card_type as patient_payment_card_type,
     patients.payment_card_last4 as patient_payment_card_last4,
     patients.payment_card_date_expired as patient_payment_card_date_expired,
+    patients.payment_card_autopay as patient_payment_card_autopay,
     patients.payment_method_default as patient_payment_method_default,
     patients.patient_date_first_rx_received,
     patients.patient_date_first_dispensed,
@@ -315,8 +321,11 @@ select
     patients.payment_coupon as patient_payment_coupon,
     patients.tracking_coupon as patient_tracking_coupon
 from goodpill_snapshot as gds
-left join "datawarehouse".dev_analytics."drugs" as drugs on gds.rx_drug_generic = drugs.generic_name
-left join "datawarehouse".dev_analytics."patients" as patients on gds.patient_id_cp = patients.patient_id_cp
-left join "datawarehouse".dev_analytics."providers" as providers on gds.rx_provider_npi = providers.npi
-left join "datawarehouse".dev_analytics."clinics_groups" as clinics_groups
-          on gds.clinic_coalesced_name ilike concat('%', clinics_groups.meta_group, '%')
+left join "datawarehouse".dev_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
+left join "datawarehouse".dev_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
+left join "datawarehouse".dev_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
+left join "datawarehouse".dev_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
+left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.clinic_coalesced_name
+left join "datawarehouse".dev_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
+left join "datawarehouse".dev_analytics."dw_clinics_groups" as dw_clinics_groups on
+        dw_clinics_groups.clinic_group_id = dw_clinics.clinic_group_id

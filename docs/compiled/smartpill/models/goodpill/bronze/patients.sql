@@ -22,6 +22,7 @@ with patients as (
         cast(
             jsonb_extract_path_text(_airbyte_data, 'payment_card_date_expired') as timestamp
         ) as payment_card_date_expired,
+        cast(jsonb_extract_path_text(_airbyte_data, 'payment_card_autopay') as int) as payment_card_autopay,
         cast(jsonb_extract_path_text(_airbyte_data, 'payment_method_default') as varchar(50)) as payment_method_default,
         cast(jsonb_extract_path_text(_airbyte_data, 'payment_coupon') as varchar(20)) as payment_coupon,
         cast(jsonb_extract_path_text(_airbyte_data, 'tracking_coupon') as varchar(20)) as tracking_coupon,
@@ -88,8 +89,9 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.payment_card_type, '') as payment_card_type,
     nullif(patients.payment_card_last4, '') as payment_card_last4,
     patients.payment_card_date_expired,
+    patients.payment_card_autopay,
     nullif(patients.payment_method_default, '') as payment_method_default,
-    cmc.clinic_name as clinic_name_coupon,
+    cmc.clinic_id as clinic_id_coupon,
     nullif(patients.payment_coupon, '') as payment_coupon,
     nullif(patients.tracking_coupon, '') as tracking_coupon,
     patients.patient_date_first_rx_received,
@@ -125,7 +127,7 @@ select distinct on (patients.patient_id_cp)
     now() as date_processed
 from patients
 left join
-    "datawarehouse".dev_analytics."clinics_meta_coupons" as cmc on
+    "datawarehouse".dev_analytics."clinic_coupons" as cmc on
         patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
 where
     lower(patients.first_name) not like '%test%'

@@ -78,6 +78,8 @@ with order_items as (
         cast(
             jsonb_extract_path_text(_airbyte_data, 'sync_to_date_min_days_stock_rxs') as varchar(255)
         ) as sync_to_date_min_days_stock_rxs,
+        cast(jsonb_extract_path_text(_airbyte_data, 'repacked_by') as varchar(5)) as repacked_by,
+        cast(jsonb_extract_path_text(_airbyte_data, 'repacked_at') as timestamp) as repacked_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
     from
@@ -134,6 +136,8 @@ select
     sync_to_date_min_days_refills_rxs,
     sync_to_date_min_days_stock,
     sync_to_date_min_days_stock_rxs,
+    nullif(repacked_by, '') as repacked_by,
+    repacked_at,
     updated_at,
     created_at,
     _airbyte_emitted_at,
