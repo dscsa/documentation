@@ -23,3 +23,5 @@ select
     created_at,
     updated_at
 from raw_goodpill_gp_clinics
+
+    where updated_at > (select max(updated_at) from "datawarehouse".dev_analytics."clinics")
