@@ -1,5 +1,6 @@
 select
     _hash_id as _vendor_credit_hash_id,
+    _airbyte_emitted_at,
     id as bill_id,
     jsonb_extract_path_text(_airbyte_nested_data, 'Id') as id,
     jsonb_extract_path_text(_airbyte_nested_data, 'AccountBasedExpenseLineDetail','AccountRef','value') as account_expense_account_id,
@@ -13,4 +14,4 @@ cross join jsonb_array_elements(line) as _airbyte_nested_data
 where
     line is not null
 
-    and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."vendor_credits")
+    and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."vendor_credits_lines")

@@ -1,12 +1,11 @@
 with qb as (
 	select
-		adjusted_amount as qbo_amount,
-		account_name as qbo_account_sub,
-		account_fully_qualified_name as qbo_account_full,
-		top_level_account_name as qbo_account_top,
-		financial_statement_helper  as qbo_report_type,
+		amount as qbo_amount,
+		account_sub as qbo_account_sub,
+		account_full as qbo_account_full,
+		account_top as qbo_account_top,
+		report_type  as qbo_report_type,
 		account_type as qbo_account_type,
-		account_classification as qbo_account_classification,
 		account_number as qbo_account_number,
 		transaction_date as transaction_date
 	from "datawarehouse".dev_quickbooks."general_ledger_abt"
@@ -267,7 +266,6 @@ select
 	qbo_account_top,
 	qbo_report_type,
 	qbo_account_type,
-	qbo_account_classification,
 	qbo_account_number,
 	transaction_date
 from

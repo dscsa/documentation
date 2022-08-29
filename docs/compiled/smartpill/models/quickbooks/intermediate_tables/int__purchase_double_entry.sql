@@ -3,6 +3,7 @@ with purchase_join as (
         select distinct on (id)
             *
         from "datawarehouse".dev_quickbooks."purchases"
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Purchase')
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -15,6 +16,7 @@ with purchase_join as (
         select distinct on (id)
             *
         from "datawarehouse".dev_quickbooks."items"
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Item')
         order by id, _airbyte_emitted_at desc
     ),
 

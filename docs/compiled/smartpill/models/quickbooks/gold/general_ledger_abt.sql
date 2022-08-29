@@ -4,6 +4,7 @@ with purchase_join as (
         select distinct on (id)
             *
         from "datawarehouse".dev_quickbooks."purchases"
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Purchase')
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -16,6 +17,7 @@ with purchase_join as (
         select distinct on (id)
             *
         from "datawarehouse".dev_quickbooks."items"
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Item')
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -1000,41 +1002,26 @@ accounts as (
 ),
 
 
-adjusted_gl as (
+qgl as (
     select
         gl_union.transaction_id,
         row_number() over(partition by gl_union.transaction_id order by gl_union.transaction_date) as transaction_index,
         gl_union.transaction_date,
-        gl_union.amount,
         gl_union.account_id,
-        -- accounts.name as account_name,
-        -- accounts.is_sub_account,
-        -- accounts.account_type,
-        -- accounts.account_sub_type,
-        accounts.financial_statement_helper,
-        -- accounts.balance as account_current_balance,
-        accounts.classification as account_classification,
+        accounts.financial_statement_helper as report_type,
         gl_union.transaction_type,
         gl_union.transaction_source,
-        gl_union.currency_name,
         gl_union.class_id,
         gl_union.customer_id,
         accounts.transaction_type as account_transaction_type,
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.amount
             else gl_union.amount * -1
-                end as adjusted_amount
+                end as amount
     from gl_union
 
     left join accounts
         on gl_union.account_id = accounts.id
-),
-
-qgl as (
-    select
-        *,
-        sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance
-    from adjusted_gl
 ),
 
 qcl as (
@@ -1053,17 +1040,17 @@ qcu as (
 
 select
     qgl.*,
-    qcl.fully_qualified_name as class_fully_qualified_name,
-    qcl.name as class_name,
-    qa.name as account_name,
-    qa.fully_qualified_name as account_fully_qualified_name,
+    qcl.fully_qualified_name as class_full,
+    qcl.name as class,
+    qa.name as account_sub,
+    qa.fully_qualified_name as account_full,
     qa.account_type as account_type,
     qa.account_number as account_number,
-    qa.top_level_id as top_level_account_id,
-    qa.parent_account_id as parent_account_id,
-    qap.name as top_level_account_name,
-    qap.account_type as top_level_account_type,
-    qap.account_number as top_level_account_number,
+    qa.top_level_id as account_top_id,
+    qa.parent_account_id as account_parent_id,
+    qap.name as account_top,
+    qap.account_type as account_top_type,
+    qap.account_number as account_top_number,
     qcu.display_name as customer_display_name,
     qcu.balance as customer_balance,
     qcu.company_name as customer_company_name

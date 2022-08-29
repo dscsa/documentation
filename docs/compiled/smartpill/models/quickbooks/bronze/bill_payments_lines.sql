@@ -1,6 +1,7 @@
 with bill_payment as (
     select
         _hash_id as _bill_payment_hash_id,
+        _airbyte_emitted_at,
         id as bill_payment_id,
 		jsonb_extract_path_text(line, 'Id') as id,
 		cast(jsonb_extract_path_text(line, 'Amount') as decimal) as amount,
@@ -11,7 +12,7 @@ with bill_payment as (
     where 
         line is not null
     
-        and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."bill_payments")
+        and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."bill_payments_lines")
     
 )
 select
