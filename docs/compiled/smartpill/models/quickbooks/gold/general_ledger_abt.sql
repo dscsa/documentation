@@ -926,6 +926,7 @@ final as (
 
 select *
 from final
+where financial_statement_helper <> 'balance_sheet'
 ),gl_union as (
     select
         transaction_id,
@@ -1009,6 +1010,7 @@ qgl as (
         gl_union.transaction_date,
         gl_union.account_id,
         accounts.financial_statement_helper as report_type,
+        accounts.classification as account_type_top,
         gl_union.transaction_type,
         gl_union.transaction_source,
         gl_union.class_id,
@@ -1044,12 +1046,11 @@ select
     qcl.name as class,
     qa.name as account_sub,
     qa.fully_qualified_name as account_full,
-    qa.account_type as account_type,
+    qa.account_type as account_type_sub,
     qa.account_number as account_number,
     qa.top_level_id as account_top_id,
     qa.parent_account_id as account_parent_id,
     qap.name as account_top,
-    qap.account_type as account_top_type,
     qap.account_number as account_top_number,
     qcu.display_name as customer_display_name,
     qcu.balance as customer_balance,

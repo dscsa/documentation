@@ -84,3 +84,4 @@ final as (
 
 select *
 from final
+where financial_statement_helper <> 'balance_sheet'

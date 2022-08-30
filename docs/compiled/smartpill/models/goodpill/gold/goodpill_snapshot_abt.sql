@@ -39,8 +39,7 @@ with goodpill_snapshot as (
                 case
                     when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
-            ) over(partition by patient_id_cp) as patient_date_churned_other,
-            clinics.clinic_name_cp as patient_clinic_name_coupon
+            ) over(partition by patient_id_cp) as patient_date_churned_other
         from "datawarehouse".dev_analytics."patients" as pat
         left join "datawarehouse".dev_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
         left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
@@ -220,10 +219,6 @@ with goodpill_snapshot as (
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
         *,
-        coalesce(
-            psh.patient_clinic_name_coupon,
-            rh.rx_clinic_name_cp
-        ) as clinic_coalesced_name,
         greatest(rh.group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
     from psh
     left join rh using (patient_id_cp)
@@ -242,7 +237,6 @@ select
     gds.order_invoice_number,
     gds.patient_id_cp,
     gds.rx_number,
-    gds.dw_patient_event_date,
     gds.dw_patient_status,
     gds.patient_date_active,
     gds.patient_date_no_rx,
@@ -251,7 +245,6 @@ select
     gds.patient_date_churned_no_fillable_rx,
     gds.patient_date_inactive,
     gds.patient_date_churned_other,
-    gds.patient_clinic_name_coupon,
     gds.rx_numbers,
     gds.rx_best_rx_number,
     gds.rx_provider_npi,
@@ -313,7 +306,6 @@ select
     gds.rx_created_at,
     gds.rx_updated_at,
     gds.group_created_at,
-    gds.rx_clinic_name_cp,
     gds.item_groups,
     gds.item_rx_dispensed_id,
     gds.item_stock_level_initial,
@@ -393,11 +385,8 @@ select
     gds.order_zip,
     gds.order_date_updated,
     gds.dw_updated_at,
-    clinics.clinic_id,
-    clinics.clinic_name_cp,
     clinics.clinic_rx_date_added_first,
     clinics.clinic_rx_date_added_last,
-    clinics.verified as clinic_verified,
     clinics.created_at as clinic_created_at,
     clinics.updated_at as clinic_updated_at,
     dw_clinics.clinic_id as dw_clinic_id,
@@ -412,12 +401,6 @@ select
     dw_clinics.clinic_id_sf as dw_clinic_id_sf,
     dw_clinics.created_at as dw_clinic_created_at,
     dw_clinics.updated_at as dw_clinic_updated_at,
-    clinics_groups.id as clinic_groups_id,
-    clinics_groups.meta_group as clinic_groups_meta_group,
-    clinics_groups.meta_template as clinic_groups_meta_template,
-    clinics_groups.commentary as clinic_groups_commentary,
-    clinics_groups.created_at as clinic_groups_created_at,
-    clinics_groups.updated_at as clinic_groups_updated_at,
     dw_clinics_groups.clinic_group_id as dw_clinic_group_id,
     dw_clinics_groups.clinic_group_name as dw_clinic_group_name,
     dw_clinics_groups.clinic_group_id_sf as dw_clinic_group_id_sf,
@@ -434,8 +417,7 @@ select
     drugs.price_coalesced as drug_price_coalesced,
     drugs.qty_repack as drug_qty_repack,
     drugs.count_ndcs as drug_count_ndcs,
-    providers.provider_id as provider_id,
-    providers.verified as provider_verified,
+    providers.provider_id as dw_provider_id,
     providers.first_rx_sent_date as provider_first_rx_sent_date,
     providers.last_rx_sent_date as provider_last_rx_sent_date,
     dw_providers.provider_name as dw_provider_name,
@@ -492,9 +474,7 @@ left join "datawarehouse".dev_analytics."drugs" as drugs on drugs.generic_name =
 left join "datawarehouse".dev_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
 left join "datawarehouse".dev_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
 left join "datawarehouse".dev_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
-left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.clinic_coalesced_name
+left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
 left join "datawarehouse".dev_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
 left join "datawarehouse".dev_analytics."dw_clinics_groups" as dw_clinics_groups on
         dw_clinics_groups.clinic_group_id = dw_clinics.clinic_group_id
-left join "datawarehouse".dev_analytics."clinics_groups" as clinics_groups on
-        clinics_groups.id = dw_clinics.clinic_group_id
