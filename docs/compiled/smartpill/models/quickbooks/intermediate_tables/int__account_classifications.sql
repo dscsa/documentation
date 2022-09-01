@@ -84,4 +84,4 @@ final as (
 
 select *
 from final
-where financial_statement_helper <> 'balance_sheet'
+where financial_statement_helper = 'income_statement' and classification is not null

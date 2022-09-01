@@ -926,7 +926,7 @@ final as (
 
 select *
 from final
-where financial_statement_helper <> 'balance_sheet'
+where financial_statement_helper = 'income_statement' and classification is not null
 ),gl_union as (
     select
         transaction_id,
@@ -1022,7 +1022,7 @@ qgl as (
                 end as amount
     from gl_union
 
-    left join accounts
+    inner join accounts
         on gl_union.account_id = accounts.id
 ),
 
