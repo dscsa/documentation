@@ -1024,6 +1024,8 @@ qgl as (
 
     inner join accounts
         on gl_union.account_id = accounts.id
+
+    where accounts.classification is not null
 ),
 
 qcl as (
