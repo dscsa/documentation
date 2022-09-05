@@ -27,7 +27,6 @@ final as (
         a.id as account_id,
         'debit' as transaction_type,
         'payroll check' as transaction_source,
-        'United States Dollar',
         null as class_id,
         null as customer_id
     from payroll_check pc

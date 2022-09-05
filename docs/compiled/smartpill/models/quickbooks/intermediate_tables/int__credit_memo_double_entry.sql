@@ -37,11 +37,10 @@ credit_memo_join as (
     select
         credit_memos.id as transaction_id,
         credit_memos.transaction_date,
-        credit_memo_lines.amount,
+        credit_memo_lines.amount * credit_memos.exchange_rate as amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
         credit_memos.customer_id,
-        credit_memo_lines.sales_item_class_id as class_id,
-        credit_memos.currency_name
+        credit_memo_lines.sales_item_class_id as class_id
     from credit_memos
 
     inner join credit_memo_lines
@@ -61,7 +60,6 @@ final as (
         account_id,
         'credit' as transaction_type,
         'credit_memo' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from credit_memo_join
@@ -75,7 +73,6 @@ final as (
         df_accounts.account_id,
         'debit' as transaction_type,
         'credit_memo' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from credit_memo_join

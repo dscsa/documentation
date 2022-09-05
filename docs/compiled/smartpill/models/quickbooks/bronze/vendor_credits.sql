@@ -7,6 +7,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'VendorRef', 'value') as vendor_id,
         jsonb_extract_path_text(_airbyte_data, 'APAccountRef','value') as payable_account_id,
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'ExchangeRate') as decimal) as exchange_rate,
         cast(jsonb_extract_path_text(_airbyte_data, 'TotalAmt') as decimal) as total_amount,
         cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date,
         jsonb_extract_path(_airbyte_data, 'Line') as line

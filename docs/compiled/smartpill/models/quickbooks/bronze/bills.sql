@@ -6,6 +6,7 @@ with final as (
         _airbyte_emitted_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'Balance') as decimal) as balance,
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'ExchangeRate') as decimal) as exchange_rate,
         cast(jsonb_extract_path_text(_airbyte_data, 'TotalAmt') as decimal) as total_amount,
         cast(jsonb_extract_path_text(_airbyte_data, 'DueDate') as timestamp) as due_date,
         cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date,

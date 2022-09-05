@@ -41,14 +41,13 @@ with invoice_join as (
         invoices.id as transaction_id,
         invoices.transaction_date as transaction_date,
         case when invoices.total_amount != 0
-            then invoice_lines.amount
-            else invoices.total_amount
+            then invoice_lines.amount * invoices.exchange_rate
+            else invoices.total_amount * invoices.exchange_rate
                 end as amount,
 
         coalesce(items.income_account_id) as account_id,
 
         invoices.customer_id,
-        invoices.currency_name,
         invoice_lines.sales_item_class_id as class_id
 
     from invoices
@@ -81,7 +80,6 @@ final as (
         account_id,
         'credit' as transaction_type,
         'invoice' as transaction_source,
-        invoice_join.currency_name,
         class_id,
         customer_id
     from invoice_join
@@ -97,7 +95,6 @@ final as (
         ar_accounts.id as account_id,
         'debit' as transaction_type,
         'invoice' as transaction_source,
-        invoice_join.currency_name,
         class_id,
         customer_id
     from invoice_join

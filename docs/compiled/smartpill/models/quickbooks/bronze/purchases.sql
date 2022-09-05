@@ -8,6 +8,7 @@ with final as (
         jsonb_extract_path_text(_airbyte_data, 'DocNumber') as doc_number,
         jsonb_extract_path_text(_airbyte_data, 'Credit') as credit,
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'ExchangeRate') as decimal) as exchange_rate,
         cast(jsonb_extract_path_text(_airbyte_data, 'TotalAmt') as decimal) as total_amount,
         jsonb_extract_path_text(_airbyte_data, 'PaymentType') as payment_type,
         cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date,

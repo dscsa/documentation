@@ -30,11 +30,10 @@ with deposit_join as (
     select
         deposits.id as transaction_id,
         deposits.transaction_date,
-        deposit_lines.amount,
+        deposit_lines.amount * deposits.exchange_rate as amount,
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.account_id, uf_accounts.id) as deposit_from_acct_id,
         customer_id as customer_id,
-        currency_name,
         deposit_lines.class_id
     from deposits
 
@@ -54,7 +53,6 @@ final as (
         deposit_to_acct_id as account_id,
         'debit' as transaction_type,
         'deposit' as transaction_source,
-        deposit_join.currency_name,
         class_id,
         customer_id
     from deposit_join
@@ -70,7 +68,6 @@ final as (
         deposit_from_acct_id as account_id,
         'credit' as transaction_type,
         'deposit' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from deposit_join

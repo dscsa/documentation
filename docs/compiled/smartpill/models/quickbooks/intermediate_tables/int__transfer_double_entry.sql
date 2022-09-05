@@ -9,8 +9,7 @@ transfer_body as (
     select
         id as transaction_id,
         transaction_date,
-        amount,
-        currency_name,
+        amount * exchange_rate as amount,
         from_account_id as credit_to_account_id,
         to_account_id as debit_to_account_id
     from transfers
@@ -24,7 +23,6 @@ final as (
         credit_to_account_id as account_id,
         'credit' as transaction_type,
         'transfer' as transaction_source,
-        currency_name,
         null::varchar as class_id,
         null::varchar as customer_id
     from transfer_body
@@ -38,7 +36,6 @@ final as (
         debit_to_account_id as account_id,
         'debit' as transaction_type,
         'transfer' as transaction_source,
-        currency_name,
         null::varchar as class_id,
         null::varchar as customer_id
     from transfer_body

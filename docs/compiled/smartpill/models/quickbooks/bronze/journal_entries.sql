@@ -6,6 +6,7 @@ with final as (
         _airbyte_emitted_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'Adjustment') as bool) as is_adjustment,
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'ExchangeRate') as decimal) as exchange_rate,
         jsonb_extract_path(_airbyte_data, 'Line') as line,
         jsonb_extract_path_text(_airbyte_data, 'PrivateNote') as private_note,
         cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date

@@ -18,11 +18,10 @@ final as (
         journal_entries.id as transaction_id,
         journal_entries.transaction_date,
         -- journal_entry_lines.vendor_id,
-        journal_entry_lines.amount,
+        journal_entry_lines.amount * journal_entries.exchange_rate as amount,
         journal_entry_lines.account_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
         'journal_entry' as transaction_source,
-        journal_entries.currency_name,
         journal_entry_lines.class_id,
         journal_entry_lines.customer_id
     from journal_entries

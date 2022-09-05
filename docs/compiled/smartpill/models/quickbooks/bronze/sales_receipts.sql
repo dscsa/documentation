@@ -6,6 +6,7 @@ with final as (
         _airbyte_emitted_at,
         jsonb_extract_path_text(_airbyte_data, 'DepositToAccountRef','value') as deposit_to_account_id,
         jsonb_extract_path_text(_airbyte_data, 'CurrencyRef','name') as currency_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'ExchangeRate') as decimal) as exchange_rate,
         cast(jsonb_extract_path_text(_airbyte_data, 'TotalAmt') as decimal) as total_amount,
         cast(jsonb_extract_path_text(_airbyte_data, 'TxnDate') as timestamp) as transaction_date,
         jsonb_extract_path_text(_airbyte_data, 'CustomerRef','value') as customer_id,

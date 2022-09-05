@@ -33,11 +33,10 @@ with bill_join as (
     select
         bills.id as transaction_id,
         bills.transaction_date,
-        bill_lines.amount,
+        bill_lines.amount * bills.exchange_rate as amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
         bills.payable_account_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
-        bills.currency_name,
         coalesce(bill_lines.account_expense_class_id, bill_lines.item_expense_class_id) as class_id
         -- bills.vendor_id
     from bills
@@ -58,7 +57,6 @@ final as (
         payed_to_account_id as account_id,
         'debit' as transaction_type,
         'bill' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from bill_join
@@ -73,7 +71,6 @@ final as (
         payable_account_id as account_id,
         'credit' as transaction_type,
         'bill' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from bill_join

@@ -2,11 +2,10 @@ with payment as (
     select distinct on (id)
         id as transaction_id,
         transaction_date,
-        total_amount as amount,
+        total_amount * exchange_rate as amount,
         deposit_to_account_id,
         receivable_account_id,
-        customer_id as customer_id,
-        currency_name
+        customer_id as customer_id
     from "datawarehouse".dev_quickbooks."payments"
     order by id, _airbyte_emitted_at desc
 ),
@@ -31,7 +30,6 @@ final as (
         deposit_to_account_id as account_id,
         'debit' as transaction_type,
         'payment' as transaction_source,
-        payment.currency_name,
         null as class_id,
         customer_id
     from payment
@@ -47,7 +45,6 @@ final as (
         coalesce(receivable_account_id, ar_accounts.id) as account_id,
         'credit' as transaction_type,
         'payment' as transaction_source,
-        payment.currency_name,
         null as class_id,
         customer_id
     from payment

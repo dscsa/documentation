@@ -36,12 +36,11 @@ with purchase_join as (
     select
         purchases.id as transaction_id,
         purchases.transaction_date,
-        purchase_lines.amount,
+        purchase_lines.amount * purchases.exchange_rate as amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
         purchases.account_id as payed_from_account_id,
         case when coalesce(purchases.credit, 'false') = 'true' then 'debit' else 'credit' end as payed_from_transaction_type,
         case when coalesce(purchases.credit, 'false') = 'true' then 'credit' else 'debit' end as payed_to_transaction_type,
-        purchases.currency_name,
         account_expense_class_id as class_id,
         coalesce(purchases.customer_id, purchase_lines.account_expense_customer_id) as customer_id
     from purchases
@@ -61,7 +60,6 @@ final as (
         payed_from_account_id as account_id,
         payed_from_transaction_type as transaction_type,
         'purchase' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from purchase_join
@@ -75,7 +73,6 @@ final as (
         payed_to_account_id as account_id,
         payed_to_transaction_type as transaction_type,
         'purchase' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from purchase_join
@@ -116,11 +113,10 @@ with deposit_join as (
     select
         deposits.id as transaction_id,
         deposits.transaction_date,
-        deposit_lines.amount,
+        deposit_lines.amount * deposits.exchange_rate as amount,
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.account_id, uf_accounts.id) as deposit_from_acct_id,
         customer_id as customer_id,
-        currency_name,
         deposit_lines.class_id
     from deposits
 
@@ -140,7 +136,6 @@ final as (
         deposit_to_acct_id as account_id,
         'debit' as transaction_type,
         'deposit' as transaction_source,
-        deposit_join.currency_name,
         class_id,
         customer_id
     from deposit_join
@@ -156,7 +151,6 @@ final as (
         deposit_from_acct_id as account_id,
         'credit' as transaction_type,
         'deposit' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from deposit_join
@@ -185,11 +179,10 @@ final as (
         journal_entries.id as transaction_id,
         journal_entries.transaction_date,
         -- journal_entry_lines.vendor_id,
-        journal_entry_lines.amount,
+        journal_entry_lines.amount * journal_entries.exchange_rate as amount,
         journal_entry_lines.account_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
         'journal_entry' as transaction_source,
-        journal_entries.currency_name,
         journal_entry_lines.class_id,
         journal_entry_lines.customer_id
     from journal_entries
@@ -207,11 +200,10 @@ with payment as (
     select distinct on (id)
         id as transaction_id,
         transaction_date,
-        total_amount as amount,
+        total_amount * exchange_rate as amount,
         deposit_to_account_id,
         receivable_account_id,
-        customer_id as customer_id,
-        currency_name
+        customer_id as customer_id
     from "datawarehouse".dev_quickbooks."payments"
     order by id, _airbyte_emitted_at desc
 ),
@@ -236,7 +228,6 @@ final as (
         deposit_to_account_id as account_id,
         'debit' as transaction_type,
         'payment' as transaction_source,
-        payment.currency_name,
         null as class_id,
         customer_id
     from payment
@@ -252,7 +243,6 @@ final as (
         coalesce(receivable_account_id, ar_accounts.id) as account_id,
         'credit' as transaction_type,
         'payment' as transaction_source,
-        payment.currency_name,
         null as class_id,
         customer_id
     from payment
@@ -298,11 +288,10 @@ with bill_join as (
     select
         bills.id as transaction_id,
         bills.transaction_date,
-        bill_lines.amount,
+        bill_lines.amount * bills.exchange_rate as amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
         bills.payable_account_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
-        bills.currency_name,
         coalesce(bill_lines.account_expense_class_id, bill_lines.item_expense_class_id) as class_id
         -- bills.vendor_id
     from bills
@@ -323,7 +312,6 @@ final as (
         payed_to_account_id as account_id,
         'debit' as transaction_type,
         'bill' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from bill_join
@@ -338,7 +326,6 @@ final as (
         payable_account_id as account_id,
         'credit' as transaction_type,
         'bill' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from bill_join
@@ -390,14 +377,13 @@ with invoice_join as (
         invoices.id as transaction_id,
         invoices.transaction_date as transaction_date,
         case when invoices.total_amount != 0
-            then invoice_lines.amount
-            else invoices.total_amount
+            then invoice_lines.amount * invoices.exchange_rate
+            else invoices.total_amount * invoices.exchange_rate
                 end as amount,
 
         coalesce(items.income_account_id) as account_id,
 
         invoices.customer_id,
-        invoices.currency_name,
         invoice_lines.sales_item_class_id as class_id
 
     from invoices
@@ -430,7 +416,6 @@ final as (
         account_id,
         'credit' as transaction_type,
         'invoice' as transaction_source,
-        invoice_join.currency_name,
         class_id,
         customer_id
     from invoice_join
@@ -446,7 +431,6 @@ final as (
         ar_accounts.id as account_id,
         'debit' as transaction_type,
         'invoice' as transaction_source,
-        invoice_join.currency_name,
         class_id,
         customer_id
     from invoice_join
@@ -484,10 +468,9 @@ with bill_payment_join as (
     select
         bill_payments.id as transaction_id,
         bill_payments.transaction_date,
-        bill_payments.total_amount as amount,
+        bill_payments.total_amount * bill_payments.exchange_rate as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
-        ap_accounts.account_id,
-        bill_payments.currency_name
+        ap_accounts.account_id
         -- bill_payments.vendor_id
     from bill_payments
 
@@ -504,7 +487,6 @@ final as (
         payment_account_id as account_id,
         'credit' as transaction_type,
         'bill payment' as transaction_source,
-        currency_name,
         null as class_id,
         null as customer_id
     from bill_payment_join
@@ -520,7 +502,6 @@ final as (
         account_id,
         'debit' as transaction_type,
         'bill payment' as transaction_source,
-        currency_name,
         null as class_id,
         null as customer_id
     from bill_payment_join
@@ -558,7 +539,6 @@ final as (
         a.id as account_id,
         'debit' as transaction_type,
         'payroll check' as transaction_source,
-        'United States Dollar',
         null as class_id,
         null as customer_id
     from payroll_check pc
@@ -595,11 +575,10 @@ sales_receipt_join as (
     select
         sales_receipts.id as transaction_id,
         sales_receipts.transaction_date,
-        sales_receipt_lines.amount,
+        sales_receipt_lines.amount * sales_receipts.exchange_rate as amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         coalesce(items.parent_income_account_id, items.income_account_id) as credit_to_account_id,
         sales_receipts.customer_id,
-        sales_receipts.currency_name,
         sales_receipt_lines.sales_item_class_id as class_id
     from sales_receipts
 
@@ -620,7 +599,6 @@ final as (
         debit_to_account_id as account_id,
         'debit' as transaction_type,
         'sales_receipt' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from sales_receipt_join
@@ -634,7 +612,6 @@ final as (
         credit_to_account_id as account_id,
         'credit' as transaction_type,
         'sales_receipt' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from sales_receipt_join
@@ -682,11 +659,10 @@ credit_memo_join as (
     select
         credit_memos.id as transaction_id,
         credit_memos.transaction_date,
-        credit_memo_lines.amount,
+        credit_memo_lines.amount * credit_memos.exchange_rate as amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
         credit_memos.customer_id,
-        credit_memo_lines.sales_item_class_id as class_id,
-        credit_memos.currency_name
+        credit_memo_lines.sales_item_class_id as class_id
     from credit_memos
 
     inner join credit_memo_lines
@@ -706,7 +682,6 @@ final as (
         account_id,
         'credit' as transaction_type,
         'credit_memo' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from credit_memo_join
@@ -720,7 +695,6 @@ final as (
         df_accounts.account_id,
         'debit' as transaction_type,
         'credit_memo' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from credit_memo_join
@@ -742,8 +716,7 @@ transfer_body as (
     select
         id as transaction_id,
         transaction_date,
-        amount,
-        currency_name,
+        amount * exchange_rate as amount,
         from_account_id as credit_to_account_id,
         to_account_id as debit_to_account_id
     from transfers
@@ -757,7 +730,6 @@ final as (
         credit_to_account_id as account_id,
         'credit' as transaction_type,
         'transfer' as transaction_source,
-        currency_name,
         null::varchar as class_id,
         null::varchar as customer_id
     from transfer_body
@@ -771,7 +743,6 @@ final as (
         debit_to_account_id as account_id,
         'debit' as transaction_type,
         'transfer' as transaction_source,
-        currency_name,
         null::varchar as class_id,
         null::varchar as customer_id
     from transfer_body
@@ -796,13 +767,12 @@ vendor_credit_join as (
     select
         vendor_credits.id as transaction_id,
         vendor_credits.transaction_date,
-        vendor_credit_lines.amount,
+        vendor_credit_lines.amount * vendor_credits.exchange_rate as amount,
         vendor_credit_lines.account_expense_class_id as class_id,
         vendor_credits.payable_account_id as debit_to_account_id,
         vendor_credit_lines.account_expense_account_id as credit_account_id,
         account_expense_customer_id as customer_id,
-        vendor_credits.vendor_id,
-        vendor_credits.currency_name
+        vendor_credits.vendor_id
     from vendor_credits
     
     inner join vendor_credit_lines 
@@ -817,7 +787,6 @@ final as (
         credit_account_id as account_id,
         'credit' as transaction_type,
         'vendor_credit' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from vendor_credit_join
@@ -831,7 +800,6 @@ final as (
         debit_to_account_id as account_id,
         'debit' as transaction_type,
         'vendor_credit' as transaction_source,
-        currency_name,
         class_id,
         customer_id
     from vendor_credit_join
@@ -936,7 +904,6 @@ where financial_statement_helper = 'income_statement' and classification is not 
         account_id,
         transaction_type,
         transaction_source,
-        currency_name,
         class_id,
         customer_id
     from __dbt__cte__int__purchase_double_entry
@@ -1026,6 +993,7 @@ qgl as (
         on gl_union.account_id = accounts.id
 
     where accounts.classification is not null
+        and accounts.is_active
 ),
 
 qcl as (
