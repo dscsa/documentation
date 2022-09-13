@@ -993,7 +993,6 @@ qgl as (
         on gl_union.account_id = accounts.id
 
     where accounts.classification is not null
-        and accounts.is_active
 ),
 
 qcl as (
