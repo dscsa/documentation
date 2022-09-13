@@ -81,7 +81,9 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'repacked_by') as varchar(5)) as repacked_by,
         cast(jsonb_extract_path_text(_airbyte_data, 'repacked_at') as timestamp) as repacked_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_initial_at') as timestamp) as days_and_message_initial_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_updated_at') as timestamp) as days_and_message_updated_at
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_order_items
 )
@@ -140,6 +142,8 @@ select
     repacked_at,
     updated_at,
     created_at,
+    days_and_message_updated_at,
+    days_and_message_initial_at,
     _airbyte_emitted_at,
     _airbyte_ab_id
 from order_items

@@ -12,6 +12,7 @@ select distinct on (rs.rx_number, rs.updated_at)
     coalesce(rg.drug_generic, rs.drug_generic) as drug_generic,
     coalesce(rg.drug_brand, rs.drug_brand) as drug_brand,
     coalesce(rg.drug_name, rs.drug_name) as drug_name,
+    rg.group_id as rx_group_id,
     rs.rx_message_key as rx_message_key,
     rs.rx_message_text as rx_message_text,
     rs.rx_message_date as rx_message_date,
@@ -74,6 +75,7 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.created_at as created_at,
     rs.updated_at as updated_at,
     rg.created_at as group_created_at,
+    rg.updated_at as rx_group_updated_at,
     clinics.clinic_name_cp as rx_clinic_name_cp
 from rxs_grouped_unnested as rg
 left join "datawarehouse".dev_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))

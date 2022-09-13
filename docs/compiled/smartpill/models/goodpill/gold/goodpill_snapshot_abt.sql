@@ -65,6 +65,7 @@ with goodpill_snapshot as (
             ) as rx_drug_generic,
             drug_brand as rx_drug_brand,
             drug_name as rx_drug_name,
+            rx_group_id,
             rx_message_key as rx_message_key,
             rx_message_text as rx_message_text,
             rx_gsn as rx_gsn,
@@ -120,6 +121,7 @@ with goodpill_snapshot as (
             created_at as rx_created_at,
             updated_at as rx_updated_at,
             group_created_at as group_created_at,
+            rx_group_updated_at,
             rx_clinic_name_cp
         from "datawarehouse".dev_analytics."rxs_joined"
     ),
@@ -156,6 +158,8 @@ with goodpill_snapshot as (
             item_date_added as item_date_added,
             item_date_changed as item_date_changed,
             updated_at as item_date_updated,
+            days_and_message_updated_at as item_days_and_message_updated_at,
+            days_and_message_initial_at as item_days_and_message_initial_at,
             refill_date_last as item_refill_date_last,
             refill_date_manual as item_refill_date_manual,
             refill_date_default as item_refill_date_default,
@@ -219,7 +223,7 @@ with goodpill_snapshot as (
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
         *,
-        greatest(rh.group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
+        greatest(rh.rx_group_updated_at, rh.group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
@@ -229,6 +233,8 @@ with goodpill_snapshot as (
         rx_number,
         order_invoice_number,
         -- prioritize rxs which were updated before the order was dispensed
+        rh.rx_group_updated_at <= o.order_date_dispensed desc,
+        rh.rx_group_updated_at desc,
         rh.group_created_at <= o.order_date_dispensed desc,
         rh.group_created_at desc
 )
@@ -251,6 +257,7 @@ select
     gds.rx_drug_generic,
     gds.rx_drug_brand,
     gds.rx_drug_name,
+    gds.rx_group_id,
     gds.rx_message_key,
     gds.rx_message_text,
     gds.rx_gsn,
@@ -306,6 +313,7 @@ select
     gds.rx_created_at,
     gds.rx_updated_at,
     gds.group_created_at,
+    gds.rx_group_updated_at,
     gds.item_groups,
     gds.item_rx_dispensed_id,
     gds.item_stock_level_initial,
@@ -333,6 +341,8 @@ select
     gds.item_date_added,
     gds.item_date_changed,
     gds.item_date_updated,
+    gds.item_days_and_message_updated_at,
+    gds.item_days_and_message_initial_at,
     gds.item_refill_date_last,
     gds.item_refill_date_manual,
     gds.item_refill_date_default,

@@ -6,6 +6,7 @@ with rxs_grouped as (
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_generic') as varchar(255)) as drug_generic,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_brand') as varchar(255)) as drug_brand,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
+        cast(jsonb_extract_path_text(_airbyte_data, 'group_id') as int) as group_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'sig_qty_per_day') as decimal(6, 3)) as sig_qty_per_day,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_keys') as varchar(255)) as rx_message_keys,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_message_date') as timestamp) as rx_message_date,
@@ -25,7 +26,8 @@ with rxs_grouped as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_transferred') as timestamp) as rx_date_transferred,
-        cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as rx_updated_at
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_grouped
 )
@@ -37,6 +39,7 @@ select
     nullif(drug_generic, '') as drug_generic,
     nullif(drug_brand, '') as drug_brand,
     nullif(drug_name, '') as drug_name,
+    group_id,
     sig_qty_per_day,
     nullif(rx_message_keys, '') as rx_message_keys,
     rx_message_date,
@@ -56,7 +59,8 @@ select
     rx_date_changed,
     rx_date_expired,
     rx_date_transferred,
-    created_at
+    created_at,
+    rx_updated_at
 from rxs_grouped
 
     where created_at > (select max(created_at) from "datawarehouse".dev_analytics."rxs_grouped")
