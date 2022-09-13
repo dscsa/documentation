@@ -115,12 +115,15 @@ with goodpill_snapshot as (
             provider_last_name as provider_last_name,
             provider_phone as provider_phone,
             clinic_name as rx_clinic_name,
-            rx_date_changed as rx_date_changed,
-            rx_date_expired as rx_date_expired,
+            rx_added_first_at,
+            rx_added_last_at,
+            rx_date_changed,
+            rx_date_expired,
             rx_date_added as rx_date_added,
+            rx_stock_level_initial as rx_stock_level_initial,
             created_at as rx_created_at,
             updated_at as rx_updated_at,
-            group_created_at as group_created_at,
+            rx_group_created_at as rx_group_created_at,
             rx_group_updated_at,
             rx_clinic_name_cp
         from "datawarehouse".dev_analytics."rxs_joined"
@@ -223,7 +226,7 @@ with goodpill_snapshot as (
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
         *,
-        greatest(rh.rx_group_updated_at, rh.group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
+        greatest(rh.rx_group_updated_at, rh.rx_group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
@@ -235,8 +238,8 @@ with goodpill_snapshot as (
         -- prioritize rxs which were updated before the order was dispensed
         rh.rx_group_updated_at <= o.order_date_dispensed desc,
         rh.rx_group_updated_at desc,
-        rh.group_created_at <= o.order_date_dispensed desc,
-        rh.group_created_at desc
+        rh.rx_group_created_at <= o.order_date_dispensed desc,
+        rh.rx_group_created_at desc
 )
 
 select
@@ -307,12 +310,15 @@ select
     gds.provider_last_name,
     gds.provider_phone,
     gds.rx_clinic_name,
+    gds.rx_added_first_at,
+    gds.rx_added_last_at,
     gds.rx_date_changed,
     gds.rx_date_expired,
+    gds.rx_stock_level_initial,
     gds.rx_date_added,
     gds.rx_created_at,
     gds.rx_updated_at,
-    gds.group_created_at,
+    gds.rx_group_created_at,
     gds.rx_group_updated_at,
     gds.item_groups,
     gds.item_rx_dispensed_id,

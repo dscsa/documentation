@@ -54,6 +54,8 @@ select distinct on (rs.rx_number, rs.updated_at)
     coalesce(rg.refill_date_last, rs.refill_date_last) as refill_date_last,
     coalesce(rg.refill_date_manual, rs.refill_date_manual) as refill_date_manual,
     coalesce(rg.refill_date_default, rs.refill_date_default) as refill_date_default,
+    rg.rx_added_first_at,
+    rg.rx_added_last_at,
     rg.refill_date_next as refill_date_next,
     rs.rx_status as rx_status,
     rs.rx_stage as rx_stage,
@@ -65,17 +67,18 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.provider_last_name as provider_last_name,
     rs.clinic_name as clinic_name,
     rs.provider_phone as provider_phone,
-    rs.rx_date_changed as rx_date_changed,
-    rs.rx_date_expired as rx_date_expired,
+    coalesce(rg.rx_date_changed, rs.rx_date_changed) as rx_date_changed,
+    coalesce(rg.rx_date_expired, rs.rx_date_expired) as rx_date_expired,
     rs.rx_date_added as rx_date_added,
+    rs.rx_stock_level_initial as rx_stock_level_initial,
     rs.transfer_pharmacy_phone as transfer_pharmacy_phone,
     rs.transfer_pharmacy_name as transfer_pharmacy_name,
     rs.transfer_pharmacy_fax as transfer_pharmacy_fax,
     rs.transfer_pharmacy_address as transfer_pharmacy_address,
     rs.created_at as created_at,
     rs.updated_at as updated_at,
-    rg.created_at as group_created_at,
-    rg.updated_at as rx_group_updated_at,
+    rg.rx_created_at as rx_group_created_at,
+    rg.rx_updated_at as rx_group_updated_at,
     clinics.clinic_name_cp as rx_clinic_name_cp
 from rxs_grouped_unnested as rg
 left join "datawarehouse".dev_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
@@ -87,5 +90,5 @@ order by
     rs.rx_number,
     rs.updated_at,
     -- prioritize the rxs_single that was updated before the group was created
-    rs.updated_at <= rg.created_at desc,
-    rg.created_at desc
+    rs.updated_at <= rg.rx_created_at desc,
+    rg.rx_created_at desc

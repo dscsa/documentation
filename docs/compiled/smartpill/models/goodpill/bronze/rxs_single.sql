@@ -66,6 +66,7 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_added') as timestamp) as rx_date_added,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_stock_level_initial') as varchar(255)) as rx_stock_level_initial,
         cast(
             jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_phone') as varchar(10)
         ) as transfer_pharmacy_phone,
@@ -141,6 +142,7 @@ select
     rx_date_changed,
     rx_date_expired,
     rx_date_added,
+    rx_stock_level_initial,
     nullif(transfer_pharmacy_phone, '') as transfer_pharmacy_phone,
     nullif(transfer_pharmacy_name, '') as transfer_pharmacy_name,
     nullif(transfer_pharmacy_fax, '') as transfer_pharmacy_fax,
