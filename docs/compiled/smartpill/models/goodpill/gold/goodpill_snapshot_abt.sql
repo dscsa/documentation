@@ -123,7 +123,7 @@ with goodpill_snapshot as (
             rx_stock_level_initial as rx_stock_level_initial,
             created_at as rx_created_at,
             updated_at as rx_updated_at,
-            rx_group_created_at as rx_group_created_at,
+            rx_group_created_at,
             rx_group_updated_at,
             rx_clinic_name_cp
         from "datawarehouse".dev_analytics."rxs_joined"

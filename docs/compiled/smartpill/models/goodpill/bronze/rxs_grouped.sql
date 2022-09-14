@@ -26,10 +26,10 @@ with rxs_grouped as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_transferred') as timestamp) as rx_date_transferred,
-        cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as rx_created_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_added_first_at') as timestamp) as rx_added_first_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_added_last_at') as timestamp) as rx_added_last_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as rx_updated_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_grouped
 )
@@ -63,8 +63,8 @@ select
     rx_date_transferred,
     rx_added_first_at,
     rx_added_last_at,
-    rx_created_at,
-    rx_updated_at
+    created_at,
+    updated_at
 from rxs_grouped
 
-    where rx_created_at > (select max(rx_created_at) from "datawarehouse".dev_analytics."rxs_grouped")
+    where created_at > (select max(created_at) from "datawarehouse".dev_analytics."rxs_grouped")

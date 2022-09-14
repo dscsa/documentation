@@ -77,8 +77,8 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.transfer_pharmacy_address as transfer_pharmacy_address,
     rs.created_at as created_at,
     rs.updated_at as updated_at,
-    rg.rx_created_at as rx_group_created_at,
-    rg.rx_updated_at as rx_group_updated_at,
+    rg.created_at as rx_group_created_at,
+    rg.updated_at as rx_group_updated_at,
     clinics.clinic_name_cp as rx_clinic_name_cp
 from rxs_grouped_unnested as rg
 left join "datawarehouse".dev_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
@@ -90,5 +90,5 @@ order by
     rs.rx_number,
     rs.updated_at,
     -- prioritize the rxs_single that was updated before the group was created
-    rs.updated_at <= rg.rx_created_at desc,
-    rg.rx_created_at desc
+    rs.updated_at <= rg.created_at desc,
+    rg.created_at desc
