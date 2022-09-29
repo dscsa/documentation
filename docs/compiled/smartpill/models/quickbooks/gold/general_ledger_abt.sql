@@ -1,11 +1,14 @@
 with  __dbt__cte__int__purchase_double_entry as (
 with purchase_join as (
     with purchases as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."purchases"
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Purchase')
-        order by id, _airbyte_emitted_at desc
+        select distinct on (p.id)
+            p.*
+        from "datawarehouse".dev_quickbooks."purchases" p
+
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
+        where del.id is null or p.updated_at > del.updated_at
+
+        order by p.id, p._airbyte_emitted_at desc
     ),
 
     purchase_lines as (
@@ -14,11 +17,14 @@ with purchase_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Item')
-        order by id, _airbyte_emitted_at desc
+        select distinct on (item.id)
+            item.*
+        from "datawarehouse".dev_quickbooks."items" item
+
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+        where del.id is null or item.updated_at > del.updated_at
+
+        order by item.id, item._airbyte_emitted_at desc
     ),
 
     items as (
@@ -83,9 +89,11 @@ from final
 ),  __dbt__cte__int__deposit_double_entry as (
 with deposit_join as (
     with deposits as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."deposits"
+        select distinct on (d.id)
+            d.*
+        from "datawarehouse".dev_quickbooks."deposits" d
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Deposit' and d.id = del.id
+        where del.id is null or d.updated_at > del.updated_at
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -163,10 +171,14 @@ from final
 Table that provides the debit and credit records of a journal entry transaction.
 */
 with journal_entries as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."journal_entries"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (j.id)
+        j.*
+    from "datawarehouse".dev_quickbooks."journal_entries" j
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'JournalEntry' and j.id = del.id
+    where del.id is null or j.updated_at > del.updated_at
+
+    order by j.id, j._airbyte_emitted_at desc
 ),
 
 journal_entry_lines as (
@@ -197,24 +209,26 @@ select *
 from final
 ),  __dbt__cte__int__payment_double_entry as (
 with payment as (
-    select distinct on (id)
-        id as transaction_id,
+    select distinct on (p.id)
+        p.id as transaction_id,
         transaction_date,
         total_amount * exchange_rate as amount,
         deposit_to_account_id,
         receivable_account_id,
         customer_id as customer_id
-    from "datawarehouse".dev_quickbooks."payments"
-    order by id, _airbyte_emitted_at desc
+    from "datawarehouse".dev_quickbooks."payments" p
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
+    where del.id is null or p.updated_at > del.updated_at
+
+    order by p.id, p._airbyte_emitted_at desc
 ),
 
 ar_accounts as (
     select
         id
     from "datawarehouse".dev_quickbooks."accounts"
-
     where account_type = 'Accounts Receivable'
-        and is_active
     limit 1
 ),
 
@@ -255,10 +269,12 @@ from final
 ),  __dbt__cte__int__bill_double_entry as (
 with bill_join as (
     with bills as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."bills"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (b.id)
+            b.*
+        from "datawarehouse".dev_quickbooks."bills" b
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
+        where del.id is null or b.updated_at > del.updated_at
+        order by b.id, b._airbyte_emitted_at desc
     ),
 
     bill_lines as (
@@ -267,10 +283,11 @@ with bill_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."items" i 
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     items as (
@@ -336,10 +353,12 @@ from final
 ),  __dbt__cte__int__invoice_double_entry as (
 with invoice_join as (
     with invoices as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."invoices"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."invoices" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
+        where del.id is null or i.updated_at > del.updated_at
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     invoice_lines as (
@@ -348,10 +367,12 @@ with invoice_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."items" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+        where del.id is null or i.updated_at > del.updated_at
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     items as (
@@ -443,10 +464,12 @@ from final
 ),  __dbt__cte__int__bill_payment_double_entry as (
 with bill_payment_join as (
     with bill_payments as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."bill_payments"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (bp.id)
+            bp.*
+        from "datawarehouse".dev_quickbooks."bill_payments" bp
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'BillPayment' and bp.id = del.id
+        where del.id is null or bp.updated_at > del.updated_at
+        order by bp.id, bp._airbyte_emitted_at desc
     ),
 
     accounts as (
@@ -549,10 +572,14 @@ select *
 from final
 ),  __dbt__cte__int__sales_receipts_double_entry as (
 with sales_receipts as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."sales_receipts"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (s.id)
+        s.*
+    from "datawarehouse".dev_quickbooks."sales_receipts" s
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
+    where del.id is null or s.updated_at > del.updated_at
+
+    order by s.id, s._airbyte_emitted_at desc
 ),
 
 sales_receipt_lines as (
@@ -568,7 +595,11 @@ items as (
     from "datawarehouse".dev_quickbooks."items" item
     left join "datawarehouse".dev_quickbooks."items" parent
         on item.parent_item_id = parent.id
-    order by id, _airbyte_emitted_at desc
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+    where del.id is null or item.updated_at > del.updated_at
+
+    order by item.id, item._airbyte_emitted_at desc
 ),
 
 sales_receipt_join as (
@@ -621,10 +652,11 @@ select *
 from final
 ),  __dbt__cte__int__credit_memo_double_entry as (
 with credit_memos as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."credit_memos"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (c.id)
+        c.*
+    from "datawarehouse".dev_quickbooks."credit_memos" c
+    where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'CreditMemo' and c.updated_at <= del.updated_at)
+    order by c.id, c._airbyte_emitted_at desc
 ),
 
 credit_memo_lines as (
@@ -633,10 +665,12 @@ credit_memo_lines as (
 ),
 
 items as (
-    select distinct on (id) 
-        *
-    from "datawarehouse".dev_quickbooks."items"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (i.id) 
+        i.*
+    from "datawarehouse".dev_quickbooks."items" i 
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+    where del.id is null or i.updated_at > del.updated_at
+    order by i.id, i._airbyte_emitted_at desc
 ),
 
 accounts as (
@@ -706,10 +740,14 @@ select *
 from final
 ),  __dbt__cte__int__transfer_double_entry as (
 with transfers as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."transfers"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (t.id)
+        t.*
+    from "datawarehouse".dev_quickbooks."transfers" t
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
+    where del.id is null or t.updated_at > del.updated_at
+
+    order by t.id, t._airbyte_emitted_at desc
 ),
 
 transfer_body as (
@@ -752,10 +790,14 @@ select *
 from final
 ),  __dbt__cte__int__vendor_credit_double_entry as (
 with vendor_credits as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."vendor_credits"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (v.id)
+        v.*
+    from "datawarehouse".dev_quickbooks."vendor_credits" v
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'VendorCredit' and v.id = del.id
+    where del.id is null or v.updated_at > del.updated_at
+
+    order by v.id, v._airbyte_emitted_at desc
 ),
 
 vendor_credit_lines as (

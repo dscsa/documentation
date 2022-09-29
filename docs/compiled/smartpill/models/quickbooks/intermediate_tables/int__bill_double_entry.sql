@@ -1,9 +1,11 @@
 with bill_join as (
     with bills as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."bills"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (b.id)
+            b.*
+        from "datawarehouse".dev_quickbooks."bills" b
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
+        where del.id is null or b.updated_at > del.updated_at
+        order by b.id, b._airbyte_emitted_at desc
     ),
 
     bill_lines as (
@@ -12,10 +14,11 @@ with bill_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."items" i 
+        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     items as (

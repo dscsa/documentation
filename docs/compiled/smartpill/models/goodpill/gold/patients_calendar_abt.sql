@@ -111,7 +111,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2096
+    where generated_number <= 2097
     order by generated_number
 
 
@@ -243,7 +243,10 @@ select
     pew.event_name as event_name_week,
     pem.event_name as event_name_month,
     pey.event_name as event_name_year,
-    p."first_name" as "patient_first_name",
+    p."patient_date_registered" as "patient_date_registered",
+  p."patient_date_added" as "patient_date_added",
+  p."patient_date_changed" as "patient_date_changed",
+  p."first_name" as "patient_first_name",
   p."last_name" as "patient_last_name",
   p."birth_date" as "patient_birth_date",
   p."language" as "patient_language",
@@ -261,10 +264,6 @@ select
   p."clinic_id_coupon" as "patient_clinic_id_coupon",
   p."payment_coupon" as "patient_payment_coupon",
   p."tracking_coupon" as "patient_tracking_coupon",
-  p."patient_date_registered" as "patient_date_registered",
-  p."patient_date_reviewed" as "patient_date_reviewed",
-  p."patient_date_added" as "patient_date_added",
-  p."patient_date_changed" as "patient_date_changed",
   p."patient_date_first_rx_received" as "patient_date_first_rx_received",
   p."patient_date_first_dispensed" as "patient_date_first_dispensed",
   p."patient_date_first_expected_by" as "patient_date_first_expected_by",

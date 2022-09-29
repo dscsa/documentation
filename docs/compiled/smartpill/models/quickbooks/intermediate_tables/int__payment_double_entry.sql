@@ -1,22 +1,24 @@
 with payment as (
-    select distinct on (id)
-        id as transaction_id,
+    select distinct on (p.id)
+        p.id as transaction_id,
         transaction_date,
         total_amount * exchange_rate as amount,
         deposit_to_account_id,
         receivable_account_id,
         customer_id as customer_id
-    from "datawarehouse".dev_quickbooks."payments"
-    order by id, _airbyte_emitted_at desc
+    from "datawarehouse".dev_quickbooks."payments" p
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
+    where del.id is null or p.updated_at > del.updated_at
+
+    order by p.id, p._airbyte_emitted_at desc
 ),
 
 ar_accounts as (
     select
         id
     from "datawarehouse".dev_quickbooks."accounts"
-
     where account_type = 'Accounts Receivable'
-        and is_active
     limit 1
 ),
 

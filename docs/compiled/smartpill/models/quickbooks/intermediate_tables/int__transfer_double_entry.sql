@@ -1,8 +1,12 @@
 with transfers as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."transfers"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (t.id)
+        t.*
+    from "datawarehouse".dev_quickbooks."transfers" t
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
+    where del.id is null or t.updated_at > del.updated_at
+
+    order by t.id, t._airbyte_emitted_at desc
 ),
 
 transfer_body as (

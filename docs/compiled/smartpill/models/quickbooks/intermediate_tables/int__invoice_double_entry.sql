@@ -1,9 +1,11 @@
 with invoice_join as (
     with invoices as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."invoices"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."invoices" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
+        where del.id is null or i.updated_at > del.updated_at
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     invoice_lines as (
@@ -12,10 +14,12 @@ with invoice_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (i.id)
+            i.*
+        from "datawarehouse".dev_quickbooks."items" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+        where del.id is null or i.updated_at > del.updated_at
+        order by i.id, i._airbyte_emitted_at desc
     ),
 
     items as (

@@ -1,8 +1,9 @@
 with credit_memos as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."credit_memos"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (c.id)
+        c.*
+    from "datawarehouse".dev_quickbooks."credit_memos" c
+    where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'CreditMemo' and c.updated_at <= del.updated_at)
+    order by c.id, c._airbyte_emitted_at desc
 ),
 
 credit_memo_lines as (
@@ -11,10 +12,12 @@ credit_memo_lines as (
 ),
 
 items as (
-    select distinct on (id) 
-        *
-    from "datawarehouse".dev_quickbooks."items"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (i.id) 
+        i.*
+    from "datawarehouse".dev_quickbooks."items" i 
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+    where del.id is null or i.updated_at > del.updated_at
+    order by i.id, i._airbyte_emitted_at desc
 ),
 
 accounts as (

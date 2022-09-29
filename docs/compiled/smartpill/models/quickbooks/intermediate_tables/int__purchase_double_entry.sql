@@ -1,10 +1,13 @@
 with purchase_join as (
     with purchases as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."purchases"
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Purchase')
-        order by id, _airbyte_emitted_at desc
+        select distinct on (p.id)
+            p.*
+        from "datawarehouse".dev_quickbooks."purchases" p
+
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
+        where del.id is null or p.updated_at > del.updated_at
+
+        order by p.id, p._airbyte_emitted_at desc
     ),
 
     purchase_lines as (
@@ -13,11 +16,14 @@ with purchase_join as (
     ),
 
     items_stg as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."items"
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" where object_type = 'Item')
-        order by id, _airbyte_emitted_at desc
+        select distinct on (item.id)
+            item.*
+        from "datawarehouse".dev_quickbooks."items" item
+
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+        where del.id is null or item.updated_at > del.updated_at
+
+        order by item.id, item._airbyte_emitted_at desc
     ),
 
     items as (

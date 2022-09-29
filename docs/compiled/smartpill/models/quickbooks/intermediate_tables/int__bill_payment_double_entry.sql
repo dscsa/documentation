@@ -1,9 +1,11 @@
 with bill_payment_join as (
     with bill_payments as (
-        select distinct on (id)
-            *
-        from "datawarehouse".dev_quickbooks."bill_payments"
-        order by id, _airbyte_emitted_at desc
+        select distinct on (bp.id)
+            bp.*
+        from "datawarehouse".dev_quickbooks."bill_payments" bp
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'BillPayment' and bp.id = del.id
+        where del.id is null or bp.updated_at > del.updated_at
+        order by bp.id, bp._airbyte_emitted_at desc
     ),
 
     accounts as (

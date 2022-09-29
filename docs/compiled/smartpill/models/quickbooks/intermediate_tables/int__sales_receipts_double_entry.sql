@@ -1,8 +1,12 @@
 with sales_receipts as (
-    select distinct on (id)
-        *
-    from "datawarehouse".dev_quickbooks."sales_receipts"
-    order by id, _airbyte_emitted_at desc
+    select distinct on (s.id)
+        s.*
+    from "datawarehouse".dev_quickbooks."sales_receipts" s
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
+    where del.id is null or s.updated_at > del.updated_at
+
+    order by s.id, s._airbyte_emitted_at desc
 ),
 
 sales_receipt_lines as (
@@ -18,7 +22,11 @@ items as (
     from "datawarehouse".dev_quickbooks."items" item
     left join "datawarehouse".dev_quickbooks."items" parent
         on item.parent_item_id = parent.id
-    order by id, _airbyte_emitted_at desc
+
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+    where del.id is null or item.updated_at > del.updated_at
+
+    order by item.id, item._airbyte_emitted_at desc
 ),
 
 sales_receipt_join as (
