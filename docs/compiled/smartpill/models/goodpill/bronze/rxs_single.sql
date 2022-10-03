@@ -4,6 +4,7 @@ with rxs_single as (
         _airbyte_ab_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_number') as int) as rx_number,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_id_cp') as int) as patient_id_cp,
+        cast(jsonb_extract_path_text(_airbyte_data, 'group_id') as int) as group_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_generic') as varchar(255)) as drug_generic,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_brand') as varchar(255)) as drug_brand,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
@@ -56,8 +57,8 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_status') as int) as rx_status,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_stage') as varchar(80)) as rx_stage,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_source') as varchar(80)) as rx_source,
-        cast(jsonb_extract_path_text(_airbyte_data, 'rx_transfer') as varchar(80)) as rx_transfer,
-        cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_transferred') as timestamp) as rx_date_transferred,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_transferred_out') as timestamp) as rx_date_transferred_out,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_transferred_in') as timestamp) as rx_date_transferred_in,
         cast(jsonb_extract_path_text(_airbyte_data, 'provider_npi') as varchar(80)) as provider_npi,
         cast(jsonb_extract_path_text(_airbyte_data, 'provider_first_name') as varchar(80)) as provider_first_name,
         cast(jsonb_extract_path_text(_airbyte_data, 'provider_last_name') as varchar(80)) as provider_last_name,
@@ -66,7 +67,9 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_changed') as timestamp) as rx_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_expired') as timestamp) as rx_date_expired,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_date_added') as timestamp) as rx_date_added,
-        cast(jsonb_extract_path_text(_airbyte_data, 'rx_stock_level_initial') as varchar(255)) as rx_stock_level_initial,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'rx_stock_level_initial') as varchar(255)
+        ) as rx_stock_level_initial,
         cast(
             jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_phone') as varchar(10)
         ) as transfer_pharmacy_phone,
@@ -88,6 +91,7 @@ select
     _airbyte_ab_id,
     rx_number,
     patient_id_cp,
+    group_id,
     nullif(drug_generic, '') as drug_generic,
     nullif(drug_brand, '') as drug_brand,
     nullif(drug_name, '') as drug_name,
@@ -132,8 +136,8 @@ select
     rx_status,
     nullif(rx_stage, '') as rx_stage,
     nullif(rx_source, '') as rx_source,
-    nullif(rx_transfer, '') as rx_transfer,
-    rx_date_transferred,
+    rx_date_transferred_out,
+    rx_date_transferred_in,
     nullif(provider_npi, '') as provider_npi,
     nullif(provider_first_name, '') as provider_first_name,
     nullif(provider_last_name, '') as provider_last_name,

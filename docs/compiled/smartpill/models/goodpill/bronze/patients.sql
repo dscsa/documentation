@@ -52,6 +52,7 @@ with patients as (
         cast(jsonb_extract_path_text(_airbyte_data, 'medications_other') as varchar(3072)) as medications_other,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_added') as timestamp) as patient_date_added,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_registered') as timestamp) as patient_date_registered,
+        cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_reviewed') as timestamp) as patient_date_reviewed,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_changed') as timestamp) as patient_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_updated') as timestamp) as patient_date_updated,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_inactive') as varchar) as patient_inactive,
@@ -73,9 +74,6 @@ with patients as (
 
 select distinct on (patients.patient_id_cp)
     patients.patient_id_cp,
-    patients.patient_date_registered,
-    patients.patient_date_added,
-    patients.patient_date_changed,
     nullif(patients.first_name, '') as first_name,
     nullif(patients.last_name, '') as last_name,
     patients.birth_date,
@@ -94,6 +92,10 @@ select distinct on (patients.patient_id_cp)
     cmc.clinic_id as clinic_id_coupon,
     nullif(patients.payment_coupon, '') as payment_coupon,
     nullif(patients.tracking_coupon, '') as tracking_coupon,
+    patients.patient_date_registered,
+    patients.patient_date_reviewed,
+    patients.patient_date_added,
+    patients.patient_date_changed,
     patients.patient_date_first_rx_received,
     patients.patient_date_first_dispensed,
     patients.patient_date_first_expected_by,
@@ -124,7 +126,7 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.allergies_other, '') as allergies_other,
     nullif(patients.medications_other, '') as medications_other,
     patients.patient_date_updated,
-    now() as date_processed
+    cast('now()' as timestamp) as date_processed
 from patients
 left join
     "datawarehouse".dev_analytics."clinic_coupons" as cmc on
