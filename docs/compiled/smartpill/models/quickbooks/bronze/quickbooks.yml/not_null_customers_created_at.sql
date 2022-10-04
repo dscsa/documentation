@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".prod_quickbooks."customers"
+from "datawarehouse".dev_quickbooks."customers"
 where created_at is null
 
 

@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".prod_quickbooks."bills"
+from "datawarehouse".dev_quickbooks."bills"
 where updated_at is null
 
 

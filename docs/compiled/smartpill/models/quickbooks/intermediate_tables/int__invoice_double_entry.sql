@@ -2,22 +2,22 @@ with invoice_join as (
     with invoices as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".prod_quickbooks."invoices" i
-        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
+        from "datawarehouse".dev_quickbooks."invoices" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
         where del.id is null or i.updated_at > del.updated_at
         order by i.id, i._airbyte_emitted_at desc
     ),
 
     invoice_lines as (
         select *
-        from "datawarehouse".prod_quickbooks."invoices_lines"
+        from "datawarehouse".dev_quickbooks."invoices_lines"
     ),
 
     items_stg as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".prod_quickbooks."items" i
-        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+        from "datawarehouse".dev_quickbooks."items" i
+        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
         where del.id is null or i.updated_at > del.updated_at
         order by i.id, i._airbyte_emitted_at desc
     ),
@@ -37,7 +37,7 @@ with invoice_join as (
     accounts as (
         select distinct on (id)
             *
-        from "datawarehouse".prod_quickbooks."accounts"
+        from "datawarehouse".dev_quickbooks."accounts"
         order by id, _airbyte_emitted_at desc
     )
 
@@ -68,7 +68,7 @@ with invoice_join as (
 
 ar_accounts as (
     select *
-    from "datawarehouse".prod_quickbooks."accounts"
+    from "datawarehouse".dev_quickbooks."accounts"
 
     where account_type = 'Accounts Receivable'
     limit 1

@@ -46,9 +46,6 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_last') as timestamp) as refill_date_last,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_manual') as timestamp) as refill_date_manual,
         cast(jsonb_extract_path_text(_airbyte_data, 'refill_date_default') as timestamp) as refill_date_default,
-        cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_date') as timestamp) as refill_target_date,
-        cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_days') as int) as refill_target_days,
-        cast(jsonb_extract_path_text(_airbyte_data, 'refill_target_rxs') as varchar(255)) as refill_target_rxs,
         cast(jsonb_extract_path_text(_airbyte_data, 'add_user_id') as int) as add_user_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'chg_user_id') as int) as chg_user_id,
         cast(jsonb_extract_path_text(_airbyte_data, 'count_lines') as int) as count_lines,
@@ -83,7 +80,9 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_initial_at') as timestamp) as days_and_message_initial_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_updated_at') as timestamp) as days_and_message_updated_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_updated_at') as timestamp) as days_and_message_updated_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'days_pended') as int) as days_pended,
+        cast(jsonb_extract_path_text(_airbyte_data, 'qty_per_day_pended') as int) as qty_per_day_pended
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_order_items
 )
@@ -122,9 +121,6 @@ select
     refill_date_last,
     refill_date_manual,
     refill_date_default,
-    refill_target_date,
-    refill_target_days,
-    nullif(refill_target_rxs, '') as refill_target_rxs,
     add_user_id,
     chg_user_id,
     count_lines,
@@ -144,6 +140,8 @@ select
     created_at,
     days_and_message_updated_at,
     days_and_message_initial_at,
+    days_pended,
+    qty_per_day_pended,
     _airbyte_emitted_at,
     _airbyte_ab_id
 from order_items

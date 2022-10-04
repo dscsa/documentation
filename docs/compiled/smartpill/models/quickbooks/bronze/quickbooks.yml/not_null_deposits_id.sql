@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".prod_quickbooks."deposits"
+from "datawarehouse".dev_quickbooks."deposits"
 where id is null
 
 

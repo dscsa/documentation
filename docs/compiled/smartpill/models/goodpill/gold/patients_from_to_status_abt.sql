@@ -3,7 +3,7 @@ with t1 as (
 		date_day
 		, event_name_day as to_status
 		, lag(event_name_day) over (partition by patient_id_cp order by date_day) as from_status
-	from "datawarehouse".prod_analytics."patients_calendar_abt"
+	from "datawarehouse".dev_analytics."patients_calendar_abt"
 ), t2 as (
     select
         count(*) as number_patients

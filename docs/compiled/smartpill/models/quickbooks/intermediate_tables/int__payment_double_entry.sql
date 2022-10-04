@@ -6,9 +6,9 @@ with payment as (
         deposit_to_account_id,
         receivable_account_id,
         customer_id as customer_id
-    from "datawarehouse".prod_quickbooks."payments" p
+    from "datawarehouse".dev_quickbooks."payments" p
 
-    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
     where del.id is null or p.updated_at > del.updated_at
 
     order by p.id, p._airbyte_emitted_at desc
@@ -17,7 +17,7 @@ with payment as (
 ar_accounts as (
     select
         id
-    from "datawarehouse".prod_quickbooks."accounts"
+    from "datawarehouse".dev_quickbooks."accounts"
     where account_type = 'Accounts Receivable'
     limit 1
 ),

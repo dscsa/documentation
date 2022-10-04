@@ -1,7 +1,7 @@
 with recursive accounts as (
      select distinct on (id)
          *
-     from "datawarehouse".prod_quickbooks."accounts"
+     from "datawarehouse".dev_quickbooks."accounts"
      order by id, _airbyte_emitted_at desc
 ),
 tree as (

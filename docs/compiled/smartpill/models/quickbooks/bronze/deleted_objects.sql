@@ -14,4 +14,4 @@ from
     final
 
 where
-    _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".prod_quickbooks."deleted_objects")
+    _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."deleted_objects")

@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".prod_quickbooks."journal_entries"
+from "datawarehouse".dev_quickbooks."journal_entries"
 where updated_at is null
 
 

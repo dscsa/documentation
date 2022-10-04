@@ -1,9 +1,9 @@
 with sales_receipts as (
     select distinct on (s.id)
         s.*
-    from "datawarehouse".prod_quickbooks."sales_receipts" s
+    from "datawarehouse".dev_quickbooks."sales_receipts" s
 
-    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
     where del.id is null or s.updated_at > del.updated_at
 
     order by s.id, s._airbyte_emitted_at desc
@@ -12,18 +12,18 @@ with sales_receipts as (
 sales_receipt_lines as (
     select
         *
-    from "datawarehouse".prod_quickbooks."sales_receipts_lines"
+    from "datawarehouse".dev_quickbooks."sales_receipts_lines"
 ),
 
 items as (
     select distinct on (item.id)
         item.*,
         parent.income_account_id as parent_income_account_id
-    from "datawarehouse".prod_quickbooks."items" item
-    left join "datawarehouse".prod_quickbooks."items" parent
+    from "datawarehouse".dev_quickbooks."items" item
+    left join "datawarehouse".dev_quickbooks."items" parent
         on item.parent_item_id = parent.id
 
-    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
     where del.id is null or item.updated_at > del.updated_at
 
     order by item.id, item._airbyte_emitted_at desc

@@ -3,7 +3,7 @@
     
 
 select *
-from "datawarehouse".prod_quickbooks."accounts"
+from "datawarehouse".dev_quickbooks."accounts"
 where balance is null
 
 

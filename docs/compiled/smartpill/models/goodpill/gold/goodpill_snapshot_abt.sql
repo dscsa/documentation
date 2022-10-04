@@ -40,9 +40,9 @@ with goodpill_snapshot as (
                     when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other
-        from "datawarehouse".prod_analytics."patients" as pat
-        left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
-        left join "datawarehouse".prod_analytics."patients_status_historic" as pme using (patient_id_cp)
+        from "datawarehouse".dev_analytics."patients" as pat
+        left join "datawarehouse".dev_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
+        left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, pme.event_date desc
     ),
 
@@ -126,7 +126,7 @@ with goodpill_snapshot as (
             rx_group_created_at,
             rx_group_updated_at,
             rx_clinic_name_cp
-        from "datawarehouse".prod_analytics."rxs_joined"
+        from "datawarehouse".dev_analytics."rxs_joined"
     ),
 
     oi as (
@@ -163,18 +163,17 @@ with goodpill_snapshot as (
             updated_at as item_date_updated,
             days_and_message_updated_at as item_days_and_message_updated_at,
             days_and_message_initial_at as item_days_and_message_initial_at,
+            days_pended as item_days_pended,
+            qty_per_day_pended as item_qty_per_day_pended,
             refill_date_last as item_refill_date_last,
             refill_date_manual as item_refill_date_manual,
             refill_date_default as item_refill_date_default,
-            refill_target_date as item_refill_target_date,
-            refill_target_days as item_refill_target_days,
-            refill_target_rxs as item_refill_target_rxs,
             add_user_id as item_add_user_id,
             chg_user_id as item_chg_user_id,
             count_lines as item_count_lines,
             repacked_by as item_repacked_by,
             repacked_at as item_repacked_at
-        from "datawarehouse".prod_analytics."order_items"
+        from "datawarehouse".dev_analytics."order_items"
     ),
 
     o as (
@@ -221,7 +220,7 @@ with goodpill_snapshot as (
             order_state as order_state,
             order_zip as order_zip,
             updated_at as order_date_updated
-        from "datawarehouse".prod_analytics."orders"
+        from "datawarehouse".dev_analytics."orders"
     )
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
@@ -349,12 +348,11 @@ select
     gds.item_date_updated,
     gds.item_days_and_message_updated_at,
     gds.item_days_and_message_initial_at,
+    gds.item_days_pended as item_days_pended,
+    gds.item_qty_per_day_pended as item_qty_per_day_pended,
     gds.item_refill_date_last,
     gds.item_refill_date_manual,
     gds.item_refill_date_default,
-    gds.item_refill_target_date,
-    gds.item_refill_target_days,
-    gds.item_refill_target_rxs,
     gds.item_add_user_id,
     gds.item_chg_user_id,
     gds.item_count_lines,
@@ -440,7 +438,7 @@ select
     dw_providers.provider_phone as dw_provider_phone,
     dw_providers.provider_id_sf as dw_provider_id_sf,
     dw_providers.default_clinic as dw_provider_default_clinic,
-    dw_providers.default_clinic_updated_at as dw_provider_default_clinic_updated_at,
+    dw_providers.default_clinic_imputed_at as dw_provider_default_clinic_imputed_at,
     patients.patient_date_registered,
     patients.patient_date_reviewed,
     patients.patient_date_added as patient_date_added,
@@ -489,11 +487,11 @@ select
     patients.payment_coupon as patient_payment_coupon,
     patients.tracking_coupon as patient_tracking_coupon
 from goodpill_snapshot as gds
-left join "datawarehouse".prod_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
-left join "datawarehouse".prod_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
-left join "datawarehouse".prod_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
-left join "datawarehouse".prod_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
-left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
-left join "datawarehouse".prod_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
-left join "datawarehouse".prod_analytics."dw_clinics_groups" as dw_clinics_groups on
+left join "datawarehouse".dev_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
+left join "datawarehouse".dev_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
+left join "datawarehouse".dev_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
+left join "datawarehouse".dev_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
+left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
+left join "datawarehouse".dev_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
+left join "datawarehouse".dev_analytics."dw_clinics_groups" as dw_clinics_groups on
         dw_clinics_groups.clinic_group_id = dw_clinics.clinic_group_id
