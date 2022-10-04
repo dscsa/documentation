@@ -22,10 +22,10 @@ with calc_statuses as (
 				rh.refill_date_first,
 				p.patient_date_changed,
 				p.patient_inactive is not null as patient_inactive
-			from "datawarehouse".dev_analytics."rxs_joined" rh
-			inner join "datawarehouse".dev_analytics."patients" p using (patient_id_cp)
-			left join "datawarehouse".dev_analytics."order_items" oi using (rx_number, patient_id_cp)
-			left join "datawarehouse".dev_analytics."orders" oh using (invoice_number, patient_id_cp)
+			from "datawarehouse".prod_analytics."rxs_joined" rh
+			inner join "datawarehouse".prod_analytics."patients" p using (patient_id_cp)
+			left join "datawarehouse".prod_analytics."order_items" oi using (rx_number, patient_id_cp)
+			left join "datawarehouse".prod_analytics."orders" oh using (invoice_number, patient_id_cp)
 		) t
 	)
 	select distinct
@@ -70,9 +70,9 @@ statuses as (
 		gp.patient_id_cp,
 		patient_date_added as event_date,
 		'PATIENT_UNREGISTERED' as event_name
-		from "datawarehouse".dev_analytics."patients" gp
+		from "datawarehouse".prod_analytics."patients" gp
 		inner join (
-			select distinct patient_id_cp from "datawarehouse".dev_analytics."rxs_joined" rxs
+			select distinct patient_id_cp from "datawarehouse".prod_analytics."rxs_joined" rxs
 		) t using (patient_id_cp)
 		where patient_date_added is not null
 			and (patient_date_registered is null or date(patient_date_registered) >= date(patient_date_added))
@@ -81,12 +81,12 @@ statuses as (
 		gp.patient_id_cp,
 		patient_date_added as event_date,
 		'PATIENT_NO_RX' as event_name
-		from "datawarehouse".dev_analytics."patients" gp
+		from "datawarehouse".prod_analytics."patients" gp
 		left join (
 			select
 				patient_id_cp,
 				min(rx_date_added) as min_rx_date_added
-			from "datawarehouse".dev_analytics."rxs_joined" rxs
+			from "datawarehouse".prod_analytics."rxs_joined" rxs
 			group by patient_id_cp
 		) r on r.patient_id_cp = gp.patient_id_cp
 		where patient_date_registered is not null
@@ -96,14 +96,14 @@ statuses as (
 		patient_id_cp,
 		patient_date_updated as event_date,
 		'PATIENT_INACTIVE' as event_name
-		from "datawarehouse".dev_analytics."patients"
+		from "datawarehouse".prod_analytics."patients"
 		where patient_inactive = 'Inactive'
 	union
 	select
 		patient_id_cp,
 		patient_date_updated as event_date,
 		'PATIENT_DECEASED' as event_name
-		from "datawarehouse".dev_analytics."patients"
+		from "datawarehouse".prod_analytics."patients"
 		where patient_inactive = 'Deceased'
 )
 
@@ -122,6 +122,6 @@ from (
 	from statuses
 ) gps
 
-	where event_date > (select MAX(event_date) from "datawarehouse".dev_analytics."patients_status_historic")
+	where event_date > (select MAX(event_date) from "datawarehouse".prod_analytics."patients_status_historic")
 
 order by patient_id_cp, event_name, event_date desc

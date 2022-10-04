@@ -8,7 +8,7 @@ with qb as (
         account_type_sub as qbo_account_type_sub,
         account_number as qbo_account_number,
         transaction_date as qbo_transaction_date
-    from "datawarehouse".dev_quickbooks."general_ledger_abt"
+    from "datawarehouse".prod_quickbooks."general_ledger_abt"
 )
 
 select
@@ -119,10 +119,11 @@ select
     coalesce(item_refill_date_last, qbo_transaction_date) as item_refill_date_last,
     coalesce(item_refill_date_manual, qbo_transaction_date) as item_refill_date_manual,
     coalesce(item_refill_date_default, qbo_transaction_date) as item_refill_date_default,
+    coalesce(item_refill_target_date, qbo_transaction_date) as item_refill_target_date,
     item_days_and_message_initial_at,
     item_days_and_message_updated_at,
-    item_days_pended,
-    item_qty_per_day_pended,
+    item_refill_target_days,
+    item_refill_target_rxs,
     item_add_user_id,
     item_chg_user_id,
     item_count_lines,
@@ -208,7 +209,7 @@ select
     dw_provider_phone,
     dw_provider_id_sf,
     dw_provider_default_clinic,
-    coalesce(dw_provider_default_clinic_imputed_at, qbo_transaction_date) as dw_provider_default_clinic_imputed_at,
+    dw_provider_default_clinic_updated_at,
     coalesce(patient_date_registered, qbo_transaction_date) as patient_date_registered,
     coalesce(patient_date_reviewed, qbo_transaction_date) as patient_date_reviewed,
     coalesce(patient_date_added, qbo_transaction_date) as patient_date_added,
@@ -265,5 +266,5 @@ select
     qbo_account_number,
     qbo_transaction_date
 from
-    "datawarehouse".dev_analytics."goodpill_snapshot_abt"
+    "datawarehouse".prod_analytics."goodpill_snapshot_abt"
 full outer join qb on false

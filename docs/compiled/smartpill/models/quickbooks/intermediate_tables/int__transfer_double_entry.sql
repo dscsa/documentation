@@ -1,9 +1,9 @@
 with transfers as (
     select distinct on (t.id)
         t.*
-    from "datawarehouse".dev_quickbooks."transfers" t
+    from "datawarehouse".prod_quickbooks."transfers" t
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
     where del.id is null or t.updated_at > del.updated_at
 
     order by t.id, t._airbyte_emitted_at desc
