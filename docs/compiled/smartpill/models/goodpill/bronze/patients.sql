@@ -129,7 +129,7 @@ select distinct on (patients.patient_id_cp)
     cast('now()' as timestamp) as date_processed
 from patients
 left join
-    "datawarehouse".dev_analytics."clinic_coupons" as cmc on
+    "datawarehouse".prod_analytics."clinic_coupons" as cmc on
         patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
 where
     lower(patients.first_name) not like '%test%'

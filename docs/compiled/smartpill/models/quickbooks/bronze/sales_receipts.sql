@@ -21,4 +21,4 @@ from
     final
 
 where
-    _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".dev_quickbooks."sales_receipts")
+    _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".prod_quickbooks."sales_receipts")

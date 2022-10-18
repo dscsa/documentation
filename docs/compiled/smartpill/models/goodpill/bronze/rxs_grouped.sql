@@ -67,4 +67,4 @@ select
     updated_at
 from rxs_grouped
 
-    where created_at > (select max(created_at) from "datawarehouse".dev_analytics."rxs_grouped")
+    where created_at > (select max(created_at) from "datawarehouse".prod_analytics."rxs_grouped")

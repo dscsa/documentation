@@ -28,4 +28,4 @@ select
     updated_at
 from raw_goodpill_dw_providers
 
-    where updated_at > (select max(updated_at) from "datawarehouse".dev_analytics."dw_providers")
+    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."dw_providers")

@@ -2,9 +2,9 @@ with purchase_join as (
     with purchases as (
         select distinct on (p.id)
             p.*
-        from "datawarehouse".dev_quickbooks."purchases" p
+        from "datawarehouse".prod_quickbooks."purchases" p
 
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
         where del.id is null or p.updated_at > del.updated_at
 
         order by p.id, p._airbyte_emitted_at desc
@@ -12,15 +12,15 @@ with purchase_join as (
 
     purchase_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."purchases_lines"
+        from "datawarehouse".prod_quickbooks."purchases_lines"
     ),
 
     items_stg as (
         select distinct on (item.id)
             item.*
-        from "datawarehouse".dev_quickbooks."items" item
+        from "datawarehouse".prod_quickbooks."items" item
 
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
         where del.id is null or item.updated_at > del.updated_at
 
         order by item.id, item._airbyte_emitted_at desc

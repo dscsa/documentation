@@ -8,7 +8,7 @@ with qb as (
         account_type_sub as qbo_account_type_sub,
         account_number as qbo_account_number,
         transaction_date as qbo_transaction_date
-    from "datawarehouse".dev_quickbooks."general_ledger_abt"
+    from "datawarehouse".prod_quickbooks."general_ledger_abt"
 )
 
 select
@@ -265,5 +265,5 @@ select
     qbo_account_number,
     qbo_transaction_date
 from
-    "datawarehouse".dev_analytics."goodpill_snapshot_abt"
+    "datawarehouse".prod_analytics."goodpill_snapshot_abt"
 full outer join qb on false

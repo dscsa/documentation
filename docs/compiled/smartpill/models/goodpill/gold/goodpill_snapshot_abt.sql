@@ -40,9 +40,9 @@ with goodpill_snapshot as (
                     when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other
-        from "datawarehouse".dev_analytics."patients" as pat
-        left join "datawarehouse".dev_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
-        left join "datawarehouse".dev_analytics."patients_status_historic" as pme using (patient_id_cp)
+        from "datawarehouse".prod_analytics."patients" as pat
+        left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
+        left join "datawarehouse".prod_analytics."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, pme.event_date desc
     ),
 
@@ -126,7 +126,7 @@ with goodpill_snapshot as (
             rx_group_created_at,
             rx_group_updated_at,
             rx_clinic_name_cp
-        from "datawarehouse".dev_analytics."rxs_joined"
+        from "datawarehouse".prod_analytics."rxs_joined"
     ),
 
     oi as (
@@ -173,7 +173,7 @@ with goodpill_snapshot as (
             count_lines as item_count_lines,
             repacked_by as item_repacked_by,
             repacked_at as item_repacked_at
-        from "datawarehouse".dev_analytics."order_items"
+        from "datawarehouse".prod_analytics."order_items"
     ),
 
     o as (
@@ -220,7 +220,7 @@ with goodpill_snapshot as (
             order_state as order_state,
             order_zip as order_zip,
             updated_at as order_date_updated
-        from "datawarehouse".dev_analytics."orders"
+        from "datawarehouse".prod_analytics."orders"
     )
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
@@ -487,11 +487,11 @@ select
     patients.payment_coupon as patient_payment_coupon,
     patients.tracking_coupon as patient_tracking_coupon
 from goodpill_snapshot as gds
-left join "datawarehouse".dev_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
-left join "datawarehouse".dev_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
-left join "datawarehouse".dev_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
-left join "datawarehouse".dev_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
-left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
-left join "datawarehouse".dev_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
-left join "datawarehouse".dev_analytics."dw_clinics_groups" as dw_clinics_groups on
+left join "datawarehouse".prod_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
+left join "datawarehouse".prod_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
+left join "datawarehouse".prod_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
+left join "datawarehouse".prod_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
+left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
+left join "datawarehouse".prod_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
+left join "datawarehouse".prod_analytics."dw_clinics_groups" as dw_clinics_groups on
         dw_clinics_groups.clinic_group_id = dw_clinics.clinic_group_id

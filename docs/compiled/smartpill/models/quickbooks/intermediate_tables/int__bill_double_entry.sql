@@ -2,22 +2,22 @@ with bill_join as (
     with bills as (
         select distinct on (b.id)
             b.*
-        from "datawarehouse".dev_quickbooks."bills" b
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
+        from "datawarehouse".prod_quickbooks."bills" b
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
         where del.id is null or b.updated_at > del.updated_at
         order by b.id, b._airbyte_emitted_at desc
     ),
 
     bill_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."bills_lines"
+        from "datawarehouse".prod_quickbooks."bills_lines"
     ),
 
     items_stg as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".dev_quickbooks."items" i 
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
+        from "datawarehouse".prod_quickbooks."items" i 
+        where id not in (select id from "datawarehouse".prod_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
         order by i.id, i._airbyte_emitted_at desc
     ),
 

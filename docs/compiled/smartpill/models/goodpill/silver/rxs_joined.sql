@@ -1,7 +1,7 @@
 with rxs_grouped_unnested as (
     select
         *
-    from "datawarehouse".dev_analytics."rxs_grouped", unnest(string_to_array(trim(both ',' from rx_numbers), ',')) as rx_number
+    from "datawarehouse".prod_analytics."rxs_grouped", unnest(string_to_array(trim(both ',' from rx_numbers), ',')) as rx_number
 )
 
 select distinct on (rs.rx_number, rs.updated_at)
@@ -81,10 +81,10 @@ select distinct on (rs.rx_number, rs.updated_at)
     rg.updated_at as rx_group_updated_at,
     clinics.clinic_name_cp as rx_clinic_name_cp
 from rxs_grouped_unnested as rg
-left join "datawarehouse".dev_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
-left join "datawarehouse".dev_analytics."clinics" as clinics on clinics.clinic_name_cp = rs.clinic_name
+left join "datawarehouse".prod_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
+left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = rs.clinic_name
 
-    where rs.updated_at > (select max(updated_at) from "datawarehouse".dev_analytics."rxs_joined")
+    where rs.updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."rxs_joined")
 
 order by
     rs.rx_number,

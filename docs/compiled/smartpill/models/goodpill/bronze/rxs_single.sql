@@ -155,4 +155,4 @@ select
     updated_at
 from rxs_single
 
-    where updated_at > (select max(updated_at) from "datawarehouse".dev_analytics."rxs_single")
+    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."rxs_single")

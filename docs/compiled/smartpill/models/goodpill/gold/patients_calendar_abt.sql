@@ -111,7 +111,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2110
+    where generated_number <= 2116
     order by generated_number
 
 
@@ -147,7 +147,7 @@ select * from filtered
         -- table with all distincts patient ids, to cross join with dates
         pids as (
             select distinct patient_id_cp
-            from "datawarehouse".dev_analytics."patients"
+            from "datawarehouse".prod_analytics."patients"
         )
 
         -- assign to all the rows of a partition its designated event
@@ -172,9 +172,9 @@ select * from filtered
             from calendar
             cross join pids
             left join
-                "datawarehouse".dev_analytics."patients_status_historic" as psh on
+                "datawarehouse".prod_analytics."patients_status_historic" as psh on
                     date(psh.event_date) = calendar.date_day and psh.patient_id_cp = pids.patient_id_cp
-            left join "datawarehouse".dev_analytics."patient_events" as pe on pe.event_name = psh.event_name
+            left join "datawarehouse".prod_analytics."patient_events" as pe on pe.event_name = psh.event_name
         ) as t
     ),
 
@@ -191,7 +191,7 @@ select * from filtered
                     ) in (
                         'PATIENT_UNREGISTERED', 'PATIENT_NO_RX'
                     ) then (
-                        select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE'
+                        select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_ACTIVE'
                     )
                 when
                     pe.event_name like '%CHURN%' and lag(
@@ -199,7 +199,7 @@ select * from filtered
                     ) over (
                         partition by pc.patient_id_cp
                     ) = 'PATIENT_ACTIVE' then (
-                        select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN'
+                        select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_NEW_CHURN'
                     )
                 when
                     pe.event_name like 'PATIENT_ACTIVE' and lag(
@@ -207,12 +207,12 @@ select * from filtered
                     ) over (
                         partition by pc.patient_id_cp
                     ) like '%CHURN%' then (
-                        select event_weight from "datawarehouse".dev_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED'
+                        select event_weight from "datawarehouse".prod_analytics."patient_events" where event_name = 'PATIENT_REACTIVATED'
                     )
                 else pc.event_weight_day
             end as event_weight_day
         from pc
-        left join "datawarehouse".dev_analytics."patient_events" as pe on pc.event_weight_day = pe.event_weight
+        left join "datawarehouse".prod_analytics."patient_events" as pe on pc.event_weight_day = pe.event_weight
     )
 
     -- obtain the event date for each time frame
@@ -297,8 +297,8 @@ select
   p."patient_date_updated" as "patient_date_updated",
   p."date_processed" as "patient_date_processed"
 from patients_calendar
-inner join "datawarehouse".dev_analytics."patients" as p on patients_calendar.patient_id_cp = p.patient_id_cp
-inner join "datawarehouse".dev_analytics."patient_events" as ped on patients_calendar.event_weight_day = ped.event_weight
-inner join "datawarehouse".dev_analytics."patient_events" as pew on patients_calendar.event_weight_week = pew.event_weight
-inner join "datawarehouse".dev_analytics."patient_events" as pem on patients_calendar.event_weight_month = pem.event_weight
-inner join "datawarehouse".dev_analytics."patient_events" as pey on patients_calendar.event_weight_year = pey.event_weight
+inner join "datawarehouse".prod_analytics."patients" as p on patients_calendar.patient_id_cp = p.patient_id_cp
+inner join "datawarehouse".prod_analytics."patient_events" as ped on patients_calendar.event_weight_day = ped.event_weight
+inner join "datawarehouse".prod_analytics."patient_events" as pew on patients_calendar.event_weight_week = pew.event_weight
+inner join "datawarehouse".prod_analytics."patient_events" as pem on patients_calendar.event_weight_month = pem.event_weight
+inner join "datawarehouse".prod_analytics."patient_events" as pey on patients_calendar.event_weight_year = pey.event_weight

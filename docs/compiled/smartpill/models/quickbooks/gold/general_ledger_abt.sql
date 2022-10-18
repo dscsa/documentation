@@ -3,9 +3,9 @@ with purchase_join as (
     with purchases as (
         select distinct on (p.id)
             p.*
-        from "datawarehouse".dev_quickbooks."purchases" p
+        from "datawarehouse".prod_quickbooks."purchases" p
 
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Purchase' and p.id = del.id
         where del.id is null or p.updated_at > del.updated_at
 
         order by p.id, p._airbyte_emitted_at desc
@@ -13,15 +13,15 @@ with purchase_join as (
 
     purchase_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."purchases_lines"
+        from "datawarehouse".prod_quickbooks."purchases_lines"
     ),
 
     items_stg as (
         select distinct on (item.id)
             item.*
-        from "datawarehouse".dev_quickbooks."items" item
+        from "datawarehouse".prod_quickbooks."items" item
 
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
         where del.id is null or item.updated_at > del.updated_at
 
         order by item.id, item._airbyte_emitted_at desc
@@ -91,21 +91,21 @@ with deposit_join as (
     with deposits as (
         select distinct on (d.id)
             d.*
-        from "datawarehouse".dev_quickbooks."deposits" d
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Deposit' and d.id = del.id
+        from "datawarehouse".prod_quickbooks."deposits" d
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Deposit' and d.id = del.id
         where del.id is null or d.updated_at > del.updated_at
         order by id, _airbyte_emitted_at desc
     ),
 
     deposit_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."deposits_lines"
+        from "datawarehouse".prod_quickbooks."deposits_lines"
     ),
 
     accounts as (
         select distinct on (id)
             *
-        from "datawarehouse".dev_quickbooks."accounts"
+        from "datawarehouse".prod_quickbooks."accounts"
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -173,9 +173,9 @@ Table that provides the debit and credit records of a journal entry transaction.
 with journal_entries as (
     select distinct on (j.id)
         j.*
-    from "datawarehouse".dev_quickbooks."journal_entries" j
+    from "datawarehouse".prod_quickbooks."journal_entries" j
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'JournalEntry' and j.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'JournalEntry' and j.id = del.id
     where del.id is null or j.updated_at > del.updated_at
 
     order by j.id, j._airbyte_emitted_at desc
@@ -183,7 +183,7 @@ with journal_entries as (
 
 journal_entry_lines as (
     select *
-    from "datawarehouse".dev_quickbooks."journal_entries_lines"
+    from "datawarehouse".prod_quickbooks."journal_entries_lines"
 ),
 
 final as (
@@ -216,9 +216,9 @@ with payment as (
         deposit_to_account_id,
         receivable_account_id,
         customer_id as customer_id
-    from "datawarehouse".dev_quickbooks."payments" p
+    from "datawarehouse".prod_quickbooks."payments" p
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Payment' and p.id = del.id
     where del.id is null or p.updated_at > del.updated_at
 
     order by p.id, p._airbyte_emitted_at desc
@@ -227,7 +227,7 @@ with payment as (
 ar_accounts as (
     select
         id
-    from "datawarehouse".dev_quickbooks."accounts"
+    from "datawarehouse".prod_quickbooks."accounts"
     where account_type = 'Accounts Receivable'
     limit 1
 ),
@@ -271,22 +271,22 @@ with bill_join as (
     with bills as (
         select distinct on (b.id)
             b.*
-        from "datawarehouse".dev_quickbooks."bills" b
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
+        from "datawarehouse".prod_quickbooks."bills" b
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Bill' and b.id = del.id
         where del.id is null or b.updated_at > del.updated_at
         order by b.id, b._airbyte_emitted_at desc
     ),
 
     bill_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."bills_lines"
+        from "datawarehouse".prod_quickbooks."bills_lines"
     ),
 
     items_stg as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".dev_quickbooks."items" i 
-        where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
+        from "datawarehouse".prod_quickbooks."items" i 
+        where id not in (select id from "datawarehouse".prod_quickbooks."deleted_objects" del where object_type = 'Item' and i.updated_at <= del.updated_at)
         order by i.id, i._airbyte_emitted_at desc
     ),
 
@@ -355,22 +355,22 @@ with invoice_join as (
     with invoices as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".dev_quickbooks."invoices" i
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
+        from "datawarehouse".prod_quickbooks."invoices" i
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Invoice' and i.id = del.id
         where del.id is null or i.updated_at > del.updated_at
         order by i.id, i._airbyte_emitted_at desc
     ),
 
     invoice_lines as (
         select *
-        from "datawarehouse".dev_quickbooks."invoices_lines"
+        from "datawarehouse".prod_quickbooks."invoices_lines"
     ),
 
     items_stg as (
         select distinct on (i.id)
             i.*
-        from "datawarehouse".dev_quickbooks."items" i
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+        from "datawarehouse".prod_quickbooks."items" i
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
         where del.id is null or i.updated_at > del.updated_at
         order by i.id, i._airbyte_emitted_at desc
     ),
@@ -390,7 +390,7 @@ with invoice_join as (
     accounts as (
         select distinct on (id)
             *
-        from "datawarehouse".dev_quickbooks."accounts"
+        from "datawarehouse".prod_quickbooks."accounts"
         order by id, _airbyte_emitted_at desc
     )
 
@@ -421,7 +421,7 @@ with invoice_join as (
 
 ar_accounts as (
     select *
-    from "datawarehouse".dev_quickbooks."accounts"
+    from "datawarehouse".prod_quickbooks."accounts"
 
     where account_type = 'Accounts Receivable'
     limit 1
@@ -466,8 +466,8 @@ with bill_payment_join as (
     with bill_payments as (
         select distinct on (bp.id)
             bp.*
-        from "datawarehouse".dev_quickbooks."bill_payments" bp
-        left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'BillPayment' and bp.id = del.id
+        from "datawarehouse".prod_quickbooks."bill_payments" bp
+        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'BillPayment' and bp.id = del.id
         where del.id is null or bp.updated_at > del.updated_at
         order by bp.id, bp._airbyte_emitted_at desc
     ),
@@ -475,7 +475,7 @@ with bill_payment_join as (
     accounts as (
         select distinct on (id)
             *
-        from "datawarehouse".dev_quickbooks."accounts"
+        from "datawarehouse".prod_quickbooks."accounts"
         order by id, _airbyte_emitted_at desc
     ),
 
@@ -548,7 +548,7 @@ accounts as (
         id,
         account_number,
         fully_qualified_name
-    from "datawarehouse".dev_quickbooks."accounts"
+    from "datawarehouse".prod_quickbooks."accounts"
     order by id, _airbyte_emitted_at
 ),
 
@@ -574,9 +574,9 @@ from final
 with sales_receipts as (
     select distinct on (s.id)
         s.*
-    from "datawarehouse".dev_quickbooks."sales_receipts" s
+    from "datawarehouse".prod_quickbooks."sales_receipts" s
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'SalesReceipt' and s.id = del.id
     where del.id is null or s.updated_at > del.updated_at
 
     order by s.id, s._airbyte_emitted_at desc
@@ -585,18 +585,18 @@ with sales_receipts as (
 sales_receipt_lines as (
     select
         *
-    from "datawarehouse".dev_quickbooks."sales_receipts_lines"
+    from "datawarehouse".prod_quickbooks."sales_receipts_lines"
 ),
 
 items as (
     select distinct on (item.id)
         item.*,
         parent.income_account_id as parent_income_account_id
-    from "datawarehouse".dev_quickbooks."items" item
-    left join "datawarehouse".dev_quickbooks."items" parent
+    from "datawarehouse".prod_quickbooks."items" item
+    left join "datawarehouse".prod_quickbooks."items" parent
         on item.parent_item_id = parent.id
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and item.id = del.id
     where del.id is null or item.updated_at > del.updated_at
 
     order by item.id, item._airbyte_emitted_at desc
@@ -654,21 +654,21 @@ from final
 with credit_memos as (
     select distinct on (c.id)
         c.*
-    from "datawarehouse".dev_quickbooks."credit_memos" c
-    where id not in (select id from "datawarehouse".dev_quickbooks."deleted_objects" del where object_type = 'CreditMemo' and c.updated_at <= del.updated_at)
+    from "datawarehouse".prod_quickbooks."credit_memos" c
+    where id not in (select id from "datawarehouse".prod_quickbooks."deleted_objects" del where object_type = 'CreditMemo' and c.updated_at <= del.updated_at)
     order by c.id, c._airbyte_emitted_at desc
 ),
 
 credit_memo_lines as (
     select *
-    from "datawarehouse".dev_quickbooks."credit_memos_lines"
+    from "datawarehouse".prod_quickbooks."credit_memos_lines"
 ),
 
 items as (
     select distinct on (i.id) 
         i.*
-    from "datawarehouse".dev_quickbooks."items" i 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
+    from "datawarehouse".prod_quickbooks."items" i 
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Item' and i.id = del.id
     where del.id is null or i.updated_at > del.updated_at
     order by i.id, i._airbyte_emitted_at desc
 ),
@@ -676,7 +676,7 @@ items as (
 accounts as (
     select distinct on (id)
         *
-    from "datawarehouse".dev_quickbooks."accounts"
+    from "datawarehouse".prod_quickbooks."accounts"
     order by id, _airbyte_emitted_at desc
 ),
 
@@ -742,9 +742,9 @@ from final
 with transfers as (
     select distinct on (t.id)
         t.*
-    from "datawarehouse".dev_quickbooks."transfers" t
+    from "datawarehouse".prod_quickbooks."transfers" t
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Transfer' and t.id = del.id
     where del.id is null or t.updated_at > del.updated_at
 
     order by t.id, t._airbyte_emitted_at desc
@@ -792,9 +792,9 @@ from final
 with vendor_credits as (
     select distinct on (v.id)
         v.*
-    from "datawarehouse".dev_quickbooks."vendor_credits" v
+    from "datawarehouse".prod_quickbooks."vendor_credits" v
 
-    left join "datawarehouse".dev_quickbooks."deleted_objects" del on object_type = 'VendorCredit' and v.id = del.id
+    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'VendorCredit' and v.id = del.id
     where del.id is null or v.updated_at > del.updated_at
 
     order by v.id, v._airbyte_emitted_at desc
@@ -802,7 +802,7 @@ with vendor_credits as (
 
 vendor_credit_lines as (
     select *
-    from "datawarehouse".dev_quickbooks."vendor_credits_lines"
+    from "datawarehouse".prod_quickbooks."vendor_credits_lines"
 ),
 
 vendor_credit_join as (
@@ -853,7 +853,7 @@ from final
 with accounts as (
     select distinct on (id)
         *
-    from "datawarehouse".dev_quickbooks."accounts"
+    from "datawarehouse".prod_quickbooks."accounts"
     order by id, _airbyte_emitted_at desc
 ),
 
@@ -1040,14 +1040,14 @@ qgl as (
 qcl as (
     select distinct on (id)
         *
-    from "datawarehouse".dev_quickbooks."classes"
+    from "datawarehouse".prod_quickbooks."classes"
     order by id, _airbyte_emitted_at desc
 ),
 
 qcu as (
     select distinct on (id)
         *
-    from "datawarehouse".dev_quickbooks."customers"
+    from "datawarehouse".prod_quickbooks."customers"
     order by id, _airbyte_emitted_at desc
 )
 
@@ -1068,6 +1068,6 @@ select
     qcu.company_name as customer_company_name
 from qgl
 left join qcl on (qcl.id = qgl.class_id)
-left join "datawarehouse".dev_quickbooks."accounts_top_level" qa on (qa.id = qgl.account_id)
-left join "datawarehouse".dev_quickbooks."accounts_top_level" qap on (qap.id = qa.top_level_id)
+left join "datawarehouse".prod_quickbooks."accounts_top_level" qa on (qa.id = qgl.account_id)
+left join "datawarehouse".prod_quickbooks."accounts_top_level" qap on (qap.id = qa.top_level_id)
 left join qcu on (qcu.id = qgl.customer_id)
