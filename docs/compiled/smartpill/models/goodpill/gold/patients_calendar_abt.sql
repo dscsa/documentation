@@ -111,7 +111,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2118
+    where generated_number <= 2124
     order by generated_number
 
 
@@ -249,7 +249,8 @@ select
   p."language" as "patient_language",
   p."phone1" as "patient_phone1",
   p."phone2" as "patient_phone2",
-  p."patient_address" as "patient_address",
+  p."patient_address1" as "patient_address1",
+  p."patient_address2" as "patient_address2",
   p."patient_city" as "patient_city",
   p."patient_state" as "patient_state",
   p."patient_zip" as "patient_zip",
@@ -258,7 +259,7 @@ select
   p."payment_card_date_expired" as "patient_payment_card_date_expired",
   p."payment_card_autopay" as "patient_payment_card_autopay",
   p."payment_method_default" as "patient_payment_method_default",
-  p."clinic_id_coupon" as "patient_clinic_id_coupon",
+  p."clinic_id" as "patient_clinic_id",
   p."payment_coupon" as "patient_payment_coupon",
   p."tracking_coupon" as "patient_tracking_coupon",
   p."patient_date_registered" as "patient_date_registered",
@@ -294,8 +295,7 @@ select
   p."allergies_tetracycline" as "patient_allergies_tetracycline",
   p."allergies_other" as "patient_allergies_other",
   p."medications_other" as "patient_medications_other",
-  p."patient_date_updated" as "patient_date_updated",
-  p."date_processed" as "patient_date_processed"
+  p."patient_date_updated" as "patient_date_updated"
 from patients_calendar
 inner join "datawarehouse".prod_analytics."patients" as p on patients_calendar.patient_id_cp = p.patient_id_cp
 inner join "datawarehouse".prod_analytics."patient_events" as ped on patients_calendar.event_weight_day = ped.event_weight

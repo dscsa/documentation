@@ -11,7 +11,7 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.patient_id_cp as patient_id_cp,
     coalesce(rg.drug_generic, rs.drug_generic) as drug_generic,
     coalesce(rg.drug_brand, rs.drug_brand) as drug_brand,
-    coalesce(rg.drug_name, rs.drug_name) as drug_name,
+    rs.drug_name as drug_name,
     coalesce(rg.group_id, rs.group_id) as rx_group_id,
     rs.rx_message_key as rx_message_key,
     rs.rx_message_text as rx_message_text,
@@ -65,7 +65,7 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.provider_npi as provider_npi,
     rs.provider_first_name as provider_first_name,
     rs.provider_last_name as provider_last_name,
-    rs.clinic_name as clinic_name,
+    rs.provider_clinic as clinic_name,
     rs.provider_phone as provider_phone,
     coalesce(rg.rx_date_changed, rs.rx_date_changed) as rx_date_changed,
     coalesce(rg.rx_date_expired, rs.rx_date_expired) as rx_date_expired,
@@ -82,7 +82,7 @@ select distinct on (rs.rx_number, rs.updated_at)
     clinics.clinic_name_cp as rx_clinic_name_cp
 from rxs_grouped_unnested as rg
 left join "datawarehouse".prod_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
-left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = rs.clinic_name
+left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = rs.provider_clinic
 
     where rs.updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."rxs_joined")
 

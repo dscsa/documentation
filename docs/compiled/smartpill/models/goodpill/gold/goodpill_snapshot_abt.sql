@@ -41,7 +41,7 @@ with goodpill_snapshot as (
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other
         from "datawarehouse".prod_analytics."patients" as pat
-        left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id_coupon = clinics.clinic_id
+        left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id = clinics.clinic_id
         left join "datawarehouse".prod_analytics."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, pme.event_date desc
     ),
@@ -150,6 +150,10 @@ with goodpill_snapshot as (
             qty_dispensed_actual as item_qty_dispensed_actual,
             price_dispensed_default as item_price_dispensed_default,
             price_dispensed_actual as item_price_dispensed_actual,
+            unit_price_retail_initial as item_unit_price_retail_initial,
+            unit_price_goodrx_initial as item_unit_price_goodrx_initial,
+            unit_price_nadac_initial as item_unit_price_nadac_initial,
+            unit_price_awp_initial as item_unit_price_awp_initial,
             qty_pended_total as item_qty_pended_total,
             qty_pended_repacks as item_qty_pended_repacks,
             count_pended_total as item_count_pended_total,
@@ -239,6 +243,12 @@ with goodpill_snapshot as (
         rh.rx_group_updated_at desc,
         rh.rx_group_created_at <= o.order_date_dispensed desc,
         rh.rx_group_created_at desc
+),
+drugs as (
+    select *,
+    nullif(drug_generic, '') as generic_name,
+    coalesce(nullif(price_goodrx, 0), nullif(price_nadac, 0), nullif(price_retail, 0)) as price_coalesced
+    from "datawarehouse".prod_analytics."drugs"
 )
 
 select
@@ -335,6 +345,10 @@ select
     gds.item_qty_dispensed_actual,
     gds.item_price_dispensed_default,
     gds.item_price_dispensed_actual,
+    gds.item_unit_price_retail_initial,
+    gds.item_unit_price_goodrx_initial,
+    gds.item_unit_price_nadac_initial,
+    gds.item_unit_price_awp_initial,
     gds.item_qty_pended_total,
     gds.item_qty_pended_repacks,
     gds.item_count_pended_total,
@@ -448,7 +462,7 @@ select
     patients.birth_date as patient_language,
     patients.phone1 as patient_phone1,
     patients.phone2 as patient_phone2,
-    patients.patient_address as patient_address,
+    concat(patients.patient_address1, ', ', patients.patient_address2) as patient_address,
     patients.patient_city as patient_city,
     patients.patient_state as patient_state,
     patients.patient_zip as patient_zip,
@@ -487,7 +501,7 @@ select
     patients.payment_coupon as patient_payment_coupon,
     patients.tracking_coupon as patient_tracking_coupon
 from goodpill_snapshot as gds
-left join "datawarehouse".prod_analytics."drugs" as drugs on drugs.generic_name = gds.rx_drug_generic
+left join drugs on drugs.generic_name = gds.rx_drug_generic
 left join "datawarehouse".prod_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
 left join "datawarehouse".prod_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
 left join "datawarehouse".prod_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi

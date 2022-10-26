@@ -58,7 +58,6 @@ select
     invoice_number,
     patient_id_cp,
     patient_id_wc,
-    coalesce(order_zip, order_state) as location_id,
     count_items,
     count_filled,
     count_nofill,

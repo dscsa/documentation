@@ -80,7 +80,8 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.language, '') as "language",
     nullif(patients.phone1, '') as phone1,
     nullif(patients.phone2, '') as phone2,
-    concat(patients.patient_address1, ', ', patients.patient_address2) as patient_address,
+    nullif(patients.patient_address1, '') as patient_address1,
+    nullif(patients.patient_address2, '') as patient_address2,
     nullif(patients.patient_city, '') as patient_city,
     nullif(patients.patient_state, '') as patient_state,
     nullif(patients.patient_zip, '') as patient_zip,
@@ -89,7 +90,7 @@ select distinct on (patients.patient_id_cp)
     patients.payment_card_date_expired,
     patients.payment_card_autopay,
     nullif(patients.payment_method_default, '') as payment_method_default,
-    cmc.clinic_id as clinic_id_coupon,
+    cmc.clinic_id,
     nullif(patients.payment_coupon, '') as payment_coupon,
     nullif(patients.tracking_coupon, '') as tracking_coupon,
     patients.patient_date_registered,
@@ -125,8 +126,7 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.allergies_tetracycline, '') as allergies_tetracycline,
     nullif(patients.allergies_other, '') as allergies_other,
     nullif(patients.medications_other, '') as medications_other,
-    patients.patient_date_updated,
-    cast('now()' as timestamp) as date_processed
+    patients.patient_date_updated
 from patients
 left join
     "datawarehouse".prod_analytics."clinic_coupons" as cmc on

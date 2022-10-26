@@ -33,6 +33,18 @@ with order_items as (
         cast(
             jsonb_extract_path_text(_airbyte_data, 'price_dispensed_actual') as decimal(5, 2)
         ) as price_dispensed_actual,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'unit_price_retail_initial') as decimal(13, 4)
+        ) as unit_price_retail_initial,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'unit_price_goodrx_initial') as decimal(13, 4)
+        ) as unit_price_goodrx_initial,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'unit_price_nadac_initial') as decimal(13, 4)
+        ) as unit_price_nadac_initial,
+        cast(
+            jsonb_extract_path_text(_airbyte_data, 'unit_price_awp_initial') as decimal(13, 4)
+        ) as unit_price_awp_initial,
         cast(jsonb_extract_path_text(_airbyte_data, 'qty_pended_total') as decimal(10, 3)) as qty_pended_total,
         cast(jsonb_extract_path_text(_airbyte_data, 'qty_pended_repacks') as decimal(10, 3)) as qty_pended_repacks,
         cast(jsonb_extract_path_text(_airbyte_data, 'count_pended_total') as int) as count_pended_total,
@@ -88,7 +100,6 @@ with order_items as (
 )
 
 select
-    concat(invoice_number, '_', rx_number) as item_id,
     invoice_number,
     patient_id_cp,
     rx_number,
@@ -108,6 +119,10 @@ select
     qty_dispensed_actual,
     price_dispensed_default,
     price_dispensed_actual,
+    unit_price_retail_initial,
+    unit_price_goodrx_initial,
+    unit_price_nadac_initial,
+    unit_price_awp_initial,
     qty_pended_total,
     qty_pended_repacks,
     count_pended_total,
