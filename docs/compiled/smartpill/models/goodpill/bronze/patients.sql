@@ -90,7 +90,6 @@ select distinct on (patients.patient_id_cp)
     patients.payment_card_date_expired,
     patients.payment_card_autopay,
     nullif(patients.payment_method_default, '') as payment_method_default,
-    cmc.clinic_id,
     nullif(patients.payment_coupon, '') as payment_coupon,
     nullif(patients.tracking_coupon, '') as tracking_coupon,
     patients.patient_date_registered,
@@ -128,9 +127,6 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.medications_other, '') as medications_other,
     patients.patient_date_updated
 from patients
-left join
-    "datawarehouse".prod_analytics."clinic_coupons" as cmc on
-        patients.payment_coupon = cmc.coupon_code or patients.tracking_coupon = cmc.coupon_code
 where
     lower(patients.first_name) not like '%test%'
     and lower(patients.first_name) not like '%user%'

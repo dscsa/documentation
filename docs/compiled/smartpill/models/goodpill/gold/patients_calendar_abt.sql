@@ -111,7 +111,7 @@ with rawdata as (
 
     select *
     from unioned
-    where generated_number <= 2124
+    where generated_number <= 2125
     order by generated_number
 
 
@@ -259,7 +259,6 @@ select
   p."payment_card_date_expired" as "patient_payment_card_date_expired",
   p."payment_card_autopay" as "patient_payment_card_autopay",
   p."payment_method_default" as "patient_payment_method_default",
-  p."clinic_id" as "patient_clinic_id",
   p."payment_coupon" as "patient_payment_coupon",
   p."tracking_coupon" as "patient_tracking_coupon",
   p."patient_date_registered" as "patient_date_registered",

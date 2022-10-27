@@ -1,4 +1,10 @@
-with goodpill_snapshot as (
+with patients as (
+    select _patients.*, cmc.clinic_id
+    from "datawarehouse".prod_analytics."patients" as _patients
+    left join "datawarehouse".prod_analytics."clinic_coupons" as cmc on
+        _patients.payment_coupon = cmc.coupon_code or _patients.tracking_coupon = cmc.coupon_code
+),
+goodpill_snapshot as (
     with psh as (
         -- join with dimension patient right away, to join later with clinics
         select distinct on (patient_id_cp)
@@ -40,7 +46,7 @@ with goodpill_snapshot as (
                     when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other
-        from "datawarehouse".prod_analytics."patients" as pat
+        from patients as pat
         left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id = clinics.clinic_id
         left join "datawarehouse".prod_analytics."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, pme.event_date desc
@@ -208,12 +214,15 @@ with goodpill_snapshot as (
             payment_due_actual as order_payment_due_actual,
             payment_date_autopay as order_payment_date_autopay,
             payment_method_actual as order_payment_method_actual,
+            payment_default_updated_at as order_payment_default_updated_at,
+            payment_actual_updated_at as order_payment_actual_updated_at,
             order_payment_coupon as order_payment_coupon,
             order_date_delivered,
             order_date_expedited,
             order_date_expected,
             order_date_expected_initial,
             order_date_failed,
+            order_stage_wc_updated_at,
             add_user_id as order_add_user_id,
             chg_user_id as order_chg_user_id,
             shipping_speed as order_shipping_speed,
@@ -397,11 +406,14 @@ select
     gds.order_payment_date_autopay,
     gds.order_payment_method_actual,
     gds.order_payment_coupon,
+    gds.order_payment_default_updated_at,
+    gds.order_payment_actual_updated_at,
     gds.order_date_delivered,
     gds.order_date_expedited,
     gds.order_date_expected,
     gds.order_date_expected_initial,
     gds.order_date_failed,
+    gds.order_stage_wc_updated_at,
     gds.order_add_user_id,
     gds.order_chg_user_id,
     gds.order_shipping_speed,
