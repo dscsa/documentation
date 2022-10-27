@@ -431,7 +431,6 @@ select
     clinics.updated_at as clinic_updated_at,
     dw_clinics.clinic_id as dw_clinic_id,
     dw_clinics.clinic_name as dw_clinic_name,
-    dw_clinics.clinic_name_cp as dw_clinic_name_cp,
     dw_clinics.clinic_address as dw_clinic_address,
     dw_clinics.clinic_street as dw_clinic_street,
     dw_clinics.clinic_city as dw_clinic_city,

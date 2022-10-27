@@ -182,7 +182,6 @@ select
     clinic_updated_at,
     dw_clinic_id,
     dw_clinic_name,
-    dw_clinic_name_cp,
     dw_clinic_address,
     dw_clinic_street,
     dw_clinic_city,
