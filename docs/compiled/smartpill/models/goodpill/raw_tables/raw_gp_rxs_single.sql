@@ -16,9 +16,7 @@ with r as (
 
 select distinct on (pkey, created_at, updated_at, _ab_cdc_updated_at, _ab_cdc_deleted_at)
 	*,
-	md5(cast(concat(pkey, created_at, updated_at, _ab_cdc_updated_at, _ab_cdc_deleted_at) as 
-    varchar
-)) as unique_id
+	md5(cast(concat(pkey, created_at, updated_at, _ab_cdc_updated_at, _ab_cdc_deleted_at) as TEXT)) as unique_id
 from
 	r
 

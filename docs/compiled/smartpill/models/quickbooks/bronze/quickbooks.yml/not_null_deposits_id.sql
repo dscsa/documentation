@@ -2,8 +2,10 @@
     
     
 
-select *
-from "datawarehouse".prod_quickbooks."deposits"
+
+
+select id
+from "datawarehouse".quickbooks."deposits"
 where id is null
 
 

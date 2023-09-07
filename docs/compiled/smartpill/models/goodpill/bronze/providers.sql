@@ -25,5 +25,3 @@ select
     created_at,
     updated_at
 from gp_providers
-
-    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."providers")

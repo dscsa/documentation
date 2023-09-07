@@ -11,9 +11,9 @@ select
     jsonb_extract_path_text(_airbyte_nested_data, 'SalesItemLineDetail','UnitPrice') as sales_item_unit_price,
     jsonb_extract_path_text(_airbyte_nested_data, 'Description') as description,
     jsonb_extract_path_text(_airbyte_nested_data, 'LineNum') as line_num
-from "datawarehouse".prod_quickbooks."invoices"
+from "datawarehouse".quickbooks."invoices"
 cross join jsonb_array_elements(line) as _airbyte_nested_data
 where
     line is not null
 
-    and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".prod_quickbooks."invoices_lines")
+    and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".quickbooks."invoices_lines")

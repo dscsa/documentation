@@ -4,9 +4,9 @@ Table that provides the debit and credit records of a journal entry transaction.
 with journal_entries as (
     select distinct on (j.id)
         j.*
-    from "datawarehouse".prod_quickbooks."journal_entries" j
+    from "datawarehouse".quickbooks."journal_entries" j
 
-    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'JournalEntry' and j.id = del.id
+    left join "datawarehouse".quickbooks."deleted_objects" del on object_type = 'JournalEntry' and j.id = del.id
     where del.id is null or j.updated_at > del.updated_at
 
     order by j.id, j._airbyte_emitted_at desc
@@ -14,7 +14,7 @@ with journal_entries as (
 
 journal_entry_lines as (
     select *
-    from "datawarehouse".prod_quickbooks."journal_entries_lines"
+    from "datawarehouse".quickbooks."journal_entries_lines"
 ),
 
 final as (

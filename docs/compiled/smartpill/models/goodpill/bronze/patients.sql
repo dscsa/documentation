@@ -56,6 +56,7 @@ with patients as (
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_changed') as timestamp) as patient_date_changed,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_date_updated') as timestamp) as patient_date_updated,
         cast(jsonb_extract_path_text(_airbyte_data, 'patient_inactive') as varchar) as patient_inactive,
+        cast(jsonb_extract_path_text(_airbyte_data, 'patient_deleted') as int) as patient_deleted,
         cast(jsonb_extract_path_text(_airbyte_data, 'initial_invoice_number') as int) as initial_invoice_number,
         cast(
             jsonb_extract_path_text(_airbyte_data, 'patient_date_first_dispensed') as timestamp
@@ -106,8 +107,9 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.pharmacy_fax, '') as pharmacy_fax,
     nullif(patients.pharmacy_address, '') as pharmacy_address,
     nullif(patients.patient_inactive, '') as patient_inactive,
+    patient_deleted,
     patients.patient_id_wc,
-    nullif(patients.email, '') as email,
+    nullif(REPLACE(REPLACE(patients.email,'+','_'),' ','_'), '') as email,
     patients.patient_autofill,
     nullif(patients.patient_note, '') as patient_note,
     patients.initial_invoice_number,
@@ -127,10 +129,4 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.medications_other, '') as medications_other,
     patients.patient_date_updated
 from patients
-where
-    lower(patients.first_name) not like '%test%'
-    and lower(patients.first_name) not like '%user%'
-    and lower(patients.last_name) not like '%test%'
-    and lower(patients.last_name) not like '%user%'
-
 order by patients.patient_id_cp, patients.patient_date_updated desc

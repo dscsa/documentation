@@ -31,5 +31,3 @@ select
     created_at,
     updated_at
 from raw_goodpill_dw_clinics
-
-    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."dw_clinics")

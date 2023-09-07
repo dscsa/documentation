@@ -81,7 +81,10 @@ with rxs_single as (
             jsonb_extract_path_text(_airbyte_data, 'transfer_pharmacy_address') as varchar(255)
         ) as transfer_pharmacy_address,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'status') as varchar(255)) as status,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_status_updated_at') as timestamp) as rx_status_updated_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'provider_email') as varchar(255)) as provider_email
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_single
 )
@@ -152,7 +155,8 @@ select
     nullif(transfer_pharmacy_fax, '') as transfer_pharmacy_fax,
     nullif(transfer_pharmacy_address, '') as transfer_pharmacy_address,
     created_at,
-    updated_at
+    updated_at,
+    status,
+    rx_status_updated_at,
+    provider_email
 from rxs_single
-
-    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."rxs_single")

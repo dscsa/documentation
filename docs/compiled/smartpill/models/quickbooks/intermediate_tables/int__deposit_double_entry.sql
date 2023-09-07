@@ -2,21 +2,21 @@ with deposit_join as (
     with deposits as (
         select distinct on (d.id)
             d.*
-        from "datawarehouse".prod_quickbooks."deposits" d
-        left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'Deposit' and d.id = del.id
+        from "datawarehouse".quickbooks."deposits" d
+        left join "datawarehouse".quickbooks."deleted_objects" del on object_type = 'Deposit' and d.id = del.id
         where del.id is null or d.updated_at > del.updated_at
         order by id, _airbyte_emitted_at desc
     ),
 
     deposit_lines as (
         select *
-        from "datawarehouse".prod_quickbooks."deposits_lines"
+        from "datawarehouse".quickbooks."deposits_lines"
     ),
 
     accounts as (
         select distinct on (id)
             *
-        from "datawarehouse".prod_quickbooks."accounts"
+        from "datawarehouse".quickbooks."accounts"
         order by id, _airbyte_emitted_at desc
     ),
 

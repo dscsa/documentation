@@ -2,8 +2,10 @@
     
     
 
-select *
-from "datawarehouse".prod_quickbooks."bill_payments"
+
+
+select _hash_id
+from "datawarehouse".quickbooks."bill_payments"
 where _hash_id is null
 
 

@@ -28,7 +28,10 @@ with rxs_grouped as (
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_added_first_at') as timestamp) as rx_added_first_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_added_last_at') as timestamp) as rx_added_last_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
+        cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_inactivated_last_at') as timestamp) as rx_inactivated_last_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_activated_last_at') as timestamp) as rx_activated_last_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'group_status') as varchar(255)) as group_status
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_grouped
 )
@@ -62,7 +65,8 @@ select
     rx_added_first_at,
     rx_added_last_at,
     created_at,
-    updated_at
+    updated_at,
+    rx_inactivated_last_at,
+    rx_activated_last_at,
+    group_status
 from rxs_grouped
-
-    where created_at > (select max(created_at) from "datawarehouse".prod_analytics."rxs_grouped")

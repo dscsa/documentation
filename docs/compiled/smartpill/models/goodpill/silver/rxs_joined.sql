@@ -1,23 +1,35 @@
-with rxs_grouped_unnested as (
+with rx_group_unnested as (
     select
         *
-    from "datawarehouse".prod_analytics."rxs_grouped", unnest(string_to_array(trim(both ',' from rx_numbers), ',')) as rx_number
+    from "datawarehouse".goodpill."rxs_grouped", unnest(string_to_array(trim(both ',' from rx_numbers), ',')) as rx_number
+),
+_rxs_single as (
+    select *, ROW_NUMBER() OVER (PARTITION BY rx_number ORDER BY updated_at  DESC) rank
+    from "datawarehouse".goodpill."rxs_single"
+),
+rxs_single as (
+    select *
+    from _rxs_single
+    where rank = 1
 )
-
 select distinct on (rs.rx_number, rs.updated_at)
     rs.rx_number as rx_number,
     rg.rx_numbers as rx_numbers,
     rg.best_rx_number as best_rx_number,
     rs.patient_id_cp as patient_id_cp,
-    coalesce(rg.drug_generic, rs.drug_generic) as drug_generic,
-    coalesce(rg.drug_brand, rs.drug_brand) as drug_brand,
+    rg.drug_generic,
+    rg.drug_generic as rx_group_drug_generic,
+    rs.drug_brand as drug_brand,
+    rg.drug_brand as rx_group_drug_brand,
     rs.drug_name as drug_name,
-    coalesce(rg.group_id, rs.group_id) as rx_group_id,
+    rs.group_id,
+    rg.group_id as rx_group_id,
     rs.rx_message_key as rx_message_key,
     rs.rx_message_text as rx_message_text,
     rs.rx_message_date as rx_message_date,
     rs.rx_gsn as rx_gsn,
-    coalesce(rg.drug_gsns, rs.drug_gsns) as drug_gsns,
+    rg.drug_gsns as rx_group_drug_gsns,
+    rs.drug_gsns,
     rg.max_gsn as max_gsn,
     rs.refills_left as refills_left,
     rs.refills_original as refills_original,
@@ -49,11 +61,16 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.sig_v2_scores as sig_v2_scores,
     rs.sig_v2_frequencies as sig_v2_frequencies,
     rs.sig_v2_durations as sig_v2_durations,
-    coalesce(rg.rx_autofill, rs.rx_autofill) as rx_autofill,
-    coalesce(rg.refill_date_first, rs.refill_date_first) as refill_date_first,
-    coalesce(rg.refill_date_last, rs.refill_date_last) as refill_date_last,
-    coalesce(rg.refill_date_manual, rs.refill_date_manual) as refill_date_manual,
-    coalesce(rg.refill_date_default, rs.refill_date_default) as refill_date_default,
+    rg.rx_autofill as rx_group_rx_autofill,
+    rs.rx_autofill,
+    rg.refill_date_first as rx_group_refill_date_first,
+    rs.refill_date_first,
+    rg.refill_date_last as rx_group_refill_date_last,
+    rs.refill_date_last,
+    rg.refill_date_manual as rx_group_refill_date_manual,
+    rs.refill_date_manual,
+    rg.refill_date_default as rx_group_refill_date_default,
+    rs.refill_date_default,
     rg.rx_added_first_at,
     rg.rx_added_last_at,
     rg.refill_date_next as refill_date_next,
@@ -67,8 +84,10 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.provider_last_name as provider_last_name,
     rs.provider_clinic as clinic_name,
     rs.provider_phone as provider_phone,
-    coalesce(rg.rx_date_changed, rs.rx_date_changed) as rx_date_changed,
-    coalesce(rg.rx_date_expired, rs.rx_date_expired) as rx_date_expired,
+    rg.rx_date_changed as rx_group_rx_date_changed,
+    rs.rx_date_changed,
+    rg.rx_date_expired as rx_group_rx_date_expired,
+    rs.rx_date_expired,
     rs.rx_date_added as rx_date_added,
     rs.rx_stock_level_initial as rx_stock_level_initial,
     rs.transfer_pharmacy_phone as transfer_pharmacy_phone,
@@ -77,14 +96,22 @@ select distinct on (rs.rx_number, rs.updated_at)
     rs.transfer_pharmacy_address as transfer_pharmacy_address,
     rs.created_at as created_at,
     rs.updated_at as updated_at,
+    rs.status,
     rg.created_at as rx_group_created_at,
     rg.updated_at as rx_group_updated_at,
-    clinics.clinic_name_cp as rx_clinic_name_cp
-from rxs_grouped_unnested as rg
-left join "datawarehouse".prod_analytics."rxs_single" as rs on (rs.rx_number = cast(rg.rx_number as int))
-left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = rs.provider_clinic
+    clinics.clinic_name_cp as rx_clinic_name_cp,
+    rs.rx_status_updated_at,
+    rs.provider_email,
+    rg.rx_inactivated_last_at,
+    rg.rx_activated_last_at,
+    rg.group_status,
+    rg.qty_total,
+    rg.rx_sources
 
-    where rs.updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."rxs_joined")
+
+from rxs_single rs
+left join rx_group_unnested as rg on (rs.rx_number = cast(rg.rx_number as int))
+left join "datawarehouse".goodpill."clinics" as clinics on clinics.clinic_name_cp = rs.provider_clinic
 
 order by
     rs.rx_number,

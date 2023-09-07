@@ -1,7 +1,9 @@
-with patients as (
-    select _patients.*, cmc.clinic_id
-    from "datawarehouse".prod_analytics."patients" as _patients
-    left join "datawarehouse".prod_analytics."clinic_coupons" as cmc on
+
+
+with _patients as (
+    select _patients.patient_id_cp, cmc.clinic_id
+    from "datawarehouse".goodpill."patients" as _patients
+    left join "datawarehouse".goodpill."clinic_coupons" as cmc on
         _patients.payment_coupon = cmc.coupon_code or _patients.tracking_coupon = cmc.coupon_code
 ),
 goodpill_snapshot as (
@@ -46,9 +48,9 @@ goodpill_snapshot as (
                     when pme.event_name = 'PATIENT_CHURNED_OTHER' then pme.event_date
                 end
             ) over(partition by patient_id_cp) as patient_date_churned_other
-        from patients as pat
-        left join "datawarehouse".prod_analytics."clinics" as clinics on pat.clinic_id = clinics.clinic_id
-        left join "datawarehouse".prod_analytics."patients_status_historic" as pme using (patient_id_cp)
+        from _patients as pat
+        left join "datawarehouse".goodpill."clinics" as clinics on pat.clinic_id = clinics.clinic_id
+        left join "datawarehouse".goodpill."patients_status_historic" as pme using (patient_id_cp)
         order by patient_id_cp, pme.event_date desc
     ),
 
@@ -71,10 +73,11 @@ goodpill_snapshot as (
             ) as rx_drug_generic,
             drug_brand as rx_drug_brand,
             drug_name as rx_drug_name,
-            rx_group_id,
-            rx_message_key as rx_message_key,
-            rx_message_text as rx_message_text,
-            rx_gsn as rx_gsn,
+            rx_message_key,
+            rx_message_text,
+            rx_message_date,
+            rx_sources,
+            rx_gsn,
             drug_gsns as rx_drug_gsns,
             max_gsn as rx_max_gsn,
             refills_left as rx_refills_left,
@@ -82,6 +85,7 @@ goodpill_snapshot as (
             refills_total as rx_refills_total,
             qty_left as rx_qty_left,
             qty_original as rx_qty_original,
+            qty_total as rx_qty_total,
             sig_actual as rx_sig_actual,
             sig_initial as rx_sig_initial,
             sig_clean as rx_sig_clean,
@@ -117,8 +121,6 @@ goodpill_snapshot as (
             rx_source as rx_source,
             rx_date_transferred_out,
             rx_date_transferred_in,
-            provider_first_name as provider_first_name,
-            provider_last_name as provider_last_name,
             provider_phone as provider_phone,
             clinic_name as rx_clinic_name,
             rx_added_first_at,
@@ -131,14 +133,36 @@ goodpill_snapshot as (
             updated_at as rx_updated_at,
             rx_group_created_at,
             rx_group_updated_at,
-            rx_clinic_name_cp
-        from "datawarehouse".prod_analytics."rxs_joined"
+            rx_clinic_name_cp,
+            status as rxs_single_status,
+            rx_status_updated_at,
+            provider_email as rx_provider_email,
+            rx_inactivated_last_at,
+            rx_activated_last_at,
+            group_status as rx_group_status,
+            rx_group_drug_generic,
+            rx_group_drug_brand,
+            rx_group_id,
+            rx_group_drug_gsns,
+            rx_group_rx_autofill,
+            rx_group_refill_date_first,
+            rx_group_refill_date_last,
+            rx_group_refill_date_manual,
+            rx_group_refill_date_default,
+            rx_group_rx_date_changed,
+            rx_group_rx_date_expired,
+            transfer_pharmacy_phone as rx_transfer_pharmacy_phone,
+            transfer_pharmacy_name as rx_transfer_pharmacy_name,
+            transfer_pharmacy_fax as rx_transfer_pharmacy_fax,
+            transfer_pharmacy_address as rx_transfer_pharmacy_address
+        from "datawarehouse".goodpill."rxs_joined"
     ),
 
     oi as (
         select
             patient_id_cp,
             rx_number,
+            line_id as item_line_id,
             invoice_number as order_invoice_number,
             groups as item_groups,
             rx_dispensed_id as item_rx_dispensed_id,
@@ -182,14 +206,18 @@ goodpill_snapshot as (
             chg_user_id as item_chg_user_id,
             count_lines as item_count_lines,
             repacked_by as item_repacked_by,
-            repacked_at as item_repacked_at
-        from "datawarehouse".prod_analytics."order_items"
+            repacked_at as item_repacked_at,
+            unpended_at as item_unpended_at,
+            pend_initial_at as item_pend_initial_at,
+            pend_updated_at as item_pend_updated_at,
+            ndc_pended as item_ndc_pended,
+            drug_generic_pended as item_drug_generic_pended
+        from "datawarehouse".goodpill."order_items"
     ),
 
     o as (
         select
             patient_id_cp,
-            patient_id_wc,
             invoice_number as order_invoice_number,
             order_date_added as order_date_added,
             order_date_dispensed as order_date_dispensed,
@@ -198,6 +226,7 @@ goodpill_snapshot as (
             count_items as order_count_items,
             count_filled as order_count_filled,
             count_nofill as order_count_nofill,
+            priority as order_priority,
             order_source as order_source,
             order_stage_cp as order_stage_cp,
             order_stage_wc as order_stage_wc,
@@ -217,23 +246,27 @@ goodpill_snapshot as (
             payment_default_updated_at as order_payment_default_updated_at,
             payment_actual_updated_at as order_payment_actual_updated_at,
             order_payment_coupon as order_payment_coupon,
+            order_date_changed, --comes from Carepoint
             order_date_delivered,
             order_date_expedited,
             order_date_expected,
             order_date_expected_initial,
             order_date_failed,
+            order_date_updated, --comes from Patient Portal
             order_stage_wc_updated_at,
             add_user_id as order_add_user_id,
             chg_user_id as order_chg_user_id,
             shipping_speed as order_shipping_speed,
+            rx_group_removals_checked_at as order_rx_group_removals_checked_at,
+            rx_group_additions_checked_at as order_rx_group_additions_checked_at,
             order_note as order_note,
             rph_check as order_rph_check,
             tech_fill as order_tech_fill,
             order_city as order_city,
             order_state as order_state,
             order_zip as order_zip,
-            updated_at as order_date_updated
-        from "datawarehouse".prod_analytics."orders"
+            updated_at as order_updated_at 
+        from "datawarehouse".goodpill."orders"
     )
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
@@ -242,7 +275,7 @@ goodpill_snapshot as (
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
-    left join o using (order_invoice_number, patient_id_cp)
+    full outer join o using (order_invoice_number, patient_id_cp)
     order by
         patient_id_cp,
         rx_number,
@@ -254,182 +287,62 @@ goodpill_snapshot as (
         rh.rx_group_created_at desc
 ),
 drugs as (
-    select *,
-    nullif(drug_generic, '') as generic_name,
-    coalesce(nullif(price_goodrx, 0), nullif(price_nadac, 0), nullif(price_retail, 0)) as price_coalesced
-    from "datawarehouse".prod_analytics."drugs"
-)
-
-select
-    gds.order_invoice_number,
-    gds.patient_id_cp,
-    gds.rx_number,
-    gds.dw_patient_status,
-    gds.patient_date_active,
-    gds.patient_date_no_rx,
-    gds.patient_date_unregistered,
-    gds.patient_date_deceased,
-    gds.patient_date_churned_no_fillable_rx,
-    gds.patient_date_inactive,
-    gds.patient_date_churned_other,
-    gds.rx_numbers,
-    gds.rx_best_rx_number,
-    gds.rx_provider_npi,
-    gds.rx_drug_generic,
-    gds.rx_drug_brand,
-    gds.rx_drug_name,
-    gds.rx_group_id,
-    gds.rx_message_key,
-    gds.rx_message_text,
-    gds.rx_gsn,
-    gds.rx_drug_gsns,
-    gds.rx_max_gsn,
-    gds.rx_refills_left,
-    gds.rx_refills_original,
-    gds.rx_refills_total,
-    gds.rx_qty_left,
-    gds.rx_qty_original,
-    gds.rx_sig_actual,
-    gds.rx_sig_initial,
-    gds.rx_sig_clean,
-    gds.rx_sig_qty,
-    gds.rx_sig_v1_qty,
-    gds.rx_sig_v1_days,
-    gds.rx_sig_v1_qty_per_day,
-    gds.rx_sig_days,
-    gds.rx_sig_qty_per_day,
-    gds.rx_sig_qty_per_day_default,
-    gds.rx_sig_qty_per_day_actual,
-    gds.rx_sig_durations,
-    gds.rx_sig_qtys_per_time,
-    gds.rx_sig_frequencies,
-    gds.rx_sig_frequency_numerators,
-    gds.rx_sig_frequency_denominators,
-    gds.rx_sig_v2_qty,
-    gds.rx_sig_v2_days,
-    gds.rx_sig_v2_qty_per_day,
-    gds.rx_sig_v2_unit,
-    gds.rx_sig_v2_conf_score,
-    gds.rx_sig_v2_dosages,
-    gds.rx_sig_v2_scores,
-    gds.rx_sig_v2_frequencies,
-    gds.rx_sig_v2_durations,
-    gds.rx_autofill,
-    gds.rx_refill_date_first,
-    gds.rx_refill_date_last,
-    gds.rx_refill_date_manual,
-    gds.rx_refill_date_next,
-    gds.rx_status,
-    gds.rx_stage,
-    gds.rx_source,
-    gds.rx_date_transferred_out,
-    gds.rx_date_transferred_in,
-    gds.provider_first_name,
-    gds.provider_last_name,
-    gds.provider_phone,
-    gds.rx_clinic_name,
-    gds.rx_added_first_at,
-    gds.rx_added_last_at,
-    gds.rx_date_changed,
-    gds.rx_date_expired,
-    gds.rx_stock_level_initial,
-    gds.rx_date_added,
-    gds.rx_created_at,
-    gds.rx_updated_at,
-    gds.rx_group_created_at,
-    gds.rx_group_updated_at,
-    gds.item_groups,
-    gds.item_rx_dispensed_id,
-    gds.item_stock_level_initial,
-    gds.item_rx_message_keys_initial,
-    gds.item_patient_autofill_initial,
-    gds.item_rx_autofill_initial,
-    gds.item_rx_numbers_initial,
-    gds.item_zscore_initial,
-    gds.item_refills_dispensed_default,
-    gds.item_refills_dispensed_actual,
-    gds.item_days_dispensed_default,
-    gds.item_days_dispensed_actual,
-    gds.item_qty_dispensed_default,
-    gds.item_qty_dispensed_actual,
-    gds.item_price_dispensed_default,
-    gds.item_price_dispensed_actual,
-    gds.item_unit_price_retail_initial,
-    gds.item_unit_price_goodrx_initial,
-    gds.item_unit_price_nadac_initial,
-    gds.item_unit_price_awp_initial,
-    gds.item_qty_pended_total,
-    gds.item_qty_pended_repacks,
-    gds.item_count_pended_total,
-    gds.item_count_pended_repacks,
-    gds.item_message_keys,
-    gds.item_message_text,
-    gds.item_type,
-    gds.item_added_by,
-    gds.item_date_added,
-    gds.item_date_changed,
-    gds.item_date_updated,
-    gds.item_days_and_message_updated_at,
-    gds.item_days_and_message_initial_at,
-    gds.item_days_pended as item_days_pended,
-    gds.item_qty_per_day_pended as item_qty_per_day_pended,
-    gds.item_refill_date_last,
-    gds.item_refill_date_manual,
-    gds.item_refill_date_default,
-    gds.item_add_user_id,
-    gds.item_chg_user_id,
-    gds.item_count_lines,
-    gds.item_repacked_by,
-    gds.item_repacked_at,
-    gds.patient_id_wc,
-    gds.order_date_added,
-    gds.order_date_dispensed,
-    gds.order_date_shipped,
-    gds.order_date_returned,
-    gds.order_count_items,
-    gds.order_count_filled,
-    gds.order_count_nofill,
-    gds.order_source,
-    gds.order_stage_cp,
-    gds.order_stage_wc,
-    gds.order_status,
-    gds.order_address1,
-    gds.order_address2,
-    gds.order_invoice_doc_id,
-    gds.order_tracking_number,
-    gds.order_payment_total_default,
-    gds.order_payment_total_actual,
-    gds.order_payment_fee_default,
-    gds.order_payment_fee_actual,
-    gds.order_payment_due_default,
-    gds.order_payment_due_actual,
-    gds.order_payment_date_autopay,
-    gds.order_payment_method_actual,
-    gds.order_payment_coupon,
-    gds.order_payment_default_updated_at,
-    gds.order_payment_actual_updated_at,
-    gds.order_date_delivered,
-    gds.order_date_expedited,
-    gds.order_date_expected,
-    gds.order_date_expected_initial,
-    gds.order_date_failed,
-    gds.order_stage_wc_updated_at,
-    gds.order_add_user_id,
-    gds.order_chg_user_id,
-    gds.order_shipping_speed,
-    gds.order_note,
-    gds.order_rph_check,
-    gds.order_tech_fill,
-    gds.order_city,
-    gds.order_state,
-    gds.order_zip,
-    gds.order_date_updated,
-    gds.dw_updated_at,
+    select
+    drugs.drug_brand,
+    drugs.drug_gsns,
+    drugs.price30 as drug_price30,
+    drugs.price90 as drug_price90,
+    drugs.price_retail as drug_price_retail,
+    drugs.price_goodrx as drug_price_goodrx,
+    drugs.price_nadac as drug_price_nadac,
+    drugs.qty_repack as drug_qty_repack,
+    drugs.count_ndcs as drug_count_ndcs,
+    drugs.drug_ordered,
+    drugs.qty_min as drug_qty_min,
+    drugs.days_min as drug_days_min,
+    drugs.max_inventory as drug_max_inventory,
+    drugs.message_display as drug_message_display,
+    drugs.message_verified as drug_message_verified,
+    drugs.message_destroyed as drug_message_destroyed,
+    nullif(drug_generic, '') as drug_generic_name,
+    coalesce(nullif(price_goodrx, 0), nullif(price_nadac, 0), nullif(price_retail, 0)) as drug_price_coalesced
+    from "datawarehouse".goodpill."drugs"
+),
+providers as (
+    select
+    providers.first_name as provider_first_name,
+	providers.last_name as provider_last_name,
+	providers.verified as provider_verified,
+    providers.npi as providers_npi,
+    providers.provider_id as dw_provider_id,
+    providers.first_rx_sent_date as provider_first_rx_sent_date,
+    providers.last_rx_sent_date as provider_last_rx_sent_date
+    from "datawarehouse".goodpill."providers"
+),
+dw_providers as (
+    select
+    dw_providers.provider_npi as dw_provider_npi,
+    dw_providers.provider_name as dw_provider_name,
+    dw_providers.provider_phone as dw_provider_phone,
+    dw_providers.provider_id_sf as dw_provider_id_sf,
+    dw_providers.default_clinic as dw_provider_default_clinic,
+    dw_providers.default_clinic_imputed_at as dw_provider_default_clinic_imputed_at
+    from "datawarehouse".goodpill."dw_providers"
+),
+clinics as (
+    select
+    clinics.clinic_id,
+    clinics.clinic_name_cp,
     clinics.clinic_rx_date_added_first,
     clinics.clinic_rx_date_added_last,
     clinics.created_at as clinic_created_at,
-    clinics.updated_at as clinic_updated_at,
+    clinics.updated_at as clinic_updated_at
+    from "datawarehouse".goodpill."clinics"
+),
+dw_clinics as (
+    select
     dw_clinics.clinic_id as dw_clinic_id,
+    dw_clinics.clinic_group_id as dw_clinic_group_id,
     dw_clinics.clinic_name as dw_clinic_name,
     dw_clinics.clinic_address as dw_clinic_address,
     dw_clinics.clinic_street as dw_clinic_street,
@@ -439,34 +352,28 @@ select
     dw_clinics.clinic_phone as dw_clinic_phone,
     dw_clinics.clinic_id_sf as dw_clinic_id_sf,
     dw_clinics.created_at as dw_clinic_created_at,
-    dw_clinics.updated_at as dw_clinic_updated_at,
-    dw_clinics_groups.clinic_group_id as dw_clinic_group_id,
-    dw_clinics_groups.clinic_group_name as dw_clinic_group_name,
-    dw_clinics_groups.clinic_group_id_sf as dw_clinic_group_id_sf,
-    dw_clinics_groups.clinic_group_domain as dw_clinic_group_domain,
-    dw_clinics_groups.created_at as dw_clinic_groups_created_at,
-    dw_clinics_groups.updated_at as dw_clinic_groups_updated_at,
-    drugs.drug_brand,
-    drugs.drug_gsns,
-    drugs.price30 as drug_price30,
-    drugs.price90 as drug_price90,
-    drugs.price_retail as drug_price_retail,
-    drugs.price_goodrx as drug_price_goodrx,
-    drugs.price_nadac as drug_price_nadac,
-    drugs.price_coalesced as drug_price_coalesced,
-    drugs.qty_repack as drug_qty_repack,
-    drugs.count_ndcs as drug_count_ndcs,
-    providers.provider_id as dw_provider_id,
-    providers.first_rx_sent_date as provider_first_rx_sent_date,
-    providers.last_rx_sent_date as provider_last_rx_sent_date,
-    dw_providers.provider_name as dw_provider_name,
-    dw_providers.provider_phone as dw_provider_phone,
-    dw_providers.provider_id_sf as dw_provider_id_sf,
-    dw_providers.default_clinic as dw_provider_default_clinic,
-    dw_providers.default_clinic_imputed_at as dw_provider_default_clinic_imputed_at,
+    dw_clinics.updated_at as dw_clinic_updated_at
+    from "datawarehouse".goodpill."dw_clinics"
+),
+dw_clinic_groups as (
+    select
+    dw_clinic_groups.clinic_group_id as dw_clinic_groups_id,
+    dw_clinic_groups.clinic_group_name as dw_clinic_group_name,
+    dw_clinic_groups.clinic_group_id_sf as dw_clinic_group_id_sf,
+    dw_clinic_groups.clinic_group_domain as dw_clinic_group_domain,
+    dw_clinic_groups.created_at as dw_clinic_groups_created_at,
+    dw_clinic_groups.updated_at as dw_clinic_groups_updated_at
+    from "datawarehouse".goodpill."dw_clinic_groups"
+),
+patients as (
+    select
+    patients.patient_id_cp,
+    patient_id_wc,
     patients.patient_date_registered,
     patients.patient_date_reviewed,
-    patients.patient_date_added as patient_date_added,
+    patients.patient_date_added,
+    patients.patient_date_changed,
+    patient_date_updated,
     patients.first_name as patient_first_name,
     patients.last_name as patient_last_name,
     patients.birth_date as patient_birth_date,
@@ -509,14 +416,18 @@ select
     patients.pharmacy_phone as pharmacy_phone,
     patients.pharmacy_fax as pharmacy_fax,
     patients.pharmacy_address as pharmacy_address,
+    patients.patient_inactive,
     patients.payment_coupon as patient_payment_coupon,
-    patients.tracking_coupon as patient_tracking_coupon
+    patients.tracking_coupon as patient_tracking_coupon,
+    patients.patient_deleted
+    from "datawarehouse".goodpill."patients"
+)
+select *
 from goodpill_snapshot as gds
-left join drugs on drugs.generic_name = gds.rx_drug_generic
-left join "datawarehouse".prod_analytics."patients" as patients on patients.patient_id_cp = gds.patient_id_cp
-left join "datawarehouse".prod_analytics."providers" as providers on providers.npi = gds.rx_provider_npi
-left join "datawarehouse".prod_analytics."dw_providers" as dw_providers on dw_providers.provider_npi = providers.npi
-left join "datawarehouse".prod_analytics."clinics" as clinics on clinics.clinic_name_cp = gds.rx_clinic_name
-left join "datawarehouse".prod_analytics."dw_clinics" as dw_clinics on dw_clinics.clinic_id = clinics.clinic_id
-left join "datawarehouse".prod_analytics."dw_clinics_groups" as dw_clinics_groups on
-        dw_clinics_groups.clinic_group_id = dw_clinics.clinic_group_id
+left join drugs on drugs.drug_generic_name = gds.rx_drug_generic
+left join patients using (patient_id_cp)
+left join providers on providers.providers_npi = gds.rx_provider_npi
+left join dw_providers on dw_providers.dw_provider_npi = providers.providers_npi
+left join clinics on clinics.clinic_name_cp = gds.rx_clinic_name
+left join dw_clinics on dw_clinics.dw_clinic_id = clinics.clinic_id
+left join dw_clinic_groups on dw_clinic_groups.dw_clinic_groups_id = dw_clinics.dw_clinic_group_id

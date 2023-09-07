@@ -1,9 +1,9 @@
 with vendor_credits as (
     select distinct on (v.id)
         v.*
-    from "datawarehouse".prod_quickbooks."vendor_credits" v
+    from "datawarehouse".quickbooks."vendor_credits" v
 
-    left join "datawarehouse".prod_quickbooks."deleted_objects" del on object_type = 'VendorCredit' and v.id = del.id
+    left join "datawarehouse".quickbooks."deleted_objects" del on object_type = 'VendorCredit' and v.id = del.id
     where del.id is null or v.updated_at > del.updated_at
 
     order by v.id, v._airbyte_emitted_at desc
@@ -11,7 +11,7 @@ with vendor_credits as (
 
 vendor_credit_lines as (
     select *
-    from "datawarehouse".prod_quickbooks."vendor_credits_lines"
+    from "datawarehouse".quickbooks."vendor_credits_lines"
 ),
 
 vendor_credit_join as (

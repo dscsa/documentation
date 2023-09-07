@@ -2,8 +2,10 @@
     
     
 
-select *
-from "datawarehouse".prod_quickbooks."bill_payments"
+
+
+select updated_at
+from "datawarehouse".quickbooks."bill_payments"
 where updated_at is null
 
 

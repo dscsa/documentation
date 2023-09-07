@@ -2,8 +2,10 @@
     
     
 
-select *
-from "datawarehouse".prod_quickbooks."purchases"
+
+
+select created_at
+from "datawarehouse".quickbooks."purchases"
 where created_at is null
 
 

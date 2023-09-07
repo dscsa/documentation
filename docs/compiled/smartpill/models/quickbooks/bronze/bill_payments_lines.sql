@@ -7,12 +7,12 @@ with bill_payment as (
 		cast(jsonb_extract_path_text(line, 'Amount') as decimal) as amount,
 		trim(both '"' from cast(line->'LinkedTxn'->0->'TxnId' as text)) as transaction_id,
 		cast(line->'linkedtxn'->0 as text) as transaction_type
-    from "datawarehouse".prod_quickbooks."bill_payments"
+    from "datawarehouse".quickbooks."bill_payments"
     cross join jsonb_array_elements(line) as line
     where 
         line is not null
     
-        and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".prod_quickbooks."bill_payments_lines")
+        and _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".quickbooks."bill_payments_lines")
     
 )
 select

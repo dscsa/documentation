@@ -22,5 +22,3 @@ select
     created_at,
     updated_at
 from raw_goodpill_gp_clinic_coupons
-
-    where updated_at > (select max(updated_at) from "datawarehouse".prod_analytics."clinic_coupons")

@@ -2,8 +2,10 @@
     
     
 
-select *
-from "datawarehouse".prod_quickbooks."journal_entries"
+
+
+select created_at
+from "datawarehouse".quickbooks."journal_entries"
 where created_at is null
 
 

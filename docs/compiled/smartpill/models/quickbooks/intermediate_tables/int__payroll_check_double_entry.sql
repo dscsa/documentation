@@ -13,7 +13,7 @@ accounts as (
         id,
         account_number,
         fully_qualified_name
-    from "datawarehouse".prod_quickbooks."accounts"
+    from "datawarehouse".quickbooks."accounts"
     order by id, _airbyte_emitted_at
 ),
 
