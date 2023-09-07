@@ -34,10 +34,6 @@ gp_user_assigned_to as (
 gp_user_related_to as (
 	select * from gp_user
 ),
-sf_user as (
-	select * from "datawarehouse".salesforce."patients_sf_user"
-    where user_isdeleted = false
-),
 tasks_x_contact as (
     select *
     from task
@@ -46,7 +42,6 @@ tasks_x_contact as (
 final as (
     select
     tasks_x_contact.*,
-    sf_user.*,
 
 	gp_user_assigned_to.gp_user_id as gp_user_assigned_to_id,
 	gp_user_assigned_to.gp_user_ownerid as gp_user_assigned_to_ownerid,
@@ -63,7 +58,6 @@ final as (
     greatest(
         tasks_x_contact.task_airbyte_emitted_at,
         tasks_x_contact.contact_airbyte_emitted_at,
-        sf_user.user_airbyte_emitted_at,
         gp_user_assigned_to.gp_user_airbyte_emitted_at,
         gp_user_related_to.gp_user_airbyte_emitted_at
     ) as _airbyte_emitted_at
@@ -71,7 +65,6 @@ final as (
     from tasks_x_contact
     left join gp_user_assigned_to on tasks_x_contact.task_assigned_to__c = gp_user_assigned_to.gp_user_id
     left join gp_user_related_to on tasks_x_contact.task_what_id = gp_user_related_to.gp_user_Id
-    left join sf_user on tasks_x_contact.task_user_id = sf_user.user_id
 )
 select * from final
 

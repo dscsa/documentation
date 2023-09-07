@@ -25,25 +25,18 @@ gp_user as (
     from "datawarehouse".salesforce."patients_gp_user__c"
     where isdeleted = false
 ),
-donors_user as (
-	select *
-    from "datawarehouse".salesforce."donors_user"
-    where user_isdeleted = false
-),
 final as (
     select
     *,
     greatest(
         task.task_airbyte_emitted_at,
         contact.contact_airbyte_emitted_at,
-        gp_user.gp_user_airbyte_emitted_at,
-        donors_user.user_airbyte_emitted_at
+        gp_user.gp_user_airbyte_emitted_at
     ) as _airbyte_emitted_at
 
     from task
     left join contact on contact.contact_id = task.task_contact_id
     left join gp_user on task.task_what_id = gp_user.gp_user_Id
-    left join donors_user on task.task_user_id = donors_user.user_id
 )
 select * from final
 
