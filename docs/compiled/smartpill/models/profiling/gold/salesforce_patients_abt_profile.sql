@@ -1630,566 +1630,6 @@
       
         
         select 
-          lower('user_id') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_id") as distinct_count,
-          count(distinct "user_id") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          82 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_fax') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_fax" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_fax") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_fax") as distinct_count,
-          count(distinct "user_fax") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          83 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_city') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_city") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_city") as distinct_count,
-          count(distinct "user_city") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          84 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_name") as distinct_count,
-          count(distinct "user_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          85 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_alias') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_alias" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_alias") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_alias") as distinct_count,
-          count(distinct "user_alias") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          86 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_email') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_email" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_email") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_email") as distinct_count,
-          count(distinct "user_email") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          87 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_phone') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_phone") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_phone") as distinct_count,
-          count(distinct "user_phone") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          88 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_state') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_state") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_state") as distinct_count,
-          count(distinct "user_state") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          89 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_title') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_title" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_title") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_title") as distinct_count,
-          count(distinct "user_title") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          90 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_street') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_street" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_street") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_street") as distinct_count,
-          count(distinct "user_street") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          91 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_about_me') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_about_me" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_about_me") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_about_me") as distinct_count,
-          count(distinct "user_about_me") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          92 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('city') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "city") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "city") as distinct_count,
-          count(distinct "city") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          93 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('state') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "state") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "state") as distinct_count,
-          count(distinct "state") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          94 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('street') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "street" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "street") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "street") as distinct_count,
-          count(distinct "street") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          95 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('country') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "country" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "country") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "country") as distinct_count,
-          count(distinct "country") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          96 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('latitude') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "latitude" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "latitude") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "latitude") as distinct_count,
-          count(distinct "latitude") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          97 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('longitude') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "longitude" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "longitude") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "longitude") as distinct_count,
-          count(distinct "longitude") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          98 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('postal_code') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "postal_code" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "postal_code") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "postal_code") as distinct_count,
-          count(distinct "postal_code") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          99 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('geocode_accuracy') as column_name,
-          nullif(lower('jsonb'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "geocode_accuracy" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "geocode_accuracy") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "geocode_accuracy") as distinct_count,
-          count(distinct "geocode_accuracy") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          100 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_country') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_country" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_country") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_country") as distinct_count,
-          count(distinct "user_country") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          101 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_lastname') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_lastname" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_lastname") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_lastname") as distinct_count,
-          count(distinct "user_lastname") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          102 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_usertype') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_usertype" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_usertype") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_usertype") as distinct_count,
-          count(distinct "user_usertype") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          103 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_username') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_username" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_username") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_username") as distinct_count,
-          count(distinct "user_username") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          104 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_firstname') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_firstname" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_firstname") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_firstname") as distinct_count,
-          count(distinct "user_firstname") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          105 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_postal_code') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_postal_code" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_postal_code") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_postal_code") as distinct_count,
-          count(distinct "user_postal_code") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          106 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_isdeleted') as column_name,
-          nullif(lower('boolean'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_isdeleted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_isdeleted") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_isdeleted") as distinct_count,
-          count(distinct "user_isdeleted") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          107 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_last_modified_date') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_last_modified_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_last_modified_date") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_last_modified_date") as distinct_count,
-          count(distinct "user_last_modified_date") = count(*) as is_unique,
-          cast(min("user_last_modified_date") as varchar) as min,
-          cast(max("user_last_modified_date") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          108 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('user_airbyte_emitted_at') as column_name,
-          nullif(lower('timestamp with time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "user_airbyte_emitted_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "user_airbyte_emitted_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "user_airbyte_emitted_at") as distinct_count,
-          count(distinct "user_airbyte_emitted_at") = count(*) as is_unique,
-          cast(min("user_airbyte_emitted_at") as varchar) as min,
-          cast(max("user_airbyte_emitted_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          109 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
           lower('gp_user_assigned_to_id') as column_name,
           nullif(lower('text'), '') as data_type,
           cast(count(*) as numeric) as row_count,
@@ -2203,7 +1643,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          110 as _column_position
+          82 as _column_position
         from source_data
 
         union all
@@ -2223,7 +1663,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          111 as _column_position
+          83 as _column_position
         from source_data
 
         union all
@@ -2243,7 +1683,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          112 as _column_position
+          84 as _column_position
         from source_data
 
         union all
@@ -2263,7 +1703,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          113 as _column_position
+          85 as _column_position
         from source_data
 
         union all
@@ -2283,7 +1723,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          114 as _column_position
+          86 as _column_position
         from source_data
 
         union all
@@ -2303,7 +1743,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          115 as _column_position
+          87 as _column_position
         from source_data
 
         union all
@@ -2323,7 +1763,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          116 as _column_position
+          88 as _column_position
         from source_data
 
         union all
@@ -2343,7 +1783,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          117 as _column_position
+          89 as _column_position
         from source_data
 
         union all
@@ -2363,7 +1803,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          118 as _column_position
+          90 as _column_position
         from source_data
 
         union all
@@ -2383,7 +1823,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          119 as _column_position
+          91 as _column_position
         from source_data
 
         union all
@@ -2403,7 +1843,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          120 as _column_position
+          92 as _column_position
         from source_data
 
         

@@ -58,6 +58,7 @@ goodpill_snapshot as (
         select
             patient_id_cp,
             rx_number,
+            rx_id,
             first_value(rx_numbers) over (
                 partition by rx_number
                 order by updated_at desc nulls last

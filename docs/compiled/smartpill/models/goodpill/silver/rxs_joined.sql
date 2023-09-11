@@ -14,6 +14,7 @@ rxs_single as (
 )
 select distinct on (rs.rx_number, rs.updated_at)
     rs.rx_number as rx_number,
+    rs.rx_id,
     rg.rx_numbers as rx_numbers,
     rg.best_rx_number as best_rx_number,
     rs.patient_id_cp as patient_id_cp,
