@@ -7,8 +7,8 @@ with _task as (
 	) as id_row_number
 	from "datawarehouse"."raw"._airbyte_raw_salesforce_donors_task
     
-        where jsonb_extract_path_text(_airbyte_data, 'LastModifiedDate')::timestamp > (
-			select max(task_last_modified_date) from "datawarehouse".salesforce."donors_task"
+        where _airbyte_emitted_at > (
+			select max(task_airbyte_emitted_at) from "datawarehouse".salesforce."donors_task"
 		)
     
 ),
