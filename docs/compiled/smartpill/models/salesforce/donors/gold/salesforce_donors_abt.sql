@@ -35,7 +35,7 @@ final as (
     ) as _airbyte_emitted_at
 
     from task
-    left join contact on contact.contact_id = task.task_contact_id
+    full outer join contact on contact.contact_id = task.task_contact_id
     left join gp_user on task.task_what_id = gp_user.gp_user_Id
 )
 select * from final

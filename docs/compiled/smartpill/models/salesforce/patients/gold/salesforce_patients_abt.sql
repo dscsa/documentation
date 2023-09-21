@@ -37,7 +37,7 @@ gp_user_related_to as (
 tasks_x_contact as (
     select *
     from task
-    left join contact on contact.contact_id = task.task_contact_id
+    full outer join contact on contact.contact_id = task.task_contact_id
 ),
 final as (
     select
