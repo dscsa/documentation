@@ -155,7 +155,9 @@ goodpill_snapshot as (
             transfer_pharmacy_phone as rx_transfer_pharmacy_phone,
             transfer_pharmacy_name as rx_transfer_pharmacy_name,
             transfer_pharmacy_fax as rx_transfer_pharmacy_fax,
-            transfer_pharmacy_address as rx_transfer_pharmacy_address
+            transfer_pharmacy_address as rx_transfer_pharmacy_address,
+            sig_confirmed_by as rx_sig_confirmed_by,
+            sig_confirmed_at as rx_sig_confirmed_at
         from "datawarehouse".goodpill."rxs_joined"
     ),
 
@@ -207,12 +209,14 @@ goodpill_snapshot as (
             chg_user_id as item_chg_user_id,
             count_lines as item_count_lines,
             repacked_by as item_repacked_by,
-            repacked_at as item_repacked_at,
             unpended_at as item_unpended_at,
             pend_initial_at as item_pend_initial_at,
             pend_updated_at as item_pend_updated_at,
             ndc_pended as item_ndc_pended,
-            drug_generic_pended as item_drug_generic_pended
+            drug_generic_pended as item_drug_generic_pended,
+            filled_at as item_filled_at,
+            pend_failed_at as item_pend_failed_at,
+            filled_by as item_filled_by
         from "datawarehouse".goodpill."order_items"
     ),
 

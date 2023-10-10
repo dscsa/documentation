@@ -107,7 +107,9 @@ select distinct on (rs.rx_number, rs.updated_at)
     rg.rx_activated_last_at,
     rg.group_status,
     rg.qty_total,
-    rg.rx_sources
+    rg.rx_sources,
+    rs.sig_confirmed_by,
+    rs.sig_confirmed_at
 
 
 from rxs_single rs

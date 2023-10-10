@@ -85,8 +85,9 @@ with rxs_single as (
         cast(jsonb_extract_path_text(_airbyte_data, 'status') as varchar(255)) as status,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_status_updated_at') as timestamp) as rx_status_updated_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'provider_email') as varchar(255)) as provider_email,
-        cast(jsonb_extract_path_text(_airbyte_data, 'rx_id') as int) as rx_id
-        
+        cast(jsonb_extract_path_text(_airbyte_data, 'rx_id') as int) as rx_id,
+        cast(jsonb_extract_path_text(_airbyte_data, 'sig_confirmed_by') as bigint) as sig_confirmed_by,
+        cast(jsonb_extract_path_text(_airbyte_data, 'sig_confirmed_at') as timestamp) as sig_confirmed_at
 
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_rxs_single
@@ -162,5 +163,7 @@ select
     status,
     rx_status_updated_at,
     provider_email,
-    rx_id
+    rx_id,
+    sig_confirmed_by,
+    sig_confirmed_at
 from rxs_single

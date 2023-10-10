@@ -65,7 +65,6 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_generic_pended') as varchar(255)) as drug_generic_pended,
         cast(jsonb_extract_path_text(_airbyte_data, 'drug_name') as varchar(255)) as drug_name,
         cast(jsonb_extract_path_text(_airbyte_data, 'repacked_by') as varchar(5)) as repacked_by,
-        cast(jsonb_extract_path_text(_airbyte_data, 'repacked_at') as timestamp) as repacked_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_initial_at') as timestamp) as days_and_message_initial_at,
@@ -75,7 +74,10 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'unpended_at') as timestamp) as unpended_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'pend_initial_at') as timestamp) as pend_initial_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'pend_updated_at') as timestamp) as pend_updated_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'ndc_pended') as varchar(255)) as ndc_pended
+        cast(jsonb_extract_path_text(_airbyte_data, 'ndc_pended') as varchar(255)) as ndc_pended,
+        cast(jsonb_extract_path_text(_airbyte_data, 'filled_at') as timestamp) as filled_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'pend_failed_at') as timestamp) as pend_failed_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'filled_by') as bigint) as filled_by
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_order_items
 )
@@ -124,7 +126,6 @@ select
     drug_generic_pended,
     drug_name,
     nullif(repacked_by, '') as repacked_by,
-    repacked_at,
     updated_at,
     created_at,
     days_and_message_updated_at,
@@ -136,5 +137,8 @@ select
     pend_updated_at,
     _airbyte_emitted_at,
     _airbyte_ab_id,
-    ndc_pended
+    ndc_pended,
+    filled_at,
+    pend_failed_at,
+    filled_by
 from order_items
