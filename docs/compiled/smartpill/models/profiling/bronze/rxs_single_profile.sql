@@ -1406,6 +1406,46 @@
           70 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('sig_confirmed_by') as column_name,
+          nullif(lower('bigint'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "sig_confirmed_by" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "sig_confirmed_by") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "sig_confirmed_by") as distinct_count,
+          count(distinct "sig_confirmed_by") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          71 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('sig_confirmed_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "sig_confirmed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "sig_confirmed_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "sig_confirmed_at") as distinct_count,
+          count(distinct "sig_confirmed_at") = count(*) as is_unique,
+          cast(min("sig_confirmed_at") as varchar) as min,
+          cast(max("sig_confirmed_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          72 as _column_position
+        from source_data
+
         
       
     )

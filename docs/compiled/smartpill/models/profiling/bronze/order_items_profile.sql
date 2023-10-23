@@ -870,26 +870,6 @@
       
         
         select 
-          lower('repacked_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "repacked_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "repacked_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "repacked_at") as distinct_count,
-          count(distinct "repacked_at") = count(*) as is_unique,
-          cast(min("repacked_at") as varchar) as min,
-          cast(max("repacked_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          44 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
           lower('updated_at') as column_name,
           nullif(lower('timestamp without time zone'), '') as data_type,
           cast(count(*) as numeric) as row_count,
@@ -903,7 +883,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          45 as _column_position
+          44 as _column_position
         from source_data
 
         union all
@@ -923,7 +903,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          46 as _column_position
+          45 as _column_position
         from source_data
 
         union all
@@ -943,7 +923,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          47 as _column_position
+          46 as _column_position
         from source_data
 
         union all
@@ -963,7 +943,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          48 as _column_position
+          47 as _column_position
         from source_data
 
         union all
@@ -983,7 +963,7 @@
           stddev_pop("days_pended") as std_dev_population,
           stddev_samp("days_pended") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          49 as _column_position
+          48 as _column_position
         from source_data
 
         union all
@@ -1003,7 +983,7 @@
           stddev_pop("qty_per_day_pended") as std_dev_population,
           stddev_samp("qty_per_day_pended") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          50 as _column_position
+          49 as _column_position
         from source_data
 
         union all
@@ -1023,7 +1003,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          51 as _column_position
+          50 as _column_position
         from source_data
 
         union all
@@ -1043,7 +1023,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          52 as _column_position
+          51 as _column_position
         from source_data
 
         union all
@@ -1063,7 +1043,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          53 as _column_position
+          52 as _column_position
         from source_data
 
         union all
@@ -1083,7 +1063,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          54 as _column_position
+          53 as _column_position
         from source_data
 
         union all
@@ -1103,7 +1083,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          55 as _column_position
+          54 as _column_position
         from source_data
 
         union all
@@ -1123,7 +1103,67 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
+          55 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('filled_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "filled_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "filled_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "filled_at") as distinct_count,
+          count(distinct "filled_at") = count(*) as is_unique,
+          cast(min("filled_at") as varchar) as min,
+          cast(max("filled_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
           56 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_failed_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_failed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_failed_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_failed_at") as distinct_count,
+          count(distinct "pend_failed_at") = count(*) as is_unique,
+          cast(min("pend_failed_at") as varchar) as min,
+          cast(max("pend_failed_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          57 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('filled_by') as column_name,
+          nullif(lower('bigint'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "filled_by" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "filled_by") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "filled_by") as distinct_count,
+          count(distinct "filled_by") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          58 as _column_position
         from source_data
 
         
