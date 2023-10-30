@@ -16,5 +16,3 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 
 from "datawarehouse"."raw"._airbyte_raw_cortex_v2_drugs
-
-created_at
