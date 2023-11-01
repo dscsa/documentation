@@ -1,7 +1,12 @@
 with q as (
 
-    select * 
+    select *, ROW_NUMBER() OVER(
+		partition by jsonb_extract_path_text(_airbyte_data, 'id')
+		order by "_airbyte_emitted_at" desc
+	) as id_row_number
     from  "datawarehouse"."raw"._airbyte_raw_cortex_v2_shipment_items
+    
+        where _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".cortex."v2_shipment_items")
     
 )
 select
@@ -53,3 +58,4 @@ select
     cast(jsonb_extract_path_text(_airbyte_data, 'is_magic_bin') as boolean) as is_magic_bin,
     _airbyte_emitted_at
 from q
+where id_row_number = 1
