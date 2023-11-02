@@ -5,6 +5,8 @@ with q as (
 	) as id_row_number
     from "datawarehouse"."raw"._airbyte_raw_cortex_v2_shipment_item_stages
     
+        where _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".cortex."v2_shipment_item_stages")
+    
 
 )
 select
