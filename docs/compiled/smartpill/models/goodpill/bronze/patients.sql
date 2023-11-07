@@ -68,7 +68,10 @@ with patients as (
             jsonb_extract_path_text(_airbyte_data, 'patient_date_first_expected_by') as timestamp
         ) as patient_date_first_expected_by,
         cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_updated_at') as timestamp) as _ab_cdc_updated_at,
-        cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at
+        cast(jsonb_extract_path_text(_airbyte_data, '_ab_cdc_deleted_at') as timestamp) as _ab_cdc_deleted_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'third_party_id') as bigint) as third_party_id,
+        cast(jsonb_extract_path_text(_airbyte_data, 'terms_viewed_at') as timestamp) as terms_viewed_at,
+        cast(jsonb_extract_path_text(_airbyte_data, 'terms_accepted') as boolean) as terms_accepted
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_patients
 )
@@ -127,6 +130,9 @@ select distinct on (patients.patient_id_cp)
     nullif(patients.allergies_tetracycline, '') as allergies_tetracycline,
     nullif(patients.allergies_other, '') as allergies_other,
     nullif(patients.medications_other, '') as medications_other,
-    patients.patient_date_updated
+    patients.patient_date_updated,
+    third_party_id,
+    terms_viewed_at,
+    terms_accepted
 from patients
 order by patients.patient_id_cp, patients.patient_date_updated desc

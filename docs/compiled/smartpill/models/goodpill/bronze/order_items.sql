@@ -77,7 +77,11 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'ndc_pended') as varchar(255)) as ndc_pended,
         cast(jsonb_extract_path_text(_airbyte_data, 'filled_at') as timestamp) as filled_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'pend_failed_at') as timestamp) as pend_failed_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'filled_by') as bigint) as filled_by
+        cast(jsonb_extract_path_text(_airbyte_data, 'filled_by') as bigint) as filled_by,
+        cast(jsonb_extract_path_text(_airbyte_data, 'pend_retried_by') as bigint) as pend_retried_by,
+        cast(jsonb_extract_path_text(_airbyte_data, 'status') as varchar) as status,
+        cast(jsonb_extract_path_text(_airbyte_data, 'pend_retried_days') as integer) as pend_retried_days,
+        cast(jsonb_extract_path_text(_airbyte_data, 'pend_retried_at') as timestamp) as pend_retried_at
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_order_items
 )
@@ -140,5 +144,9 @@ select
     ndc_pended,
     filled_at,
     pend_failed_at,
-    filled_by
+    filled_by,
+    pend_retried_by,
+    status,
+    pend_retried_days,
+    pend_retried_at
 from order_items
