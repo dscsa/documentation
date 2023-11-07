@@ -275,7 +275,7 @@ goodpill_snapshot as (
             order_state as order_state,
             order_zip as order_zip,
             updated_at as order_updated_at,
-            status as order_status
+            status as order_shipped_status
         from "datawarehouse".goodpill."orders"
     )
 

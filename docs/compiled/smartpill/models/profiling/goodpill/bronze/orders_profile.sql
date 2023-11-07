@@ -1066,6 +1066,26 @@
           53 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('status') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "status" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "status") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "status") as distinct_count,
+          count(distinct "status") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          54 as _column_position
+        from source_data
+
         
       
     )

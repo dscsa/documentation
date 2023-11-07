@@ -1166,6 +1166,86 @@
           58 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('pend_retried_by') as column_name,
+          nullif(lower('bigint'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_retried_by" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_retried_by") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_retried_by") as distinct_count,
+          count(distinct "pend_retried_by") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          59 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('status') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "status" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "status") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "status") as distinct_count,
+          count(distinct "status") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          60 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_retried_days') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_retried_days" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_retried_days") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_retried_days") as distinct_count,
+          count(distinct "pend_retried_days") = count(*) as is_unique,
+          cast(min("pend_retried_days") as varchar) as min,
+          cast(max("pend_retried_days") as varchar) as max,
+          avg("pend_retried_days") as avg,
+          stddev_pop("pend_retried_days") as std_dev_population,
+          stddev_samp("pend_retried_days") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          61 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_retried_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_retried_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_retried_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_retried_at") as distinct_count,
+          count(distinct "pend_retried_at") = count(*) as is_unique,
+          cast(min("pend_retried_at") as varchar) as min,
+          cast(max("pend_retried_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          62 as _column_position
+        from source_data
+
         
       
     )

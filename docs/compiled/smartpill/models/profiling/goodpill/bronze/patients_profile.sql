@@ -1086,6 +1086,66 @@
           54 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('third_party_id') as column_name,
+          nullif(lower('bigint'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "third_party_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "third_party_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "third_party_id") as distinct_count,
+          count(distinct "third_party_id") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          55 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('terms_viewed_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "terms_viewed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "terms_viewed_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "terms_viewed_at") as distinct_count,
+          count(distinct "terms_viewed_at") = count(*) as is_unique,
+          cast(min("terms_viewed_at") as varchar) as min,
+          cast(max("terms_viewed_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          56 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('terms_accepted') as column_name,
+          nullif(lower('boolean'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "terms_accepted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "terms_accepted") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "terms_accepted") as distinct_count,
+          count(distinct "terms_accepted") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          57 as _column_position
+        from source_data
+
         
       
     )
