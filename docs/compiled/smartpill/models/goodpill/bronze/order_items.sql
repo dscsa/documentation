@@ -70,7 +70,7 @@ with order_items as (
         cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_initial_at') as timestamp) as days_and_message_initial_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'days_and_message_updated_at') as timestamp) as days_and_message_updated_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'days_pended') as int) as days_pended,
-        cast(jsonb_extract_path_text(_airbyte_data, 'qty_per_day_pended') as int) as qty_per_day_pended,
+        cast(jsonb_extract_path_text(_airbyte_data, 'qty_per_day_pended') as decimal(6,3)) as qty_per_day_pended,
         cast(jsonb_extract_path_text(_airbyte_data, 'unpended_at') as timestamp) as unpended_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'pend_initial_at') as timestamp) as pend_initial_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'pend_updated_at') as timestamp) as pend_updated_at,

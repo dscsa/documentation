@@ -40,6 +40,6 @@ tasks_x_orders_x_contacts as (
 )
 select
     *
-    , '2023-11-07 20:35:13.501168+00:00'::timestamp as batch_timestamp
+    , '2023-11-09 13:38:39.742967+00:00'::timestamp as batch_timestamp
     , 'now()' as execution_date
 from tasks_x_orders_x_contacts
