@@ -7,6 +7,5 @@ select
     reason as pharmacy_reason,
     status as pharmacy_status,
     message as pharmacy_message,
-    payload as pharmacy_payload,
-    'pharmacy_actions' as source_name
+    payload as pharmacy_payload
 from "datawarehouse".goodpill."gp_pharmacy_actions"
