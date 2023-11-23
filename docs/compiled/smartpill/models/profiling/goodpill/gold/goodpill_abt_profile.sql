@@ -2771,7 +2771,7 @@
         
         select 
           lower('item_qty_per_day_pended') as column_name,
-          nullif(lower('integer'), '') as data_type,
+          nullif(lower('numeric'), '') as data_type,
           cast(count(*) as numeric) as row_count,
           sum(case when "item_qty_per_day_pended" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
           count(distinct "item_qty_per_day_pended") / cast(count(*) as numeric) as distinct_proportion,

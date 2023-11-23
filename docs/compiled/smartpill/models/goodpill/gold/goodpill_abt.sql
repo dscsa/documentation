@@ -434,6 +434,48 @@ patients as (
     terms_viewed_at as patient_terms_viewed_at,
     terms_accepted as patient_terms_accepted
     from "datawarehouse".goodpill."patients"
+),
+gp_pend_group as (
+    select 
+    pend_group_name,
+    invoice_number as pend_group_invoice_number, 
+    initial_pend_date as pend_group_initial_date, 
+    last_pend_date as pend_group_last_date
+    from "datawarehouse".goodpill."gp_pend_group"
+),
+gp_stock_live as (
+    select 
+    drug_generic as stock_live_drug_generic,
+    price_per_month as stock_live_price_per_month,
+    drug_ordered as stock_live_drug_ordered,
+    qty_repack as stock_live_qty_repack,
+    months_inventory as stock_live_months_inventory,
+    avg_inventory as stock_live_avg_inventory,
+    last_inventory as stock_live_last_inventory,
+    months_entered as stock_live_months_entered,
+    stddev_entered as stock_live_stddev_entered,
+    total_entered as stock_live_total_entered,
+    months_dispensed as stock_live_months_dispensed,
+    stddev_dispensed_actual as stock_live_stddev_dispensed_actual,
+    total_dispensed_actual as stock_live_total_dispensed_actual,
+    total_dispensed_default as stock_live_total_dispensed_default,
+    stddev_dispensed_default as stock_live_stddev_dispensed_default,
+    month_interval as stock_live_month_interval,
+    default_rxs_min as stock_live_default_rxs_min,
+    last_inv_low_threshold as stock_live_last_inv_low_threshold,
+    last_inv_high_threshold as stock_live_last_inv_high_threshold,
+    last_inv_onetime_threshold as stock_live_last_inv_onetime_threshold,
+    zlow_threshold as stock_live_zlow_threshold,
+    zhigh_threshold as stock_live_zhigh_threshold,
+    zscore as stock_live_zscore,
+    stock_level as stock_live_level
+    from "datawarehouse".goodpill."gp_stock_live"
+),
+gp_order_items_inventory_items as (
+    select 
+    line_id as inventory_line_id,
+    inventory_item_id
+    from "datawarehouse".goodpill."gp_order_items_inventory_items"
 )
 select *
 from goodpill_snapshot as gds
@@ -444,3 +486,5 @@ left join dw_providers on dw_providers.dw_provider_npi = providers.providers_npi
 left join clinics on clinics.clinic_name_cp = gds.rx_clinic_name
 left join dw_clinics on dw_clinics.dw_clinic_id = clinics.clinic_id
 left join dw_clinic_groups on dw_clinic_groups.dw_clinic_groups_id = dw_clinics.dw_clinic_group_id
+left join gp_pend_group gpg on gpg.pend_group_invoice_number = gds.order_invoice_number
+left join gp_stock_live gsl on gsl.stock_live_drug_generic = gds.rx_drug_generic

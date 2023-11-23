@@ -1,4 +1,3 @@
-
 select
 cast(jsonb_extract_path_text(_airbyte_data, 'event') as varchar(255)) as event,
 cast(jsonb_extract_path_text(_airbyte_data, 'comm_id') as int) as comm_id,
@@ -12,5 +11,9 @@ cast(jsonb_extract_path_text(_airbyte_data, 'invoice_number') as int) as invoice
 cast(jsonb_extract_path_text(_airbyte_data, 'group_id') as int) as group_id ,
 cast(jsonb_extract_path_text(_airbyte_data, 'rx_number') as int) as rx_number ,
 cast(jsonb_extract_path_text(_airbyte_data, 'date_deleted') as timestamp) as date_deleted,
-jsonb_extract_path_text(_airbyte_data, 'meta_json')::text as meta_json
+cast(jsonb_extract_path_text(_airbyte_data, 'meta_json') as text) as meta_json,
+cast(jsonb_extract_path_text(_airbyte_data, 'email_subject') as varchar(255)) as email_subject,
+cast(jsonb_extract_path_text(_airbyte_data, 'sms') as text) as sms,
+cast(jsonb_extract_path_text(_airbyte_data, 'email_body') as text) as email_body
+
 from raw."_airbyte_raw_goodpill_gp_patient_comms" arggpc
