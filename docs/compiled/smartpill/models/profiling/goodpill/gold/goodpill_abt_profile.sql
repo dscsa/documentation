@@ -6346,6 +6346,566 @@
           317 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('pend_group_name') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_group_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_group_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_group_name") as distinct_count,
+          count(distinct "pend_group_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          318 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_group_invoice_number') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_group_invoice_number" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_group_invoice_number") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_group_invoice_number") as distinct_count,
+          count(distinct "pend_group_invoice_number") = count(*) as is_unique,
+          cast(min("pend_group_invoice_number") as varchar) as min,
+          cast(max("pend_group_invoice_number") as varchar) as max,
+          avg("pend_group_invoice_number") as avg,
+          stddev_pop("pend_group_invoice_number") as std_dev_population,
+          stddev_samp("pend_group_invoice_number") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          319 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_group_initial_date') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_group_initial_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_group_initial_date") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_group_initial_date") as distinct_count,
+          count(distinct "pend_group_initial_date") = count(*) as is_unique,
+          cast(min("pend_group_initial_date") as varchar) as min,
+          cast(max("pend_group_initial_date") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          320 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pend_group_last_date') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pend_group_last_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pend_group_last_date") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pend_group_last_date") as distinct_count,
+          count(distinct "pend_group_last_date") = count(*) as is_unique,
+          cast(min("pend_group_last_date") as varchar) as min,
+          cast(max("pend_group_last_date") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          321 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_drug_generic') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_drug_generic" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_drug_generic") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_drug_generic") as distinct_count,
+          count(distinct "stock_live_drug_generic") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          322 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_price_per_month') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_price_per_month" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_price_per_month") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_price_per_month") as distinct_count,
+          count(distinct "stock_live_price_per_month") = count(*) as is_unique,
+          cast(min("stock_live_price_per_month") as varchar) as min,
+          cast(max("stock_live_price_per_month") as varchar) as max,
+          avg("stock_live_price_per_month") as avg,
+          stddev_pop("stock_live_price_per_month") as std_dev_population,
+          stddev_samp("stock_live_price_per_month") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          323 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_drug_ordered') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_drug_ordered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_drug_ordered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_drug_ordered") as distinct_count,
+          count(distinct "stock_live_drug_ordered") = count(*) as is_unique,
+          cast(min("stock_live_drug_ordered") as varchar) as min,
+          cast(max("stock_live_drug_ordered") as varchar) as max,
+          avg("stock_live_drug_ordered") as avg,
+          stddev_pop("stock_live_drug_ordered") as std_dev_population,
+          stddev_samp("stock_live_drug_ordered") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          324 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_qty_repack') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_qty_repack" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_qty_repack") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_qty_repack") as distinct_count,
+          count(distinct "stock_live_qty_repack") = count(*) as is_unique,
+          cast(min("stock_live_qty_repack") as varchar) as min,
+          cast(max("stock_live_qty_repack") as varchar) as max,
+          avg("stock_live_qty_repack") as avg,
+          stddev_pop("stock_live_qty_repack") as std_dev_population,
+          stddev_samp("stock_live_qty_repack") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          325 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_months_inventory') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_months_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_months_inventory") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_months_inventory") as distinct_count,
+          count(distinct "stock_live_months_inventory") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          326 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_avg_inventory') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_avg_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_avg_inventory") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_avg_inventory") as distinct_count,
+          count(distinct "stock_live_avg_inventory") = count(*) as is_unique,
+          cast(min("stock_live_avg_inventory") as varchar) as min,
+          cast(max("stock_live_avg_inventory") as varchar) as max,
+          avg("stock_live_avg_inventory") as avg,
+          stddev_pop("stock_live_avg_inventory") as std_dev_population,
+          stddev_samp("stock_live_avg_inventory") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          327 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_last_inventory') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_last_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_last_inventory") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_last_inventory") as distinct_count,
+          count(distinct "stock_live_last_inventory") = count(*) as is_unique,
+          cast(min("stock_live_last_inventory") as varchar) as min,
+          cast(max("stock_live_last_inventory") as varchar) as max,
+          avg("stock_live_last_inventory") as avg,
+          stddev_pop("stock_live_last_inventory") as std_dev_population,
+          stddev_samp("stock_live_last_inventory") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          328 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_months_entered') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_months_entered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_months_entered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_months_entered") as distinct_count,
+          count(distinct "stock_live_months_entered") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          329 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_stddev_entered') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_stddev_entered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_stddev_entered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_stddev_entered") as distinct_count,
+          count(distinct "stock_live_stddev_entered") = count(*) as is_unique,
+          cast(min("stock_live_stddev_entered") as varchar) as min,
+          cast(max("stock_live_stddev_entered") as varchar) as max,
+          avg("stock_live_stddev_entered") as avg,
+          stddev_pop("stock_live_stddev_entered") as std_dev_population,
+          stddev_samp("stock_live_stddev_entered") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          330 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_total_entered') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_total_entered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_total_entered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_total_entered") as distinct_count,
+          count(distinct "stock_live_total_entered") = count(*) as is_unique,
+          cast(min("stock_live_total_entered") as varchar) as min,
+          cast(max("stock_live_total_entered") as varchar) as max,
+          avg("stock_live_total_entered") as avg,
+          stddev_pop("stock_live_total_entered") as std_dev_population,
+          stddev_samp("stock_live_total_entered") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          331 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_months_dispensed') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_months_dispensed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_months_dispensed") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_months_dispensed") as distinct_count,
+          count(distinct "stock_live_months_dispensed") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          332 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_stddev_dispensed_actual') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_stddev_dispensed_actual" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_stddev_dispensed_actual") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_stddev_dispensed_actual") as distinct_count,
+          count(distinct "stock_live_stddev_dispensed_actual") = count(*) as is_unique,
+          cast(min("stock_live_stddev_dispensed_actual") as varchar) as min,
+          cast(max("stock_live_stddev_dispensed_actual") as varchar) as max,
+          avg("stock_live_stddev_dispensed_actual") as avg,
+          stddev_pop("stock_live_stddev_dispensed_actual") as std_dev_population,
+          stddev_samp("stock_live_stddev_dispensed_actual") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          333 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_total_dispensed_actual') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_total_dispensed_actual" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_total_dispensed_actual") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_total_dispensed_actual") as distinct_count,
+          count(distinct "stock_live_total_dispensed_actual") = count(*) as is_unique,
+          cast(min("stock_live_total_dispensed_actual") as varchar) as min,
+          cast(max("stock_live_total_dispensed_actual") as varchar) as max,
+          avg("stock_live_total_dispensed_actual") as avg,
+          stddev_pop("stock_live_total_dispensed_actual") as std_dev_population,
+          stddev_samp("stock_live_total_dispensed_actual") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          334 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_total_dispensed_default') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_total_dispensed_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_total_dispensed_default") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_total_dispensed_default") as distinct_count,
+          count(distinct "stock_live_total_dispensed_default") = count(*) as is_unique,
+          cast(min("stock_live_total_dispensed_default") as varchar) as min,
+          cast(max("stock_live_total_dispensed_default") as varchar) as max,
+          avg("stock_live_total_dispensed_default") as avg,
+          stddev_pop("stock_live_total_dispensed_default") as std_dev_population,
+          stddev_samp("stock_live_total_dispensed_default") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          335 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_stddev_dispensed_default') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_stddev_dispensed_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_stddev_dispensed_default") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_stddev_dispensed_default") as distinct_count,
+          count(distinct "stock_live_stddev_dispensed_default") = count(*) as is_unique,
+          cast(min("stock_live_stddev_dispensed_default") as varchar) as min,
+          cast(max("stock_live_stddev_dispensed_default") as varchar) as max,
+          avg("stock_live_stddev_dispensed_default") as avg,
+          stddev_pop("stock_live_stddev_dispensed_default") as std_dev_population,
+          stddev_samp("stock_live_stddev_dispensed_default") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          336 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_month_interval') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_month_interval" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_month_interval") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_month_interval") as distinct_count,
+          count(distinct "stock_live_month_interval") = count(*) as is_unique,
+          cast(min("stock_live_month_interval") as varchar) as min,
+          cast(max("stock_live_month_interval") as varchar) as max,
+          avg("stock_live_month_interval") as avg,
+          stddev_pop("stock_live_month_interval") as std_dev_population,
+          stddev_samp("stock_live_month_interval") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          337 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_default_rxs_min') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_default_rxs_min" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_default_rxs_min") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_default_rxs_min") as distinct_count,
+          count(distinct "stock_live_default_rxs_min") = count(*) as is_unique,
+          cast(min("stock_live_default_rxs_min") as varchar) as min,
+          cast(max("stock_live_default_rxs_min") as varchar) as max,
+          avg("stock_live_default_rxs_min") as avg,
+          stddev_pop("stock_live_default_rxs_min") as std_dev_population,
+          stddev_samp("stock_live_default_rxs_min") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          338 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_last_inv_low_threshold') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_last_inv_low_threshold" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_last_inv_low_threshold") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_last_inv_low_threshold") as distinct_count,
+          count(distinct "stock_live_last_inv_low_threshold") = count(*) as is_unique,
+          cast(min("stock_live_last_inv_low_threshold") as varchar) as min,
+          cast(max("stock_live_last_inv_low_threshold") as varchar) as max,
+          avg("stock_live_last_inv_low_threshold") as avg,
+          stddev_pop("stock_live_last_inv_low_threshold") as std_dev_population,
+          stddev_samp("stock_live_last_inv_low_threshold") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          339 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_last_inv_high_threshold') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_last_inv_high_threshold" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_last_inv_high_threshold") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_last_inv_high_threshold") as distinct_count,
+          count(distinct "stock_live_last_inv_high_threshold") = count(*) as is_unique,
+          cast(min("stock_live_last_inv_high_threshold") as varchar) as min,
+          cast(max("stock_live_last_inv_high_threshold") as varchar) as max,
+          avg("stock_live_last_inv_high_threshold") as avg,
+          stddev_pop("stock_live_last_inv_high_threshold") as std_dev_population,
+          stddev_samp("stock_live_last_inv_high_threshold") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          340 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_last_inv_onetime_threshold') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_last_inv_onetime_threshold" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_last_inv_onetime_threshold") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_last_inv_onetime_threshold") as distinct_count,
+          count(distinct "stock_live_last_inv_onetime_threshold") = count(*) as is_unique,
+          cast(min("stock_live_last_inv_onetime_threshold") as varchar) as min,
+          cast(max("stock_live_last_inv_onetime_threshold") as varchar) as max,
+          avg("stock_live_last_inv_onetime_threshold") as avg,
+          stddev_pop("stock_live_last_inv_onetime_threshold") as std_dev_population,
+          stddev_samp("stock_live_last_inv_onetime_threshold") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          341 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_zlow_threshold') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_zlow_threshold" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_zlow_threshold") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_zlow_threshold") as distinct_count,
+          count(distinct "stock_live_zlow_threshold") = count(*) as is_unique,
+          cast(min("stock_live_zlow_threshold") as varchar) as min,
+          cast(max("stock_live_zlow_threshold") as varchar) as max,
+          avg("stock_live_zlow_threshold") as avg,
+          stddev_pop("stock_live_zlow_threshold") as std_dev_population,
+          stddev_samp("stock_live_zlow_threshold") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          342 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_zhigh_threshold') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_zhigh_threshold" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_zhigh_threshold") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_zhigh_threshold") as distinct_count,
+          count(distinct "stock_live_zhigh_threshold") = count(*) as is_unique,
+          cast(min("stock_live_zhigh_threshold") as varchar) as min,
+          cast(max("stock_live_zhigh_threshold") as varchar) as max,
+          avg("stock_live_zhigh_threshold") as avg,
+          stddev_pop("stock_live_zhigh_threshold") as std_dev_population,
+          stddev_samp("stock_live_zhigh_threshold") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          343 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_zscore') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_zscore" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_zscore") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_zscore") as distinct_count,
+          count(distinct "stock_live_zscore") = count(*) as is_unique,
+          cast(min("stock_live_zscore") as varchar) as min,
+          cast(max("stock_live_zscore") as varchar) as max,
+          avg("stock_live_zscore") as avg,
+          stddev_pop("stock_live_zscore") as std_dev_population,
+          stddev_samp("stock_live_zscore") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          344 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('stock_live_level') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "stock_live_level" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "stock_live_level") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "stock_live_level") as distinct_count,
+          count(distinct "stock_live_level") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          345 as _column_position
+        from source_data
+
         
       
     )
