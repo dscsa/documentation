@@ -61,23 +61,23 @@ with patients as (
 ),
 patient_comms as (
     select
-    comm_id,
-    event as comm_event,
-    data_type as comm_data_type,
-    date_sent as comm_date_sent,
-    created_at as comm_created_at,
-    updated_at as comm_updated_at,
-    date_to_send as comm_date_to_send,
-    patient_id_cp as comm_patient_id_cp,
-    invoice_number as comm_invoice_number,
-    group_id  as comm_group_id ,
-    rx_number  as comm_rx_number ,
-    date_deleted as comm_date_deleted,
-    meta_json as comm_meta_json,
-    email_subject as comm_email_subject,
-    sms as comm_sms,
-    email_body as comm_email_body
+    patient_comms_comm_id,
+    event as patient_comms_event,
+    data_type as patient_comms_data_type,
+    date_sent as patient_comms_date_sent,
+    created_at as patient_comms_created_at,
+    updated_at as patient_comms_updated_at,
+    date_to_send as patient_comms_date_to_send,
+    patient_id_cp as patient_comms_patient_id_cp,
+    invoice_number as patient_comms_invoice_number,
+    group_id as patient_comms_group_id ,
+    rx_number as patient_comms_rx_number ,
+    date_deleted as patient_comms_date_deleted,
+    meta_json as patient_comms_meta_json,
+    email_subject as patient_comms_email_subject,
+    sms as patient_comms_sms,
+    email_body as patient_comms_email_body
     from "datawarehouse".goodpill."patient_comms"
 )
 select * from patients
-left join patient_comms on patient_comms.comm_patient_id_cp = patients.patient_id_cp
+left join patient_comms on patient_comms.patient_comms_patient_id_cp = patients.patient_id_cp
