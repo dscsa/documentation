@@ -61,7 +61,7 @@ with patients as (
 ),
 patient_comms as (
     select
-    patient_comms_comm_id,
+    comm_id as patient_comms_comm_id,
     event as patient_comms_event,
     data_type as patient_comms_data_type,
     date_sent as patient_comms_date_sent,
