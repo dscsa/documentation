@@ -277,23 +277,35 @@ goodpill_snapshot as (
             updated_at as order_updated_at,
             status as order_shipped_status
         from "datawarehouse".goodpill."orders"
+    ),
+    gp_pend_group as (
+        select
+        pend_group_name,
+        invoice_number as pend_group_invoice_number,
+        initial_pend_date as pend_group_initial_date,
+        last_pend_date as pend_group_last_date
+        from "datawarehouse".goodpill."gp_pend_group"
+    ),
+    o_safe as (
+        select * from o
+        left join gp_pend_group gpg on gpg.pend_group_invoice_number = o.order_invoice_number
     )
 
     select distinct on (patient_id_cp, rx_number, order_invoice_number)
         *,
-        greatest(rh.rx_group_updated_at, rh.rx_group_created_at, oi.item_date_updated, o.order_date_updated) as dw_updated_at
+        greatest(rh.rx_group_updated_at, rh.rx_group_created_at, oi.item_date_updated, o_safe.order_date_updated) as dw_updated_at
     from psh
     left join rh using (patient_id_cp)
     left join oi using (rx_number, patient_id_cp)
-    full outer join o using (order_invoice_number, patient_id_cp)
+    full outer join o_safe using (order_invoice_number, patient_id_cp)
     order by
         patient_id_cp,
         rx_number,
         order_invoice_number,
         -- prioritize rxs which were updated before the order was dispensed
-        rh.rx_group_updated_at <= o.order_date_dispensed desc,
+        rh.rx_group_updated_at <= o_safe.order_date_dispensed desc,
         rh.rx_group_updated_at desc,
-        rh.rx_group_created_at <= o.order_date_dispensed desc,
+        rh.rx_group_created_at <= o_safe.order_date_dispensed desc,
         rh.rx_group_created_at desc
 ),
 drugs as (
@@ -435,16 +447,8 @@ patients as (
     terms_accepted as patient_terms_accepted
     from "datawarehouse".goodpill."patients"
 ),
-gp_pend_group as (
-    select 
-    pend_group_name,
-    invoice_number as pend_group_invoice_number, 
-    initial_pend_date as pend_group_initial_date, 
-    last_pend_date as pend_group_last_date
-    from "datawarehouse".goodpill."gp_pend_group"
-),
 gp_stock_live as (
-    select 
+    select
     drug_generic as stock_live_drug_generic,
     price_per_month as stock_live_price_per_month,
     drug_ordered as stock_live_drug_ordered,
@@ -471,20 +475,25 @@ gp_stock_live as (
     stock_level as stock_live_level
     from "datawarehouse".goodpill."gp_stock_live"
 ),
-gp_order_items_inventory_items as (
-    select 
-    line_id as inventory_line_id,
-    inventory_item_id
-    from "datawarehouse".goodpill."gp_order_items_inventory_items"
+drugs_safe as (
+    -- pre join
+    select * from drugs
+    left join gp_stock_live gsl on drugs.drug_generic_name = gsl.stock_live_drug_generic
+),
+clinics_safe as (
+    -- pre join
+    select * from clinics
+    left join dw_clinics on dw_clinics.dw_clinic_id = clinics.clinic_id
+    left join dw_clinic_groups on dw_clinic_groups.dw_clinic_groups_id = dw_clinics.dw_clinic_group_id
+),
+providers_safe as (
+    -- pre join
+    select * from providers
+    left join dw_providers on dw_providers.dw_provider_npi = providers.providers_npi
 )
 select *
 from goodpill_snapshot as gds
-left join drugs on drugs.drug_generic_name = gds.rx_drug_generic
+left join drugs_safe on drugs_safe.drug_generic_name = gds.rx_drug_generic
 left join patients using (patient_id_cp)
-left join providers on providers.providers_npi = gds.rx_provider_npi
-left join dw_providers on dw_providers.dw_provider_npi = providers.providers_npi
-left join clinics on clinics.clinic_name_cp = gds.rx_clinic_name
-left join dw_clinics on dw_clinics.dw_clinic_id = clinics.clinic_id
-left join dw_clinic_groups on dw_clinic_groups.dw_clinic_groups_id = dw_clinics.dw_clinic_group_id
-left join gp_pend_group gpg on gpg.pend_group_invoice_number = gds.order_invoice_number
-left join gp_stock_live gsl on gsl.stock_live_drug_generic = gds.rx_drug_generic
+left join providers_safe on providers_safe.providers_npi = gds.rx_provider_npi
+left join clinics_safe on clinics_safe.clinic_name_cp = gds.rx_clinic_name

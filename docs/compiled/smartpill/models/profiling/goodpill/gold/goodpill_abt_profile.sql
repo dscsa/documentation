@@ -4130,2226 +4130,6 @@
       
         
         select 
-          lower('dw_updated_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_updated_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_updated_at") as distinct_count,
-          count(distinct "dw_updated_at") = count(*) as is_unique,
-          cast(min("dw_updated_at") as varchar) as min,
-          cast(max("dw_updated_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          207 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_brand') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_brand" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_brand") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_brand") as distinct_count,
-          count(distinct "drug_brand") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          208 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_gsns') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_gsns" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_gsns") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_gsns") as distinct_count,
-          count(distinct "drug_gsns") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          209 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price30') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price30" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price30") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price30") as distinct_count,
-          count(distinct "drug_price30") = count(*) as is_unique,
-          cast(min("drug_price30") as varchar) as min,
-          cast(max("drug_price30") as varchar) as max,
-          avg("drug_price30") as avg,
-          stddev_pop("drug_price30") as std_dev_population,
-          stddev_samp("drug_price30") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          210 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price90') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price90" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price90") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price90") as distinct_count,
-          count(distinct "drug_price90") = count(*) as is_unique,
-          cast(min("drug_price90") as varchar) as min,
-          cast(max("drug_price90") as varchar) as max,
-          avg("drug_price90") as avg,
-          stddev_pop("drug_price90") as std_dev_population,
-          stddev_samp("drug_price90") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          211 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price_retail') as column_name,
-          nullif(lower('numeric'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price_retail" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price_retail") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price_retail") as distinct_count,
-          count(distinct "drug_price_retail") = count(*) as is_unique,
-          cast(min("drug_price_retail") as varchar) as min,
-          cast(max("drug_price_retail") as varchar) as max,
-          avg("drug_price_retail") as avg,
-          stddev_pop("drug_price_retail") as std_dev_population,
-          stddev_samp("drug_price_retail") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          212 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price_goodrx') as column_name,
-          nullif(lower('numeric'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price_goodrx" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price_goodrx") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price_goodrx") as distinct_count,
-          count(distinct "drug_price_goodrx") = count(*) as is_unique,
-          cast(min("drug_price_goodrx") as varchar) as min,
-          cast(max("drug_price_goodrx") as varchar) as max,
-          avg("drug_price_goodrx") as avg,
-          stddev_pop("drug_price_goodrx") as std_dev_population,
-          stddev_samp("drug_price_goodrx") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          213 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price_nadac') as column_name,
-          nullif(lower('numeric'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price_nadac" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price_nadac") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price_nadac") as distinct_count,
-          count(distinct "drug_price_nadac") = count(*) as is_unique,
-          cast(min("drug_price_nadac") as varchar) as min,
-          cast(max("drug_price_nadac") as varchar) as max,
-          avg("drug_price_nadac") as avg,
-          stddev_pop("drug_price_nadac") as std_dev_population,
-          stddev_samp("drug_price_nadac") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          214 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_qty_repack') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_qty_repack" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_qty_repack") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_qty_repack") as distinct_count,
-          count(distinct "drug_qty_repack") = count(*) as is_unique,
-          cast(min("drug_qty_repack") as varchar) as min,
-          cast(max("drug_qty_repack") as varchar) as max,
-          avg("drug_qty_repack") as avg,
-          stddev_pop("drug_qty_repack") as std_dev_population,
-          stddev_samp("drug_qty_repack") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          215 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_count_ndcs') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_count_ndcs" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_count_ndcs") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_count_ndcs") as distinct_count,
-          count(distinct "drug_count_ndcs") = count(*) as is_unique,
-          cast(min("drug_count_ndcs") as varchar) as min,
-          cast(max("drug_count_ndcs") as varchar) as max,
-          avg("drug_count_ndcs") as avg,
-          stddev_pop("drug_count_ndcs") as std_dev_population,
-          stddev_samp("drug_count_ndcs") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          216 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_ordered') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_ordered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_ordered") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_ordered") as distinct_count,
-          count(distinct "drug_ordered") = count(*) as is_unique,
-          cast(min("drug_ordered") as varchar) as min,
-          cast(max("drug_ordered") as varchar) as max,
-          avg("drug_ordered") as avg,
-          stddev_pop("drug_ordered") as std_dev_population,
-          stddev_samp("drug_ordered") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          217 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_qty_min') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_qty_min" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_qty_min") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_qty_min") as distinct_count,
-          count(distinct "drug_qty_min") = count(*) as is_unique,
-          cast(min("drug_qty_min") as varchar) as min,
-          cast(max("drug_qty_min") as varchar) as max,
-          avg("drug_qty_min") as avg,
-          stddev_pop("drug_qty_min") as std_dev_population,
-          stddev_samp("drug_qty_min") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          218 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_days_min') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_days_min" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_days_min") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_days_min") as distinct_count,
-          count(distinct "drug_days_min") = count(*) as is_unique,
-          cast(min("drug_days_min") as varchar) as min,
-          cast(max("drug_days_min") as varchar) as max,
-          avg("drug_days_min") as avg,
-          stddev_pop("drug_days_min") as std_dev_population,
-          stddev_samp("drug_days_min") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          219 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_max_inventory') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_max_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_max_inventory") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_max_inventory") as distinct_count,
-          count(distinct "drug_max_inventory") = count(*) as is_unique,
-          cast(min("drug_max_inventory") as varchar) as min,
-          cast(max("drug_max_inventory") as varchar) as max,
-          avg("drug_max_inventory") as avg,
-          stddev_pop("drug_max_inventory") as std_dev_population,
-          stddev_samp("drug_max_inventory") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          220 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_message_display') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_message_display" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_message_display") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_message_display") as distinct_count,
-          count(distinct "drug_message_display") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          221 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_message_verified') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_message_verified" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_message_verified") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_message_verified") as distinct_count,
-          count(distinct "drug_message_verified") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          222 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_message_destroyed') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_message_destroyed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_message_destroyed") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_message_destroyed") as distinct_count,
-          count(distinct "drug_message_destroyed") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          223 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_generic_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_generic_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_generic_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_generic_name") as distinct_count,
-          count(distinct "drug_generic_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          224 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('drug_price_coalesced') as column_name,
-          nullif(lower('numeric'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "drug_price_coalesced" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "drug_price_coalesced") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "drug_price_coalesced") as distinct_count,
-          count(distinct "drug_price_coalesced") = count(*) as is_unique,
-          cast(min("drug_price_coalesced") as varchar) as min,
-          cast(max("drug_price_coalesced") as varchar) as max,
-          avg("drug_price_coalesced") as avg,
-          stddev_pop("drug_price_coalesced") as std_dev_population,
-          stddev_samp("drug_price_coalesced") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          225 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_id_wc') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_id_wc" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_id_wc") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_id_wc") as distinct_count,
-          count(distinct "patient_id_wc") = count(*) as is_unique,
-          cast(min("patient_id_wc") as varchar) as min,
-          cast(max("patient_id_wc") as varchar) as max,
-          avg("patient_id_wc") as avg,
-          stddev_pop("patient_id_wc") as std_dev_population,
-          stddev_samp("patient_id_wc") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          226 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_registered') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_registered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_registered") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_registered") as distinct_count,
-          count(distinct "patient_date_registered") = count(*) as is_unique,
-          cast(min("patient_date_registered") as varchar) as min,
-          cast(max("patient_date_registered") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          227 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_reviewed') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_reviewed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_reviewed") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_reviewed") as distinct_count,
-          count(distinct "patient_date_reviewed") = count(*) as is_unique,
-          cast(min("patient_date_reviewed") as varchar) as min,
-          cast(max("patient_date_reviewed") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          228 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_added') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_added" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_added") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_added") as distinct_count,
-          count(distinct "patient_date_added") = count(*) as is_unique,
-          cast(min("patient_date_added") as varchar) as min,
-          cast(max("patient_date_added") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          229 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_changed') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_changed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_changed") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_changed") as distinct_count,
-          count(distinct "patient_date_changed") = count(*) as is_unique,
-          cast(min("patient_date_changed") as varchar) as min,
-          cast(max("patient_date_changed") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          230 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_updated') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_updated" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_updated") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_updated") as distinct_count,
-          count(distinct "patient_date_updated") = count(*) as is_unique,
-          cast(min("patient_date_updated") as varchar) as min,
-          cast(max("patient_date_updated") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          231 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_first_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_first_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_first_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_first_name") as distinct_count,
-          count(distinct "patient_first_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          232 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_last_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_last_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_last_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_last_name") as distinct_count,
-          count(distinct "patient_last_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          233 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_birth_date') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_birth_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_birth_date") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_birth_date") as distinct_count,
-          count(distinct "patient_birth_date") = count(*) as is_unique,
-          cast(min("patient_birth_date") as varchar) as min,
-          cast(max("patient_birth_date") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          234 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_language') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_language" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_language") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_language") as distinct_count,
-          count(distinct "patient_language") = count(*) as is_unique,
-          cast(min("patient_language") as varchar) as min,
-          cast(max("patient_language") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          235 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_phone1') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_phone1" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_phone1") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_phone1") as distinct_count,
-          count(distinct "patient_phone1") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          236 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_phone2') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_phone2" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_phone2") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_phone2") as distinct_count,
-          count(distinct "patient_phone2") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          237 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_address') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_address") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_address") as distinct_count,
-          count(distinct "patient_address") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          238 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_city') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_city") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_city") as distinct_count,
-          count(distinct "patient_city") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          239 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_state') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_state") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_state") as distinct_count,
-          count(distinct "patient_state") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          240 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_zip') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_zip" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_zip") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_zip") as distinct_count,
-          count(distinct "patient_zip") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          241 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_card_type') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_card_type" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_card_type") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_card_type") as distinct_count,
-          count(distinct "patient_payment_card_type") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          242 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_card_last4') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_card_last4" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_card_last4") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_card_last4") as distinct_count,
-          count(distinct "patient_payment_card_last4") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          243 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_card_date_expired') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_card_date_expired" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_card_date_expired") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_card_date_expired") as distinct_count,
-          count(distinct "patient_payment_card_date_expired") = count(*) as is_unique,
-          cast(min("patient_payment_card_date_expired") as varchar) as min,
-          cast(max("patient_payment_card_date_expired") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          244 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_card_autopay') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_card_autopay" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_card_autopay") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_card_autopay") as distinct_count,
-          count(distinct "patient_payment_card_autopay") = count(*) as is_unique,
-          cast(min("patient_payment_card_autopay") as varchar) as min,
-          cast(max("patient_payment_card_autopay") as varchar) as max,
-          avg("patient_payment_card_autopay") as avg,
-          stddev_pop("patient_payment_card_autopay") as std_dev_population,
-          stddev_samp("patient_payment_card_autopay") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          245 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_method_default') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_method_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_method_default") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_method_default") as distinct_count,
-          count(distinct "patient_payment_method_default") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          246 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_first_rx_received') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_first_rx_received" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_first_rx_received") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_first_rx_received") as distinct_count,
-          count(distinct "patient_date_first_rx_received") = count(*) as is_unique,
-          cast(min("patient_date_first_rx_received") as varchar) as min,
-          cast(max("patient_date_first_rx_received") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          247 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_first_dispensed') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_first_dispensed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_first_dispensed") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_first_dispensed") as distinct_count,
-          count(distinct "patient_date_first_dispensed") = count(*) as is_unique,
-          cast(min("patient_date_first_dispensed") as varchar) as min,
-          cast(max("patient_date_first_dispensed") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          248 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_date_first_expected_by') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_date_first_expected_by" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_date_first_expected_by") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_date_first_expected_by") as distinct_count,
-          count(distinct "patient_date_first_expected_by") = count(*) as is_unique,
-          cast(min("patient_date_first_expected_by") as varchar) as min,
-          cast(max("patient_date_first_expected_by") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          249 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_refills_used') as column_name,
-          nullif(lower('numeric'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_refills_used" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_refills_used") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_refills_used") as distinct_count,
-          count(distinct "patient_refills_used") = count(*) as is_unique,
-          cast(min("patient_refills_used") as varchar) as min,
-          cast(max("patient_refills_used") as varchar) as max,
-          avg("patient_refills_used") as avg,
-          stddev_pop("patient_refills_used") as std_dev_population,
-          stddev_samp("patient_refills_used") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          250 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_email') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_email" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_email") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_email") as distinct_count,
-          count(distinct "patient_email") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          251 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_autofill') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_autofill" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_autofill") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_autofill") as distinct_count,
-          count(distinct "patient_autofill") = count(*) as is_unique,
-          cast(min("patient_autofill") as varchar) as min,
-          cast(max("patient_autofill") as varchar) as max,
-          avg("patient_autofill") as avg,
-          stddev_pop("patient_autofill") as std_dev_population,
-          stddev_samp("patient_autofill") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          252 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_initial_invoice_number') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_initial_invoice_number" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_initial_invoice_number") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_initial_invoice_number") as distinct_count,
-          count(distinct "patient_initial_invoice_number") = count(*) as is_unique,
-          cast(min("patient_initial_invoice_number") as varchar) as min,
-          cast(max("patient_initial_invoice_number") as varchar) as max,
-          avg("patient_initial_invoice_number") as avg,
-          stddev_pop("patient_initial_invoice_number") as std_dev_population,
-          stddev_samp("patient_initial_invoice_number") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          253 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_note') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_note" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_note") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_note") as distinct_count,
-          count(distinct "patient_note") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          254 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_none') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_none" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_none") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_none") as distinct_count,
-          count(distinct "patient_allergies_none") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          255 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_cephalosporins') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_cephalosporins" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_cephalosporins") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_cephalosporins") as distinct_count,
-          count(distinct "patient_allergies_cephalosporins") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          256 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_sulfa') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_sulfa" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_sulfa") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_sulfa") as distinct_count,
-          count(distinct "patient_allergies_sulfa") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          257 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_aspirin') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_aspirin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_aspirin") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_aspirin") as distinct_count,
-          count(distinct "patient_allergies_aspirin") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          258 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_penicillin') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_penicillin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_penicillin") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_penicillin") as distinct_count,
-          count(distinct "patient_allergies_penicillin") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          259 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_erythromycin') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_erythromycin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_erythromycin") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_erythromycin") as distinct_count,
-          count(distinct "patient_allergies_erythromycin") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          260 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_codeine') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_codeine" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_codeine") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_codeine") as distinct_count,
-          count(distinct "patient_allergies_codeine") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          261 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_nsaids') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_nsaids" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_nsaids") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_nsaids") as distinct_count,
-          count(distinct "patient_allergies_nsaids") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          262 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_salicylates') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_salicylates" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_salicylates") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_salicylates") as distinct_count,
-          count(distinct "patient_allergies_salicylates") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          263 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_azithromycin') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_azithromycin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_azithromycin") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_azithromycin") as distinct_count,
-          count(distinct "patient_allergies_azithromycin") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          264 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_amoxicillin') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_amoxicillin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_amoxicillin") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_amoxicillin") as distinct_count,
-          count(distinct "patient_allergies_amoxicillin") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          265 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_tetracycline') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_tetracycline" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_tetracycline") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_tetracycline") as distinct_count,
-          count(distinct "patient_allergies_tetracycline") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          266 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_allergies_other') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_allergies_other" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_allergies_other") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_allergies_other") as distinct_count,
-          count(distinct "patient_allergies_other") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          267 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_medications_other') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_medications_other" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_medications_other") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_medications_other") as distinct_count,
-          count(distinct "patient_medications_other") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          268 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('pharmacy_npi') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "pharmacy_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "pharmacy_npi") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "pharmacy_npi") as distinct_count,
-          count(distinct "pharmacy_npi") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          269 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('pharmacy_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "pharmacy_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "pharmacy_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "pharmacy_name") as distinct_count,
-          count(distinct "pharmacy_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          270 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('pharmacy_phone') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "pharmacy_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "pharmacy_phone") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "pharmacy_phone") as distinct_count,
-          count(distinct "pharmacy_phone") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          271 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('pharmacy_fax') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "pharmacy_fax" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "pharmacy_fax") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "pharmacy_fax") as distinct_count,
-          count(distinct "pharmacy_fax") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          272 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('pharmacy_address') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "pharmacy_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "pharmacy_address") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "pharmacy_address") as distinct_count,
-          count(distinct "pharmacy_address") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          273 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_inactive') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_inactive" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_inactive") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_inactive") as distinct_count,
-          count(distinct "patient_inactive") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          274 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_payment_coupon') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_payment_coupon" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_payment_coupon") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_payment_coupon") as distinct_count,
-          count(distinct "patient_payment_coupon") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          275 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_tracking_coupon') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_tracking_coupon" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_tracking_coupon") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_tracking_coupon") as distinct_count,
-          count(distinct "patient_tracking_coupon") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          276 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_patient_deleted') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_patient_deleted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_patient_deleted") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_patient_deleted") as distinct_count,
-          count(distinct "patient_patient_deleted") = count(*) as is_unique,
-          cast(min("patient_patient_deleted") as varchar) as min,
-          cast(max("patient_patient_deleted") as varchar) as max,
-          avg("patient_patient_deleted") as avg,
-          stddev_pop("patient_patient_deleted") as std_dev_population,
-          stddev_samp("patient_patient_deleted") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          277 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_third_party_id') as column_name,
-          nullif(lower('bigint'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_third_party_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_third_party_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_third_party_id") as distinct_count,
-          count(distinct "patient_third_party_id") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          278 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_terms_viewed_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_terms_viewed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_terms_viewed_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_terms_viewed_at") as distinct_count,
-          count(distinct "patient_terms_viewed_at") = count(*) as is_unique,
-          cast(min("patient_terms_viewed_at") as varchar) as min,
-          cast(max("patient_terms_viewed_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          279 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('patient_terms_accepted') as column_name,
-          nullif(lower('boolean'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "patient_terms_accepted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "patient_terms_accepted") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "patient_terms_accepted") as distinct_count,
-          count(distinct "patient_terms_accepted") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          280 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('provider_first_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "provider_first_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "provider_first_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "provider_first_name") as distinct_count,
-          count(distinct "provider_first_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          281 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('provider_last_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "provider_last_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "provider_last_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "provider_last_name") as distinct_count,
-          count(distinct "provider_last_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          282 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('provider_verified') as column_name,
-          nullif(lower('boolean'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "provider_verified" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "provider_verified") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "provider_verified") as distinct_count,
-          count(distinct "provider_verified") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          283 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('providers_npi') as column_name,
-          nullif(lower('character varying'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "providers_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "providers_npi") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "providers_npi") as distinct_count,
-          count(distinct "providers_npi") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          284 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_id') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_id") as distinct_count,
-          count(distinct "dw_provider_id") = count(*) as is_unique,
-          cast(min("dw_provider_id") as varchar) as min,
-          cast(max("dw_provider_id") as varchar) as max,
-          avg("dw_provider_id") as avg,
-          stddev_pop("dw_provider_id") as std_dev_population,
-          stddev_samp("dw_provider_id") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          285 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('provider_first_rx_sent_date') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "provider_first_rx_sent_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "provider_first_rx_sent_date") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "provider_first_rx_sent_date") as distinct_count,
-          count(distinct "provider_first_rx_sent_date") = count(*) as is_unique,
-          cast(min("provider_first_rx_sent_date") as varchar) as min,
-          cast(max("provider_first_rx_sent_date") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          286 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('provider_last_rx_sent_date') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "provider_last_rx_sent_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "provider_last_rx_sent_date") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "provider_last_rx_sent_date") as distinct_count,
-          count(distinct "provider_last_rx_sent_date") = count(*) as is_unique,
-          cast(min("provider_last_rx_sent_date") as varchar) as min,
-          cast(max("provider_last_rx_sent_date") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          287 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_npi') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_npi") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_npi") as distinct_count,
-          count(distinct "dw_provider_npi") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          288 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_name") as distinct_count,
-          count(distinct "dw_provider_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          289 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_phone') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_phone") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_phone") as distinct_count,
-          count(distinct "dw_provider_phone") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          290 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_id_sf') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_id_sf") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_id_sf") as distinct_count,
-          count(distinct "dw_provider_id_sf") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          291 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_default_clinic') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_default_clinic" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_default_clinic") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_default_clinic") as distinct_count,
-          count(distinct "dw_provider_default_clinic") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          292 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_provider_default_clinic_imputed_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_provider_default_clinic_imputed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_provider_default_clinic_imputed_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_provider_default_clinic_imputed_at") as distinct_count,
-          count(distinct "dw_provider_default_clinic_imputed_at") = count(*) as is_unique,
-          cast(min("dw_provider_default_clinic_imputed_at") as varchar) as min,
-          cast(max("dw_provider_default_clinic_imputed_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          293 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_id') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_id") as distinct_count,
-          count(distinct "clinic_id") = count(*) as is_unique,
-          cast(min("clinic_id") as varchar) as min,
-          cast(max("clinic_id") as varchar) as max,
-          avg("clinic_id") as avg,
-          stddev_pop("clinic_id") as std_dev_population,
-          stddev_samp("clinic_id") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          294 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_name_cp') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_name_cp" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_name_cp") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_name_cp") as distinct_count,
-          count(distinct "clinic_name_cp") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          295 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_rx_date_added_first') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_rx_date_added_first" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_rx_date_added_first") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_rx_date_added_first") as distinct_count,
-          count(distinct "clinic_rx_date_added_first") = count(*) as is_unique,
-          cast(min("clinic_rx_date_added_first") as varchar) as min,
-          cast(max("clinic_rx_date_added_first") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          296 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_rx_date_added_last') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_rx_date_added_last" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_rx_date_added_last") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_rx_date_added_last") as distinct_count,
-          count(distinct "clinic_rx_date_added_last") = count(*) as is_unique,
-          cast(min("clinic_rx_date_added_last") as varchar) as min,
-          cast(max("clinic_rx_date_added_last") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          297 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_created_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_created_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_created_at") as distinct_count,
-          count(distinct "clinic_created_at") = count(*) as is_unique,
-          cast(min("clinic_created_at") as varchar) as min,
-          cast(max("clinic_created_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          298 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('clinic_updated_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "clinic_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "clinic_updated_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "clinic_updated_at") as distinct_count,
-          count(distinct "clinic_updated_at") = count(*) as is_unique,
-          cast(min("clinic_updated_at") as varchar) as min,
-          cast(max("clinic_updated_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          299 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_id') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_id") as distinct_count,
-          count(distinct "dw_clinic_id") = count(*) as is_unique,
-          cast(min("dw_clinic_id") as varchar) as min,
-          cast(max("dw_clinic_id") as varchar) as max,
-          avg("dw_clinic_id") as avg,
-          stddev_pop("dw_clinic_id") as std_dev_population,
-          stddev_samp("dw_clinic_id") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          300 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_group_id') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_group_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_group_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_group_id") as distinct_count,
-          count(distinct "dw_clinic_group_id") = count(*) as is_unique,
-          cast(min("dw_clinic_group_id") as varchar) as min,
-          cast(max("dw_clinic_group_id") as varchar) as max,
-          avg("dw_clinic_group_id") as avg,
-          stddev_pop("dw_clinic_group_id") as std_dev_population,
-          stddev_samp("dw_clinic_group_id") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          301 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_name") as distinct_count,
-          count(distinct "dw_clinic_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          302 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_address') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_address") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_address") as distinct_count,
-          count(distinct "dw_clinic_address") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          303 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_street') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_street" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_street") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_street") as distinct_count,
-          count(distinct "dw_clinic_street") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          304 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_city') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_city") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_city") as distinct_count,
-          count(distinct "dw_clinic_city") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          305 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_state') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_state") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_state") as distinct_count,
-          count(distinct "dw_clinic_state") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          306 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_zip') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_zip" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_zip") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_zip") as distinct_count,
-          count(distinct "dw_clinic_zip") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          307 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_phone') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_phone") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_phone") as distinct_count,
-          count(distinct "dw_clinic_phone") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          308 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_id_sf') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_id_sf") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_id_sf") as distinct_count,
-          count(distinct "dw_clinic_id_sf") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          309 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_created_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_created_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_created_at") as distinct_count,
-          count(distinct "dw_clinic_created_at") = count(*) as is_unique,
-          cast(min("dw_clinic_created_at") as varchar) as min,
-          cast(max("dw_clinic_created_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          310 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_updated_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_updated_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_updated_at") as distinct_count,
-          count(distinct "dw_clinic_updated_at") = count(*) as is_unique,
-          cast(min("dw_clinic_updated_at") as varchar) as min,
-          cast(max("dw_clinic_updated_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          311 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_groups_id') as column_name,
-          nullif(lower('integer'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_groups_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_groups_id") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_groups_id") as distinct_count,
-          count(distinct "dw_clinic_groups_id") = count(*) as is_unique,
-          cast(min("dw_clinic_groups_id") as varchar) as min,
-          cast(max("dw_clinic_groups_id") as varchar) as max,
-          avg("dw_clinic_groups_id") as avg,
-          stddev_pop("dw_clinic_groups_id") as std_dev_population,
-          stddev_samp("dw_clinic_groups_id") as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          312 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_group_name') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_group_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_group_name") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_group_name") as distinct_count,
-          count(distinct "dw_clinic_group_name") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          313 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_group_id_sf') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_group_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_group_id_sf") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_group_id_sf") as distinct_count,
-          count(distinct "dw_clinic_group_id_sf") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          314 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_group_domain') as column_name,
-          nullif(lower('text'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_group_domain" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_group_domain") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_group_domain") as distinct_count,
-          count(distinct "dw_clinic_group_domain") = count(*) as is_unique,
-          null as min,
-          null as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          315 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_groups_created_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_groups_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_groups_created_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_groups_created_at") as distinct_count,
-          count(distinct "dw_clinic_groups_created_at") = count(*) as is_unique,
-          cast(min("dw_clinic_groups_created_at") as varchar) as min,
-          cast(max("dw_clinic_groups_created_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          316 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
-          lower('dw_clinic_groups_updated_at') as column_name,
-          nullif(lower('timestamp without time zone'), '') as data_type,
-          cast(count(*) as numeric) as row_count,
-          sum(case when "dw_clinic_groups_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
-          count(distinct "dw_clinic_groups_updated_at") / cast(count(*) as numeric) as distinct_proportion,
-          count(distinct "dw_clinic_groups_updated_at") as distinct_count,
-          count(distinct "dw_clinic_groups_updated_at") = count(*) as is_unique,
-          cast(min("dw_clinic_groups_updated_at") as varchar) as min,
-          cast(max("dw_clinic_groups_updated_at") as varchar) as max,
-          cast(null as numeric) as avg,
-          cast(null as numeric) as std_dev_population,
-          cast(null as numeric) as std_dev_sample,
-          cast(current_timestamp as varchar) as profiled_at,
-          317 as _column_position
-        from source_data
-
-        union all
-      
-        
-        select 
           lower('pend_group_name') as column_name,
           nullif(lower('character varying'), '') as data_type,
           cast(count(*) as numeric) as row_count,
@@ -6363,7 +4143,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          318 as _column_position
+          207 as _column_position
         from source_data
 
         union all
@@ -6383,7 +4163,7 @@
           stddev_pop("pend_group_invoice_number") as std_dev_population,
           stddev_samp("pend_group_invoice_number") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          319 as _column_position
+          208 as _column_position
         from source_data
 
         union all
@@ -6403,7 +4183,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          320 as _column_position
+          209 as _column_position
         from source_data
 
         union all
@@ -6423,7 +4203,387 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          321 as _column_position
+          210 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_updated_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_updated_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_updated_at") as distinct_count,
+          count(distinct "dw_updated_at") = count(*) as is_unique,
+          cast(min("dw_updated_at") as varchar) as min,
+          cast(max("dw_updated_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          211 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_brand') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_brand" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_brand") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_brand") as distinct_count,
+          count(distinct "drug_brand") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          212 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_gsns') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_gsns" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_gsns") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_gsns") as distinct_count,
+          count(distinct "drug_gsns") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          213 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price30') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price30" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price30") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price30") as distinct_count,
+          count(distinct "drug_price30") = count(*) as is_unique,
+          cast(min("drug_price30") as varchar) as min,
+          cast(max("drug_price30") as varchar) as max,
+          avg("drug_price30") as avg,
+          stddev_pop("drug_price30") as std_dev_population,
+          stddev_samp("drug_price30") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          214 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price90') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price90" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price90") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price90") as distinct_count,
+          count(distinct "drug_price90") = count(*) as is_unique,
+          cast(min("drug_price90") as varchar) as min,
+          cast(max("drug_price90") as varchar) as max,
+          avg("drug_price90") as avg,
+          stddev_pop("drug_price90") as std_dev_population,
+          stddev_samp("drug_price90") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          215 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price_retail') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price_retail" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price_retail") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price_retail") as distinct_count,
+          count(distinct "drug_price_retail") = count(*) as is_unique,
+          cast(min("drug_price_retail") as varchar) as min,
+          cast(max("drug_price_retail") as varchar) as max,
+          avg("drug_price_retail") as avg,
+          stddev_pop("drug_price_retail") as std_dev_population,
+          stddev_samp("drug_price_retail") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          216 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price_goodrx') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price_goodrx" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price_goodrx") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price_goodrx") as distinct_count,
+          count(distinct "drug_price_goodrx") = count(*) as is_unique,
+          cast(min("drug_price_goodrx") as varchar) as min,
+          cast(max("drug_price_goodrx") as varchar) as max,
+          avg("drug_price_goodrx") as avg,
+          stddev_pop("drug_price_goodrx") as std_dev_population,
+          stddev_samp("drug_price_goodrx") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          217 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price_nadac') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price_nadac" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price_nadac") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price_nadac") as distinct_count,
+          count(distinct "drug_price_nadac") = count(*) as is_unique,
+          cast(min("drug_price_nadac") as varchar) as min,
+          cast(max("drug_price_nadac") as varchar) as max,
+          avg("drug_price_nadac") as avg,
+          stddev_pop("drug_price_nadac") as std_dev_population,
+          stddev_samp("drug_price_nadac") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          218 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_qty_repack') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_qty_repack" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_qty_repack") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_qty_repack") as distinct_count,
+          count(distinct "drug_qty_repack") = count(*) as is_unique,
+          cast(min("drug_qty_repack") as varchar) as min,
+          cast(max("drug_qty_repack") as varchar) as max,
+          avg("drug_qty_repack") as avg,
+          stddev_pop("drug_qty_repack") as std_dev_population,
+          stddev_samp("drug_qty_repack") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          219 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_count_ndcs') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_count_ndcs" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_count_ndcs") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_count_ndcs") as distinct_count,
+          count(distinct "drug_count_ndcs") = count(*) as is_unique,
+          cast(min("drug_count_ndcs") as varchar) as min,
+          cast(max("drug_count_ndcs") as varchar) as max,
+          avg("drug_count_ndcs") as avg,
+          stddev_pop("drug_count_ndcs") as std_dev_population,
+          stddev_samp("drug_count_ndcs") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          220 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_ordered') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_ordered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_ordered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_ordered") as distinct_count,
+          count(distinct "drug_ordered") = count(*) as is_unique,
+          cast(min("drug_ordered") as varchar) as min,
+          cast(max("drug_ordered") as varchar) as max,
+          avg("drug_ordered") as avg,
+          stddev_pop("drug_ordered") as std_dev_population,
+          stddev_samp("drug_ordered") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          221 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_qty_min') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_qty_min" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_qty_min") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_qty_min") as distinct_count,
+          count(distinct "drug_qty_min") = count(*) as is_unique,
+          cast(min("drug_qty_min") as varchar) as min,
+          cast(max("drug_qty_min") as varchar) as max,
+          avg("drug_qty_min") as avg,
+          stddev_pop("drug_qty_min") as std_dev_population,
+          stddev_samp("drug_qty_min") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          222 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_days_min') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_days_min" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_days_min") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_days_min") as distinct_count,
+          count(distinct "drug_days_min") = count(*) as is_unique,
+          cast(min("drug_days_min") as varchar) as min,
+          cast(max("drug_days_min") as varchar) as max,
+          avg("drug_days_min") as avg,
+          stddev_pop("drug_days_min") as std_dev_population,
+          stddev_samp("drug_days_min") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          223 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_max_inventory') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_max_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_max_inventory") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_max_inventory") as distinct_count,
+          count(distinct "drug_max_inventory") = count(*) as is_unique,
+          cast(min("drug_max_inventory") as varchar) as min,
+          cast(max("drug_max_inventory") as varchar) as max,
+          avg("drug_max_inventory") as avg,
+          stddev_pop("drug_max_inventory") as std_dev_population,
+          stddev_samp("drug_max_inventory") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          224 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_message_display') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_message_display" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_message_display") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_message_display") as distinct_count,
+          count(distinct "drug_message_display") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          225 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_message_verified') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_message_verified" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_message_verified") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_message_verified") as distinct_count,
+          count(distinct "drug_message_verified") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          226 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_message_destroyed') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_message_destroyed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_message_destroyed") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_message_destroyed") as distinct_count,
+          count(distinct "drug_message_destroyed") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          227 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_generic_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_generic_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_generic_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_generic_name") as distinct_count,
+          count(distinct "drug_generic_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          228 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('drug_price_coalesced') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "drug_price_coalesced" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "drug_price_coalesced") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "drug_price_coalesced") as distinct_count,
+          count(distinct "drug_price_coalesced") = count(*) as is_unique,
+          cast(min("drug_price_coalesced") as varchar) as min,
+          cast(max("drug_price_coalesced") as varchar) as max,
+          avg("drug_price_coalesced") as avg,
+          stddev_pop("drug_price_coalesced") as std_dev_population,
+          stddev_samp("drug_price_coalesced") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          229 as _column_position
         from source_data
 
         union all
@@ -6443,7 +4603,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          322 as _column_position
+          230 as _column_position
         from source_data
 
         union all
@@ -6463,7 +4623,7 @@
           stddev_pop("stock_live_price_per_month") as std_dev_population,
           stddev_samp("stock_live_price_per_month") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          323 as _column_position
+          231 as _column_position
         from source_data
 
         union all
@@ -6483,7 +4643,7 @@
           stddev_pop("stock_live_drug_ordered") as std_dev_population,
           stddev_samp("stock_live_drug_ordered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          324 as _column_position
+          232 as _column_position
         from source_data
 
         union all
@@ -6503,7 +4663,7 @@
           stddev_pop("stock_live_qty_repack") as std_dev_population,
           stddev_samp("stock_live_qty_repack") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          325 as _column_position
+          233 as _column_position
         from source_data
 
         union all
@@ -6523,7 +4683,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          326 as _column_position
+          234 as _column_position
         from source_data
 
         union all
@@ -6543,7 +4703,7 @@
           stddev_pop("stock_live_avg_inventory") as std_dev_population,
           stddev_samp("stock_live_avg_inventory") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          327 as _column_position
+          235 as _column_position
         from source_data
 
         union all
@@ -6563,7 +4723,7 @@
           stddev_pop("stock_live_last_inventory") as std_dev_population,
           stddev_samp("stock_live_last_inventory") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          328 as _column_position
+          236 as _column_position
         from source_data
 
         union all
@@ -6583,7 +4743,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          329 as _column_position
+          237 as _column_position
         from source_data
 
         union all
@@ -6603,7 +4763,7 @@
           stddev_pop("stock_live_stddev_entered") as std_dev_population,
           stddev_samp("stock_live_stddev_entered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          330 as _column_position
+          238 as _column_position
         from source_data
 
         union all
@@ -6623,7 +4783,7 @@
           stddev_pop("stock_live_total_entered") as std_dev_population,
           stddev_samp("stock_live_total_entered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          331 as _column_position
+          239 as _column_position
         from source_data
 
         union all
@@ -6643,7 +4803,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          332 as _column_position
+          240 as _column_position
         from source_data
 
         union all
@@ -6663,7 +4823,7 @@
           stddev_pop("stock_live_stddev_dispensed_actual") as std_dev_population,
           stddev_samp("stock_live_stddev_dispensed_actual") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          333 as _column_position
+          241 as _column_position
         from source_data
 
         union all
@@ -6683,7 +4843,7 @@
           stddev_pop("stock_live_total_dispensed_actual") as std_dev_population,
           stddev_samp("stock_live_total_dispensed_actual") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          334 as _column_position
+          242 as _column_position
         from source_data
 
         union all
@@ -6703,7 +4863,7 @@
           stddev_pop("stock_live_total_dispensed_default") as std_dev_population,
           stddev_samp("stock_live_total_dispensed_default") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          335 as _column_position
+          243 as _column_position
         from source_data
 
         union all
@@ -6723,7 +4883,7 @@
           stddev_pop("stock_live_stddev_dispensed_default") as std_dev_population,
           stddev_samp("stock_live_stddev_dispensed_default") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          336 as _column_position
+          244 as _column_position
         from source_data
 
         union all
@@ -6743,7 +4903,7 @@
           stddev_pop("stock_live_month_interval") as std_dev_population,
           stddev_samp("stock_live_month_interval") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          337 as _column_position
+          245 as _column_position
         from source_data
 
         union all
@@ -6763,7 +4923,7 @@
           stddev_pop("stock_live_default_rxs_min") as std_dev_population,
           stddev_samp("stock_live_default_rxs_min") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          338 as _column_position
+          246 as _column_position
         from source_data
 
         union all
@@ -6783,7 +4943,7 @@
           stddev_pop("stock_live_last_inv_low_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_low_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          339 as _column_position
+          247 as _column_position
         from source_data
 
         union all
@@ -6803,7 +4963,7 @@
           stddev_pop("stock_live_last_inv_high_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_high_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          340 as _column_position
+          248 as _column_position
         from source_data
 
         union all
@@ -6823,7 +4983,7 @@
           stddev_pop("stock_live_last_inv_onetime_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_onetime_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          341 as _column_position
+          249 as _column_position
         from source_data
 
         union all
@@ -6843,7 +5003,7 @@
           stddev_pop("stock_live_zlow_threshold") as std_dev_population,
           stddev_samp("stock_live_zlow_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          342 as _column_position
+          250 as _column_position
         from source_data
 
         union all
@@ -6863,7 +5023,7 @@
           stddev_pop("stock_live_zhigh_threshold") as std_dev_population,
           stddev_samp("stock_live_zhigh_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          343 as _column_position
+          251 as _column_position
         from source_data
 
         union all
@@ -6883,7 +5043,7 @@
           stddev_pop("stock_live_zscore") as std_dev_population,
           stddev_samp("stock_live_zscore") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          344 as _column_position
+          252 as _column_position
         from source_data
 
         union all
@@ -6899,6 +5059,1846 @@
           count(distinct "stock_live_level") = count(*) as is_unique,
           null as min,
           null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          253 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_id_wc') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_id_wc" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_id_wc") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_id_wc") as distinct_count,
+          count(distinct "patient_id_wc") = count(*) as is_unique,
+          cast(min("patient_id_wc") as varchar) as min,
+          cast(max("patient_id_wc") as varchar) as max,
+          avg("patient_id_wc") as avg,
+          stddev_pop("patient_id_wc") as std_dev_population,
+          stddev_samp("patient_id_wc") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          254 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_registered') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_registered" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_registered") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_registered") as distinct_count,
+          count(distinct "patient_date_registered") = count(*) as is_unique,
+          cast(min("patient_date_registered") as varchar) as min,
+          cast(max("patient_date_registered") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          255 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_reviewed') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_reviewed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_reviewed") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_reviewed") as distinct_count,
+          count(distinct "patient_date_reviewed") = count(*) as is_unique,
+          cast(min("patient_date_reviewed") as varchar) as min,
+          cast(max("patient_date_reviewed") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          256 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_added') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_added" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_added") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_added") as distinct_count,
+          count(distinct "patient_date_added") = count(*) as is_unique,
+          cast(min("patient_date_added") as varchar) as min,
+          cast(max("patient_date_added") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          257 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_changed') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_changed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_changed") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_changed") as distinct_count,
+          count(distinct "patient_date_changed") = count(*) as is_unique,
+          cast(min("patient_date_changed") as varchar) as min,
+          cast(max("patient_date_changed") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          258 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_updated') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_updated" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_updated") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_updated") as distinct_count,
+          count(distinct "patient_date_updated") = count(*) as is_unique,
+          cast(min("patient_date_updated") as varchar) as min,
+          cast(max("patient_date_updated") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          259 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_first_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_first_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_first_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_first_name") as distinct_count,
+          count(distinct "patient_first_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          260 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_last_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_last_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_last_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_last_name") as distinct_count,
+          count(distinct "patient_last_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          261 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_birth_date') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_birth_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_birth_date") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_birth_date") as distinct_count,
+          count(distinct "patient_birth_date") = count(*) as is_unique,
+          cast(min("patient_birth_date") as varchar) as min,
+          cast(max("patient_birth_date") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          262 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_language') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_language" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_language") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_language") as distinct_count,
+          count(distinct "patient_language") = count(*) as is_unique,
+          cast(min("patient_language") as varchar) as min,
+          cast(max("patient_language") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          263 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_phone1') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_phone1" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_phone1") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_phone1") as distinct_count,
+          count(distinct "patient_phone1") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          264 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_phone2') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_phone2" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_phone2") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_phone2") as distinct_count,
+          count(distinct "patient_phone2") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          265 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_address') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_address") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_address") as distinct_count,
+          count(distinct "patient_address") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          266 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_city') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_city") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_city") as distinct_count,
+          count(distinct "patient_city") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          267 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_state') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_state") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_state") as distinct_count,
+          count(distinct "patient_state") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          268 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_zip') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_zip" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_zip") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_zip") as distinct_count,
+          count(distinct "patient_zip") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          269 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_card_type') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_card_type" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_card_type") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_card_type") as distinct_count,
+          count(distinct "patient_payment_card_type") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          270 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_card_last4') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_card_last4" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_card_last4") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_card_last4") as distinct_count,
+          count(distinct "patient_payment_card_last4") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          271 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_card_date_expired') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_card_date_expired" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_card_date_expired") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_card_date_expired") as distinct_count,
+          count(distinct "patient_payment_card_date_expired") = count(*) as is_unique,
+          cast(min("patient_payment_card_date_expired") as varchar) as min,
+          cast(max("patient_payment_card_date_expired") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          272 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_card_autopay') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_card_autopay" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_card_autopay") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_card_autopay") as distinct_count,
+          count(distinct "patient_payment_card_autopay") = count(*) as is_unique,
+          cast(min("patient_payment_card_autopay") as varchar) as min,
+          cast(max("patient_payment_card_autopay") as varchar) as max,
+          avg("patient_payment_card_autopay") as avg,
+          stddev_pop("patient_payment_card_autopay") as std_dev_population,
+          stddev_samp("patient_payment_card_autopay") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          273 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_method_default') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_method_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_method_default") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_method_default") as distinct_count,
+          count(distinct "patient_payment_method_default") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          274 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_first_rx_received') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_first_rx_received" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_first_rx_received") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_first_rx_received") as distinct_count,
+          count(distinct "patient_date_first_rx_received") = count(*) as is_unique,
+          cast(min("patient_date_first_rx_received") as varchar) as min,
+          cast(max("patient_date_first_rx_received") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          275 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_first_dispensed') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_first_dispensed" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_first_dispensed") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_first_dispensed") as distinct_count,
+          count(distinct "patient_date_first_dispensed") = count(*) as is_unique,
+          cast(min("patient_date_first_dispensed") as varchar) as min,
+          cast(max("patient_date_first_dispensed") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          276 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_date_first_expected_by') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_date_first_expected_by" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_date_first_expected_by") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_date_first_expected_by") as distinct_count,
+          count(distinct "patient_date_first_expected_by") = count(*) as is_unique,
+          cast(min("patient_date_first_expected_by") as varchar) as min,
+          cast(max("patient_date_first_expected_by") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          277 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_refills_used') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_refills_used" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_refills_used") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_refills_used") as distinct_count,
+          count(distinct "patient_refills_used") = count(*) as is_unique,
+          cast(min("patient_refills_used") as varchar) as min,
+          cast(max("patient_refills_used") as varchar) as max,
+          avg("patient_refills_used") as avg,
+          stddev_pop("patient_refills_used") as std_dev_population,
+          stddev_samp("patient_refills_used") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          278 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_email') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_email" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_email") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_email") as distinct_count,
+          count(distinct "patient_email") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          279 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_autofill') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_autofill" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_autofill") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_autofill") as distinct_count,
+          count(distinct "patient_autofill") = count(*) as is_unique,
+          cast(min("patient_autofill") as varchar) as min,
+          cast(max("patient_autofill") as varchar) as max,
+          avg("patient_autofill") as avg,
+          stddev_pop("patient_autofill") as std_dev_population,
+          stddev_samp("patient_autofill") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          280 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_initial_invoice_number') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_initial_invoice_number" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_initial_invoice_number") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_initial_invoice_number") as distinct_count,
+          count(distinct "patient_initial_invoice_number") = count(*) as is_unique,
+          cast(min("patient_initial_invoice_number") as varchar) as min,
+          cast(max("patient_initial_invoice_number") as varchar) as max,
+          avg("patient_initial_invoice_number") as avg,
+          stddev_pop("patient_initial_invoice_number") as std_dev_population,
+          stddev_samp("patient_initial_invoice_number") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          281 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_note') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_note" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_note") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_note") as distinct_count,
+          count(distinct "patient_note") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          282 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_none') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_none" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_none") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_none") as distinct_count,
+          count(distinct "patient_allergies_none") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          283 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_cephalosporins') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_cephalosporins" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_cephalosporins") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_cephalosporins") as distinct_count,
+          count(distinct "patient_allergies_cephalosporins") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          284 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_sulfa') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_sulfa" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_sulfa") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_sulfa") as distinct_count,
+          count(distinct "patient_allergies_sulfa") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          285 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_aspirin') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_aspirin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_aspirin") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_aspirin") as distinct_count,
+          count(distinct "patient_allergies_aspirin") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          286 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_penicillin') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_penicillin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_penicillin") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_penicillin") as distinct_count,
+          count(distinct "patient_allergies_penicillin") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          287 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_erythromycin') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_erythromycin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_erythromycin") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_erythromycin") as distinct_count,
+          count(distinct "patient_allergies_erythromycin") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          288 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_codeine') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_codeine" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_codeine") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_codeine") as distinct_count,
+          count(distinct "patient_allergies_codeine") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          289 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_nsaids') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_nsaids" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_nsaids") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_nsaids") as distinct_count,
+          count(distinct "patient_allergies_nsaids") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          290 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_salicylates') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_salicylates" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_salicylates") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_salicylates") as distinct_count,
+          count(distinct "patient_allergies_salicylates") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          291 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_azithromycin') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_azithromycin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_azithromycin") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_azithromycin") as distinct_count,
+          count(distinct "patient_allergies_azithromycin") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          292 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_amoxicillin') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_amoxicillin" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_amoxicillin") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_amoxicillin") as distinct_count,
+          count(distinct "patient_allergies_amoxicillin") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          293 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_tetracycline') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_tetracycline" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_tetracycline") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_tetracycline") as distinct_count,
+          count(distinct "patient_allergies_tetracycline") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          294 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_allergies_other') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_allergies_other" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_allergies_other") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_allergies_other") as distinct_count,
+          count(distinct "patient_allergies_other") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          295 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_medications_other') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_medications_other" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_medications_other") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_medications_other") as distinct_count,
+          count(distinct "patient_medications_other") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          296 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pharmacy_npi') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pharmacy_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pharmacy_npi") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pharmacy_npi") as distinct_count,
+          count(distinct "pharmacy_npi") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          297 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pharmacy_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pharmacy_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pharmacy_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pharmacy_name") as distinct_count,
+          count(distinct "pharmacy_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          298 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pharmacy_phone') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pharmacy_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pharmacy_phone") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pharmacy_phone") as distinct_count,
+          count(distinct "pharmacy_phone") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          299 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pharmacy_fax') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pharmacy_fax" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pharmacy_fax") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pharmacy_fax") as distinct_count,
+          count(distinct "pharmacy_fax") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          300 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('pharmacy_address') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "pharmacy_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "pharmacy_address") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "pharmacy_address") as distinct_count,
+          count(distinct "pharmacy_address") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          301 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_inactive') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_inactive" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_inactive") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_inactive") as distinct_count,
+          count(distinct "patient_inactive") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          302 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_payment_coupon') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_payment_coupon" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_payment_coupon") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_payment_coupon") as distinct_count,
+          count(distinct "patient_payment_coupon") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          303 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_tracking_coupon') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_tracking_coupon" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_tracking_coupon") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_tracking_coupon") as distinct_count,
+          count(distinct "patient_tracking_coupon") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          304 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_patient_deleted') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_patient_deleted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_patient_deleted") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_patient_deleted") as distinct_count,
+          count(distinct "patient_patient_deleted") = count(*) as is_unique,
+          cast(min("patient_patient_deleted") as varchar) as min,
+          cast(max("patient_patient_deleted") as varchar) as max,
+          avg("patient_patient_deleted") as avg,
+          stddev_pop("patient_patient_deleted") as std_dev_population,
+          stddev_samp("patient_patient_deleted") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          305 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_third_party_id') as column_name,
+          nullif(lower('bigint'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_third_party_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_third_party_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_third_party_id") as distinct_count,
+          count(distinct "patient_third_party_id") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          306 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_terms_viewed_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_terms_viewed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_terms_viewed_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_terms_viewed_at") as distinct_count,
+          count(distinct "patient_terms_viewed_at") = count(*) as is_unique,
+          cast(min("patient_terms_viewed_at") as varchar) as min,
+          cast(max("patient_terms_viewed_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          307 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('patient_terms_accepted') as column_name,
+          nullif(lower('boolean'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "patient_terms_accepted" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "patient_terms_accepted") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "patient_terms_accepted") as distinct_count,
+          count(distinct "patient_terms_accepted") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          308 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('provider_first_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "provider_first_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "provider_first_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "provider_first_name") as distinct_count,
+          count(distinct "provider_first_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          309 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('provider_last_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "provider_last_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "provider_last_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "provider_last_name") as distinct_count,
+          count(distinct "provider_last_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          310 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('provider_verified') as column_name,
+          nullif(lower('boolean'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "provider_verified" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "provider_verified") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "provider_verified") as distinct_count,
+          count(distinct "provider_verified") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          311 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('providers_npi') as column_name,
+          nullif(lower('character varying'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "providers_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "providers_npi") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "providers_npi") as distinct_count,
+          count(distinct "providers_npi") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          312 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_id') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_id") as distinct_count,
+          count(distinct "dw_provider_id") = count(*) as is_unique,
+          cast(min("dw_provider_id") as varchar) as min,
+          cast(max("dw_provider_id") as varchar) as max,
+          avg("dw_provider_id") as avg,
+          stddev_pop("dw_provider_id") as std_dev_population,
+          stddev_samp("dw_provider_id") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          313 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('provider_first_rx_sent_date') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "provider_first_rx_sent_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "provider_first_rx_sent_date") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "provider_first_rx_sent_date") as distinct_count,
+          count(distinct "provider_first_rx_sent_date") = count(*) as is_unique,
+          cast(min("provider_first_rx_sent_date") as varchar) as min,
+          cast(max("provider_first_rx_sent_date") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          314 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('provider_last_rx_sent_date') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "provider_last_rx_sent_date" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "provider_last_rx_sent_date") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "provider_last_rx_sent_date") as distinct_count,
+          count(distinct "provider_last_rx_sent_date") = count(*) as is_unique,
+          cast(min("provider_last_rx_sent_date") as varchar) as min,
+          cast(max("provider_last_rx_sent_date") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          315 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_npi') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_npi" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_npi") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_npi") as distinct_count,
+          count(distinct "dw_provider_npi") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          316 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_name") as distinct_count,
+          count(distinct "dw_provider_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          317 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_phone') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_phone") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_phone") as distinct_count,
+          count(distinct "dw_provider_phone") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          318 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_id_sf') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_id_sf") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_id_sf") as distinct_count,
+          count(distinct "dw_provider_id_sf") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          319 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_default_clinic') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_default_clinic" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_default_clinic") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_default_clinic") as distinct_count,
+          count(distinct "dw_provider_default_clinic") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          320 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_provider_default_clinic_imputed_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_provider_default_clinic_imputed_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_provider_default_clinic_imputed_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_provider_default_clinic_imputed_at") as distinct_count,
+          count(distinct "dw_provider_default_clinic_imputed_at") = count(*) as is_unique,
+          cast(min("dw_provider_default_clinic_imputed_at") as varchar) as min,
+          cast(max("dw_provider_default_clinic_imputed_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          321 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_id') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_id") as distinct_count,
+          count(distinct "clinic_id") = count(*) as is_unique,
+          cast(min("clinic_id") as varchar) as min,
+          cast(max("clinic_id") as varchar) as max,
+          avg("clinic_id") as avg,
+          stddev_pop("clinic_id") as std_dev_population,
+          stddev_samp("clinic_id") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          322 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_name_cp') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_name_cp" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_name_cp") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_name_cp") as distinct_count,
+          count(distinct "clinic_name_cp") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          323 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_rx_date_added_first') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_rx_date_added_first" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_rx_date_added_first") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_rx_date_added_first") as distinct_count,
+          count(distinct "clinic_rx_date_added_first") = count(*) as is_unique,
+          cast(min("clinic_rx_date_added_first") as varchar) as min,
+          cast(max("clinic_rx_date_added_first") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          324 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_rx_date_added_last') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_rx_date_added_last" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_rx_date_added_last") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_rx_date_added_last") as distinct_count,
+          count(distinct "clinic_rx_date_added_last") = count(*) as is_unique,
+          cast(min("clinic_rx_date_added_last") as varchar) as min,
+          cast(max("clinic_rx_date_added_last") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          325 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_created_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_created_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_created_at") as distinct_count,
+          count(distinct "clinic_created_at") = count(*) as is_unique,
+          cast(min("clinic_created_at") as varchar) as min,
+          cast(max("clinic_created_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          326 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('clinic_updated_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "clinic_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "clinic_updated_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "clinic_updated_at") as distinct_count,
+          count(distinct "clinic_updated_at") = count(*) as is_unique,
+          cast(min("clinic_updated_at") as varchar) as min,
+          cast(max("clinic_updated_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          327 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_id') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_id") as distinct_count,
+          count(distinct "dw_clinic_id") = count(*) as is_unique,
+          cast(min("dw_clinic_id") as varchar) as min,
+          cast(max("dw_clinic_id") as varchar) as max,
+          avg("dw_clinic_id") as avg,
+          stddev_pop("dw_clinic_id") as std_dev_population,
+          stddev_samp("dw_clinic_id") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          328 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_group_id') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_group_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_group_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_group_id") as distinct_count,
+          count(distinct "dw_clinic_group_id") = count(*) as is_unique,
+          cast(min("dw_clinic_group_id") as varchar) as min,
+          cast(max("dw_clinic_group_id") as varchar) as max,
+          avg("dw_clinic_group_id") as avg,
+          stddev_pop("dw_clinic_group_id") as std_dev_population,
+          stddev_samp("dw_clinic_group_id") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          329 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_name") as distinct_count,
+          count(distinct "dw_clinic_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          330 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_address') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_address" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_address") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_address") as distinct_count,
+          count(distinct "dw_clinic_address") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          331 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_street') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_street" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_street") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_street") as distinct_count,
+          count(distinct "dw_clinic_street") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          332 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_city') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_city" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_city") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_city") as distinct_count,
+          count(distinct "dw_clinic_city") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          333 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_state') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_state" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_state") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_state") as distinct_count,
+          count(distinct "dw_clinic_state") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          334 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_zip') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_zip" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_zip") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_zip") as distinct_count,
+          count(distinct "dw_clinic_zip") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          335 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_phone') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_phone" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_phone") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_phone") as distinct_count,
+          count(distinct "dw_clinic_phone") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          336 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_id_sf') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_id_sf") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_id_sf") as distinct_count,
+          count(distinct "dw_clinic_id_sf") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          337 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_created_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_created_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_created_at") as distinct_count,
+          count(distinct "dw_clinic_created_at") = count(*) as is_unique,
+          cast(min("dw_clinic_created_at") as varchar) as min,
+          cast(max("dw_clinic_created_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          338 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_updated_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_updated_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_updated_at") as distinct_count,
+          count(distinct "dw_clinic_updated_at") = count(*) as is_unique,
+          cast(min("dw_clinic_updated_at") as varchar) as min,
+          cast(max("dw_clinic_updated_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          339 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_groups_id') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_groups_id" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_groups_id") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_groups_id") as distinct_count,
+          count(distinct "dw_clinic_groups_id") = count(*) as is_unique,
+          cast(min("dw_clinic_groups_id") as varchar) as min,
+          cast(max("dw_clinic_groups_id") as varchar) as max,
+          avg("dw_clinic_groups_id") as avg,
+          stddev_pop("dw_clinic_groups_id") as std_dev_population,
+          stddev_samp("dw_clinic_groups_id") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          340 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_group_name') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_group_name" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_group_name") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_group_name") as distinct_count,
+          count(distinct "dw_clinic_group_name") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          341 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_group_id_sf') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_group_id_sf" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_group_id_sf") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_group_id_sf") as distinct_count,
+          count(distinct "dw_clinic_group_id_sf") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          342 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_group_domain') as column_name,
+          nullif(lower('text'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_group_domain" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_group_domain") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_group_domain") as distinct_count,
+          count(distinct "dw_clinic_group_domain") = count(*) as is_unique,
+          null as min,
+          null as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          343 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_groups_created_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_groups_created_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_groups_created_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_groups_created_at") as distinct_count,
+          count(distinct "dw_clinic_groups_created_at") = count(*) as is_unique,
+          cast(min("dw_clinic_groups_created_at") as varchar) as min,
+          cast(max("dw_clinic_groups_created_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          344 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('dw_clinic_groups_updated_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "dw_clinic_groups_updated_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "dw_clinic_groups_updated_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "dw_clinic_groups_updated_at") as distinct_count,
+          count(distinct "dw_clinic_groups_updated_at") = count(*) as is_unique,
+          cast(min("dw_clinic_groups_updated_at") as varchar) as min,
+          cast(max("dw_clinic_groups_updated_at") as varchar) as max,
           cast(null as numeric) as avg,
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
