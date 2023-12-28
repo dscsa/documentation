@@ -275,7 +275,10 @@ goodpill_snapshot as (
             order_state as order_state,
             order_zip as order_zip,
             updated_at as order_updated_at,
-            status as order_shipped_status
+            status as order_shipped_status,
+            shipping_weight_oz_default as order_shipping_weight_oz_default,
+            shipping_weight_oz_actual as order_shipping_weight_oz_actual,
+            picking_expedited_at as order_picking_expedited_at
         from "datawarehouse".goodpill."orders"
     ),
     gp_pend_group as (

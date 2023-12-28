@@ -55,8 +55,10 @@ with orders as (
         cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_group_removals_checked_at') as timestamp) as rx_group_removals_checked_at,
         cast(jsonb_extract_path_text(_airbyte_data, 'rx_group_additions_checked_at') as timestamp) as rx_group_additions_checked_at,
-        cast(jsonb_extract_path_text(_airbyte_data, 'status') as varchar(255)) as status
-
+        cast(jsonb_extract_path_text(_airbyte_data, 'status') as varchar(255)) as status,
+        cast(jsonb_extract_path_text(_airbyte_data, 'shipping_weight_oz_default') as decimal(8,2)) as shipping_weight_oz_default,
+        cast(jsonb_extract_path_text(_airbyte_data, 'shipping_weight_oz_actual') as decimal(8,2)) as shipping_weight_oz_actual,
+        cast(jsonb_extract_path_text(_airbyte_data, 'picking_expedited_at') as timestamp) as picking_expedited_at
     from
         "datawarehouse"."raw"._airbyte_raw_goodpill_gp_orders
 )
@@ -115,5 +117,8 @@ select
     _airbyte_ab_id,
     rx_group_additions_checked_at,
     rx_group_removals_checked_at,
-    status
+    status,
+    shipping_weight_oz_default,
+    shipping_weight_oz_actual,
+    picking_expedited_at
 from orders

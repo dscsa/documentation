@@ -1086,6 +1086,66 @@
           54 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('shipping_weight_oz_default') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "shipping_weight_oz_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "shipping_weight_oz_default") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "shipping_weight_oz_default") as distinct_count,
+          count(distinct "shipping_weight_oz_default") = count(*) as is_unique,
+          cast(min("shipping_weight_oz_default") as varchar) as min,
+          cast(max("shipping_weight_oz_default") as varchar) as max,
+          avg("shipping_weight_oz_default") as avg,
+          stddev_pop("shipping_weight_oz_default") as std_dev_population,
+          stddev_samp("shipping_weight_oz_default") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          55 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('shipping_weight_oz_actual') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "shipping_weight_oz_actual" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "shipping_weight_oz_actual") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "shipping_weight_oz_actual") as distinct_count,
+          count(distinct "shipping_weight_oz_actual") = count(*) as is_unique,
+          cast(min("shipping_weight_oz_actual") as varchar) as min,
+          cast(max("shipping_weight_oz_actual") as varchar) as max,
+          avg("shipping_weight_oz_actual") as avg,
+          stddev_pop("shipping_weight_oz_actual") as std_dev_population,
+          stddev_samp("shipping_weight_oz_actual") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          56 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('picking_expedited_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "picking_expedited_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "picking_expedited_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "picking_expedited_at") as distinct_count,
+          count(distinct "picking_expedited_at") = count(*) as is_unique,
+          cast(min("picking_expedited_at") as varchar) as min,
+          cast(max("picking_expedited_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          57 as _column_position
+        from source_data
+
         
       
     )

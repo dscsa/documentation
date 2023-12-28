@@ -4130,6 +4130,66 @@
       
         
         select 
+          lower('order_shipping_weight_oz_default') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "order_shipping_weight_oz_default" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "order_shipping_weight_oz_default") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "order_shipping_weight_oz_default") as distinct_count,
+          count(distinct "order_shipping_weight_oz_default") = count(*) as is_unique,
+          cast(min("order_shipping_weight_oz_default") as varchar) as min,
+          cast(max("order_shipping_weight_oz_default") as varchar) as max,
+          avg("order_shipping_weight_oz_default") as avg,
+          stddev_pop("order_shipping_weight_oz_default") as std_dev_population,
+          stddev_samp("order_shipping_weight_oz_default") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          207 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('order_shipping_weight_oz_actual') as column_name,
+          nullif(lower('numeric'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "order_shipping_weight_oz_actual" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "order_shipping_weight_oz_actual") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "order_shipping_weight_oz_actual") as distinct_count,
+          count(distinct "order_shipping_weight_oz_actual") = count(*) as is_unique,
+          cast(min("order_shipping_weight_oz_actual") as varchar) as min,
+          cast(max("order_shipping_weight_oz_actual") as varchar) as max,
+          avg("order_shipping_weight_oz_actual") as avg,
+          stddev_pop("order_shipping_weight_oz_actual") as std_dev_population,
+          stddev_samp("order_shipping_weight_oz_actual") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          208 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('order_picking_expedited_at') as column_name,
+          nullif(lower('timestamp without time zone'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "order_picking_expedited_at" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "order_picking_expedited_at") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "order_picking_expedited_at") as distinct_count,
+          count(distinct "order_picking_expedited_at") = count(*) as is_unique,
+          cast(min("order_picking_expedited_at") as varchar) as min,
+          cast(max("order_picking_expedited_at") as varchar) as max,
+          cast(null as numeric) as avg,
+          cast(null as numeric) as std_dev_population,
+          cast(null as numeric) as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          209 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
           lower('pend_group_name') as column_name,
           nullif(lower('character varying'), '') as data_type,
           cast(count(*) as numeric) as row_count,
@@ -4143,7 +4203,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          207 as _column_position
+          210 as _column_position
         from source_data
 
         union all
@@ -4163,7 +4223,7 @@
           stddev_pop("pend_group_invoice_number") as std_dev_population,
           stddev_samp("pend_group_invoice_number") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          208 as _column_position
+          211 as _column_position
         from source_data
 
         union all
@@ -4183,7 +4243,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          209 as _column_position
+          212 as _column_position
         from source_data
 
         union all
@@ -4203,7 +4263,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          210 as _column_position
+          213 as _column_position
         from source_data
 
         union all
@@ -4223,7 +4283,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          211 as _column_position
+          214 as _column_position
         from source_data
 
         union all
@@ -4243,7 +4303,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          212 as _column_position
+          215 as _column_position
         from source_data
 
         union all
@@ -4263,7 +4323,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          213 as _column_position
+          216 as _column_position
         from source_data
 
         union all
@@ -4283,7 +4343,7 @@
           stddev_pop("drug_price30") as std_dev_population,
           stddev_samp("drug_price30") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          214 as _column_position
+          217 as _column_position
         from source_data
 
         union all
@@ -4303,7 +4363,7 @@
           stddev_pop("drug_price90") as std_dev_population,
           stddev_samp("drug_price90") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          215 as _column_position
+          218 as _column_position
         from source_data
 
         union all
@@ -4323,7 +4383,7 @@
           stddev_pop("drug_price_retail") as std_dev_population,
           stddev_samp("drug_price_retail") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          216 as _column_position
+          219 as _column_position
         from source_data
 
         union all
@@ -4343,7 +4403,7 @@
           stddev_pop("drug_price_goodrx") as std_dev_population,
           stddev_samp("drug_price_goodrx") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          217 as _column_position
+          220 as _column_position
         from source_data
 
         union all
@@ -4363,7 +4423,7 @@
           stddev_pop("drug_price_nadac") as std_dev_population,
           stddev_samp("drug_price_nadac") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          218 as _column_position
+          221 as _column_position
         from source_data
 
         union all
@@ -4383,7 +4443,7 @@
           stddev_pop("drug_qty_repack") as std_dev_population,
           stddev_samp("drug_qty_repack") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          219 as _column_position
+          222 as _column_position
         from source_data
 
         union all
@@ -4403,7 +4463,7 @@
           stddev_pop("drug_count_ndcs") as std_dev_population,
           stddev_samp("drug_count_ndcs") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          220 as _column_position
+          223 as _column_position
         from source_data
 
         union all
@@ -4423,7 +4483,7 @@
           stddev_pop("drug_ordered") as std_dev_population,
           stddev_samp("drug_ordered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          221 as _column_position
+          224 as _column_position
         from source_data
 
         union all
@@ -4443,7 +4503,7 @@
           stddev_pop("drug_qty_min") as std_dev_population,
           stddev_samp("drug_qty_min") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          222 as _column_position
+          225 as _column_position
         from source_data
 
         union all
@@ -4463,7 +4523,7 @@
           stddev_pop("drug_days_min") as std_dev_population,
           stddev_samp("drug_days_min") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          223 as _column_position
+          226 as _column_position
         from source_data
 
         union all
@@ -4483,7 +4543,7 @@
           stddev_pop("drug_max_inventory") as std_dev_population,
           stddev_samp("drug_max_inventory") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          224 as _column_position
+          227 as _column_position
         from source_data
 
         union all
@@ -4503,7 +4563,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          225 as _column_position
+          228 as _column_position
         from source_data
 
         union all
@@ -4523,7 +4583,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          226 as _column_position
+          229 as _column_position
         from source_data
 
         union all
@@ -4543,7 +4603,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          227 as _column_position
+          230 as _column_position
         from source_data
 
         union all
@@ -4563,7 +4623,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          228 as _column_position
+          231 as _column_position
         from source_data
 
         union all
@@ -4583,7 +4643,7 @@
           stddev_pop("drug_price_coalesced") as std_dev_population,
           stddev_samp("drug_price_coalesced") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          229 as _column_position
+          232 as _column_position
         from source_data
 
         union all
@@ -4603,7 +4663,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          230 as _column_position
+          233 as _column_position
         from source_data
 
         union all
@@ -4623,7 +4683,7 @@
           stddev_pop("stock_live_price_per_month") as std_dev_population,
           stddev_samp("stock_live_price_per_month") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          231 as _column_position
+          234 as _column_position
         from source_data
 
         union all
@@ -4643,7 +4703,7 @@
           stddev_pop("stock_live_drug_ordered") as std_dev_population,
           stddev_samp("stock_live_drug_ordered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          232 as _column_position
+          235 as _column_position
         from source_data
 
         union all
@@ -4663,7 +4723,7 @@
           stddev_pop("stock_live_qty_repack") as std_dev_population,
           stddev_samp("stock_live_qty_repack") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          233 as _column_position
+          236 as _column_position
         from source_data
 
         union all
@@ -4683,7 +4743,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          234 as _column_position
+          237 as _column_position
         from source_data
 
         union all
@@ -4703,7 +4763,7 @@
           stddev_pop("stock_live_avg_inventory") as std_dev_population,
           stddev_samp("stock_live_avg_inventory") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          235 as _column_position
+          238 as _column_position
         from source_data
 
         union all
@@ -4723,7 +4783,7 @@
           stddev_pop("stock_live_last_inventory") as std_dev_population,
           stddev_samp("stock_live_last_inventory") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          236 as _column_position
+          239 as _column_position
         from source_data
 
         union all
@@ -4743,7 +4803,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          237 as _column_position
+          240 as _column_position
         from source_data
 
         union all
@@ -4763,7 +4823,7 @@
           stddev_pop("stock_live_stddev_entered") as std_dev_population,
           stddev_samp("stock_live_stddev_entered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          238 as _column_position
+          241 as _column_position
         from source_data
 
         union all
@@ -4783,7 +4843,7 @@
           stddev_pop("stock_live_total_entered") as std_dev_population,
           stddev_samp("stock_live_total_entered") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          239 as _column_position
+          242 as _column_position
         from source_data
 
         union all
@@ -4803,7 +4863,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          240 as _column_position
+          243 as _column_position
         from source_data
 
         union all
@@ -4823,7 +4883,7 @@
           stddev_pop("stock_live_stddev_dispensed_actual") as std_dev_population,
           stddev_samp("stock_live_stddev_dispensed_actual") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          241 as _column_position
+          244 as _column_position
         from source_data
 
         union all
@@ -4843,7 +4903,7 @@
           stddev_pop("stock_live_total_dispensed_actual") as std_dev_population,
           stddev_samp("stock_live_total_dispensed_actual") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          242 as _column_position
+          245 as _column_position
         from source_data
 
         union all
@@ -4863,7 +4923,7 @@
           stddev_pop("stock_live_total_dispensed_default") as std_dev_population,
           stddev_samp("stock_live_total_dispensed_default") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          243 as _column_position
+          246 as _column_position
         from source_data
 
         union all
@@ -4883,7 +4943,7 @@
           stddev_pop("stock_live_stddev_dispensed_default") as std_dev_population,
           stddev_samp("stock_live_stddev_dispensed_default") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          244 as _column_position
+          247 as _column_position
         from source_data
 
         union all
@@ -4903,7 +4963,7 @@
           stddev_pop("stock_live_month_interval") as std_dev_population,
           stddev_samp("stock_live_month_interval") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          245 as _column_position
+          248 as _column_position
         from source_data
 
         union all
@@ -4923,7 +4983,7 @@
           stddev_pop("stock_live_default_rxs_min") as std_dev_population,
           stddev_samp("stock_live_default_rxs_min") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          246 as _column_position
+          249 as _column_position
         from source_data
 
         union all
@@ -4943,7 +5003,7 @@
           stddev_pop("stock_live_last_inv_low_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_low_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          247 as _column_position
+          250 as _column_position
         from source_data
 
         union all
@@ -4963,7 +5023,7 @@
           stddev_pop("stock_live_last_inv_high_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_high_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          248 as _column_position
+          251 as _column_position
         from source_data
 
         union all
@@ -4983,7 +5043,7 @@
           stddev_pop("stock_live_last_inv_onetime_threshold") as std_dev_population,
           stddev_samp("stock_live_last_inv_onetime_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          249 as _column_position
+          252 as _column_position
         from source_data
 
         union all
@@ -5003,7 +5063,7 @@
           stddev_pop("stock_live_zlow_threshold") as std_dev_population,
           stddev_samp("stock_live_zlow_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          250 as _column_position
+          253 as _column_position
         from source_data
 
         union all
@@ -5023,7 +5083,7 @@
           stddev_pop("stock_live_zhigh_threshold") as std_dev_population,
           stddev_samp("stock_live_zhigh_threshold") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          251 as _column_position
+          254 as _column_position
         from source_data
 
         union all
@@ -5043,7 +5103,7 @@
           stddev_pop("stock_live_zscore") as std_dev_population,
           stddev_samp("stock_live_zscore") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          252 as _column_position
+          255 as _column_position
         from source_data
 
         union all
@@ -5063,7 +5123,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          253 as _column_position
+          256 as _column_position
         from source_data
 
         union all
@@ -5083,7 +5143,7 @@
           stddev_pop("patient_id_wc") as std_dev_population,
           stddev_samp("patient_id_wc") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          254 as _column_position
+          257 as _column_position
         from source_data
 
         union all
@@ -5103,7 +5163,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          255 as _column_position
+          258 as _column_position
         from source_data
 
         union all
@@ -5123,7 +5183,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          256 as _column_position
+          259 as _column_position
         from source_data
 
         union all
@@ -5143,7 +5203,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          257 as _column_position
+          260 as _column_position
         from source_data
 
         union all
@@ -5163,7 +5223,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          258 as _column_position
+          261 as _column_position
         from source_data
 
         union all
@@ -5183,7 +5243,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          259 as _column_position
+          262 as _column_position
         from source_data
 
         union all
@@ -5203,7 +5263,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          260 as _column_position
+          263 as _column_position
         from source_data
 
         union all
@@ -5223,7 +5283,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          261 as _column_position
+          264 as _column_position
         from source_data
 
         union all
@@ -5243,7 +5303,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          262 as _column_position
+          265 as _column_position
         from source_data
 
         union all
@@ -5263,7 +5323,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          263 as _column_position
+          266 as _column_position
         from source_data
 
         union all
@@ -5283,7 +5343,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          264 as _column_position
+          267 as _column_position
         from source_data
 
         union all
@@ -5303,7 +5363,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          265 as _column_position
+          268 as _column_position
         from source_data
 
         union all
@@ -5323,7 +5383,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          266 as _column_position
+          269 as _column_position
         from source_data
 
         union all
@@ -5343,7 +5403,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          267 as _column_position
+          270 as _column_position
         from source_data
 
         union all
@@ -5363,7 +5423,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          268 as _column_position
+          271 as _column_position
         from source_data
 
         union all
@@ -5383,7 +5443,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          269 as _column_position
+          272 as _column_position
         from source_data
 
         union all
@@ -5403,7 +5463,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          270 as _column_position
+          273 as _column_position
         from source_data
 
         union all
@@ -5423,7 +5483,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          271 as _column_position
+          274 as _column_position
         from source_data
 
         union all
@@ -5443,7 +5503,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          272 as _column_position
+          275 as _column_position
         from source_data
 
         union all
@@ -5463,7 +5523,7 @@
           stddev_pop("patient_payment_card_autopay") as std_dev_population,
           stddev_samp("patient_payment_card_autopay") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          273 as _column_position
+          276 as _column_position
         from source_data
 
         union all
@@ -5483,7 +5543,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          274 as _column_position
+          277 as _column_position
         from source_data
 
         union all
@@ -5503,7 +5563,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          275 as _column_position
+          278 as _column_position
         from source_data
 
         union all
@@ -5523,7 +5583,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          276 as _column_position
+          279 as _column_position
         from source_data
 
         union all
@@ -5543,7 +5603,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          277 as _column_position
+          280 as _column_position
         from source_data
 
         union all
@@ -5563,7 +5623,7 @@
           stddev_pop("patient_refills_used") as std_dev_population,
           stddev_samp("patient_refills_used") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          278 as _column_position
+          281 as _column_position
         from source_data
 
         union all
@@ -5583,7 +5643,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          279 as _column_position
+          282 as _column_position
         from source_data
 
         union all
@@ -5603,7 +5663,7 @@
           stddev_pop("patient_autofill") as std_dev_population,
           stddev_samp("patient_autofill") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          280 as _column_position
+          283 as _column_position
         from source_data
 
         union all
@@ -5623,7 +5683,7 @@
           stddev_pop("patient_initial_invoice_number") as std_dev_population,
           stddev_samp("patient_initial_invoice_number") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          281 as _column_position
+          284 as _column_position
         from source_data
 
         union all
@@ -5643,7 +5703,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          282 as _column_position
+          285 as _column_position
         from source_data
 
         union all
@@ -5663,7 +5723,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          283 as _column_position
+          286 as _column_position
         from source_data
 
         union all
@@ -5683,7 +5743,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          284 as _column_position
+          287 as _column_position
         from source_data
 
         union all
@@ -5703,7 +5763,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          285 as _column_position
+          288 as _column_position
         from source_data
 
         union all
@@ -5723,7 +5783,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          286 as _column_position
+          289 as _column_position
         from source_data
 
         union all
@@ -5743,7 +5803,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          287 as _column_position
+          290 as _column_position
         from source_data
 
         union all
@@ -5763,7 +5823,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          288 as _column_position
+          291 as _column_position
         from source_data
 
         union all
@@ -5783,7 +5843,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          289 as _column_position
+          292 as _column_position
         from source_data
 
         union all
@@ -5803,7 +5863,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          290 as _column_position
+          293 as _column_position
         from source_data
 
         union all
@@ -5823,7 +5883,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          291 as _column_position
+          294 as _column_position
         from source_data
 
         union all
@@ -5843,7 +5903,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          292 as _column_position
+          295 as _column_position
         from source_data
 
         union all
@@ -5863,7 +5923,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          293 as _column_position
+          296 as _column_position
         from source_data
 
         union all
@@ -5883,7 +5943,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          294 as _column_position
+          297 as _column_position
         from source_data
 
         union all
@@ -5903,7 +5963,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          295 as _column_position
+          298 as _column_position
         from source_data
 
         union all
@@ -5923,7 +5983,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          296 as _column_position
+          299 as _column_position
         from source_data
 
         union all
@@ -5943,7 +6003,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          297 as _column_position
+          300 as _column_position
         from source_data
 
         union all
@@ -5963,7 +6023,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          298 as _column_position
+          301 as _column_position
         from source_data
 
         union all
@@ -5983,7 +6043,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          299 as _column_position
+          302 as _column_position
         from source_data
 
         union all
@@ -6003,7 +6063,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          300 as _column_position
+          303 as _column_position
         from source_data
 
         union all
@@ -6023,7 +6083,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          301 as _column_position
+          304 as _column_position
         from source_data
 
         union all
@@ -6043,7 +6103,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          302 as _column_position
+          305 as _column_position
         from source_data
 
         union all
@@ -6063,7 +6123,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          303 as _column_position
+          306 as _column_position
         from source_data
 
         union all
@@ -6083,7 +6143,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          304 as _column_position
+          307 as _column_position
         from source_data
 
         union all
@@ -6103,7 +6163,7 @@
           stddev_pop("patient_patient_deleted") as std_dev_population,
           stddev_samp("patient_patient_deleted") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          305 as _column_position
+          308 as _column_position
         from source_data
 
         union all
@@ -6123,7 +6183,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          306 as _column_position
+          309 as _column_position
         from source_data
 
         union all
@@ -6143,7 +6203,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          307 as _column_position
+          310 as _column_position
         from source_data
 
         union all
@@ -6163,7 +6223,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          308 as _column_position
+          311 as _column_position
         from source_data
 
         union all
@@ -6183,7 +6243,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          309 as _column_position
+          312 as _column_position
         from source_data
 
         union all
@@ -6203,7 +6263,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          310 as _column_position
+          313 as _column_position
         from source_data
 
         union all
@@ -6223,7 +6283,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          311 as _column_position
+          314 as _column_position
         from source_data
 
         union all
@@ -6243,7 +6303,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          312 as _column_position
+          315 as _column_position
         from source_data
 
         union all
@@ -6263,7 +6323,7 @@
           stddev_pop("dw_provider_id") as std_dev_population,
           stddev_samp("dw_provider_id") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          313 as _column_position
+          316 as _column_position
         from source_data
 
         union all
@@ -6283,7 +6343,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          314 as _column_position
+          317 as _column_position
         from source_data
 
         union all
@@ -6303,7 +6363,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          315 as _column_position
+          318 as _column_position
         from source_data
 
         union all
@@ -6323,7 +6383,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          316 as _column_position
+          319 as _column_position
         from source_data
 
         union all
@@ -6343,7 +6403,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          317 as _column_position
+          320 as _column_position
         from source_data
 
         union all
@@ -6363,7 +6423,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          318 as _column_position
+          321 as _column_position
         from source_data
 
         union all
@@ -6383,7 +6443,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          319 as _column_position
+          322 as _column_position
         from source_data
 
         union all
@@ -6403,7 +6463,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          320 as _column_position
+          323 as _column_position
         from source_data
 
         union all
@@ -6423,7 +6483,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          321 as _column_position
+          324 as _column_position
         from source_data
 
         union all
@@ -6443,7 +6503,7 @@
           stddev_pop("clinic_id") as std_dev_population,
           stddev_samp("clinic_id") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          322 as _column_position
+          325 as _column_position
         from source_data
 
         union all
@@ -6463,7 +6523,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          323 as _column_position
+          326 as _column_position
         from source_data
 
         union all
@@ -6483,7 +6543,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          324 as _column_position
+          327 as _column_position
         from source_data
 
         union all
@@ -6503,7 +6563,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          325 as _column_position
+          328 as _column_position
         from source_data
 
         union all
@@ -6523,7 +6583,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          326 as _column_position
+          329 as _column_position
         from source_data
 
         union all
@@ -6543,7 +6603,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          327 as _column_position
+          330 as _column_position
         from source_data
 
         union all
@@ -6563,7 +6623,7 @@
           stddev_pop("dw_clinic_id") as std_dev_population,
           stddev_samp("dw_clinic_id") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          328 as _column_position
+          331 as _column_position
         from source_data
 
         union all
@@ -6583,7 +6643,7 @@
           stddev_pop("dw_clinic_group_id") as std_dev_population,
           stddev_samp("dw_clinic_group_id") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          329 as _column_position
+          332 as _column_position
         from source_data
 
         union all
@@ -6603,7 +6663,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          330 as _column_position
+          333 as _column_position
         from source_data
 
         union all
@@ -6623,7 +6683,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          331 as _column_position
+          334 as _column_position
         from source_data
 
         union all
@@ -6643,7 +6703,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          332 as _column_position
+          335 as _column_position
         from source_data
 
         union all
@@ -6663,7 +6723,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          333 as _column_position
+          336 as _column_position
         from source_data
 
         union all
@@ -6683,7 +6743,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          334 as _column_position
+          337 as _column_position
         from source_data
 
         union all
@@ -6703,7 +6763,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          335 as _column_position
+          338 as _column_position
         from source_data
 
         union all
@@ -6723,7 +6783,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          336 as _column_position
+          339 as _column_position
         from source_data
 
         union all
@@ -6743,7 +6803,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          337 as _column_position
+          340 as _column_position
         from source_data
 
         union all
@@ -6763,7 +6823,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          338 as _column_position
+          341 as _column_position
         from source_data
 
         union all
@@ -6783,7 +6843,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          339 as _column_position
+          342 as _column_position
         from source_data
 
         union all
@@ -6803,7 +6863,7 @@
           stddev_pop("dw_clinic_groups_id") as std_dev_population,
           stddev_samp("dw_clinic_groups_id") as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          340 as _column_position
+          343 as _column_position
         from source_data
 
         union all
@@ -6823,7 +6883,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          341 as _column_position
+          344 as _column_position
         from source_data
 
         union all
@@ -6843,7 +6903,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          342 as _column_position
+          345 as _column_position
         from source_data
 
         union all
@@ -6863,7 +6923,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          343 as _column_position
+          346 as _column_position
         from source_data
 
         union all
@@ -6883,7 +6943,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          344 as _column_position
+          347 as _column_position
         from source_data
 
         union all
@@ -6903,7 +6963,7 @@
           cast(null as numeric) as std_dev_population,
           cast(null as numeric) as std_dev_sample,
           cast(current_timestamp as varchar) as profiled_at,
-          345 as _column_position
+          348 as _column_position
         from source_data
 
         
