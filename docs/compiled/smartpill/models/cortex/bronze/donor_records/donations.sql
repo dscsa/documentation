@@ -1,0 +1,23 @@
+select
+    cast(jsonb_extract_path_text(_airbyte_data, 'id') as bigint) as id,
+    cast(jsonb_extract_path_text(_airbyte_data, 'v1_id') as bigint) as v1_id,
+    cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'deleted_at') as timestamp) as deleted_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'archived_at') as timestamp) as archived_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'scheduled_at') as timestamp) as scheduled_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'shipped_at') as timestamp) as shipped_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'delivered_at') as timestamp) as delivered_at,
+    cast(jsonb_extract_path_text(_airbyte_data, 'accepted_on') as date) as accepted_on,
+    cast(jsonb_extract_path_text(_airbyte_data, 'creator_id') as bigint) as creator_id,
+    cast(jsonb_extract_path_text(_airbyte_data, 'pickup_location') as varchar(191)) as pickup_location,
+    cast(jsonb_extract_path_text(_airbyte_data, 'donor_account_id') as bigint) as donor_account_id,
+    cast(jsonb_extract_path_text(_airbyte_data, 'recipient_account_id') as bigint) as recipient_account_id,
+    cast(jsonb_extract_path_text(_airbyte_data, 'num_pickup_boxes') as bigint) as num_pickup_boxes,
+    cast(jsonb_extract_path_text(_airbyte_data, 'date_index') as varchar(191)) as date_index,
+    cast(jsonb_extract_path_text(_airbyte_data, 'contact_name') as varchar(191)) as contact_name,
+    cast(jsonb_extract_path_text(_airbyte_data, 'expected_tracking_number') as varchar(191)) as expected_tracking_number,
+    cast(jsonb_extract_path_text(_airbyte_data, 'source') as varchar(20)) as source,
+    cast(jsonb_extract_path_text(_airbyte_data, 'reschedule_pickups') as boolean) as reschedule_pickups,
+    cast(jsonb_extract_path_text(_airbyte_data, 'percent_dispensed_default') as float) as percent_dispensed_default
+from "datawarehouse"."raw"._airbyte_raw_cortex_donations
