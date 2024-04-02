@@ -186,6 +186,126 @@
           9 as _column_position
         from source_data
 
+        union all
+      
+        
+        select 
+          lower('default_max_inventory') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_max_inventory" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_max_inventory") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_max_inventory") as distinct_count,
+          count(distinct "default_max_inventory") = count(*) as is_unique,
+          cast(min("default_max_inventory") as varchar) as min,
+          cast(max("default_max_inventory") as varchar) as max,
+          avg("default_max_inventory") as avg,
+          stddev_pop("default_max_inventory") as std_dev_population,
+          stddev_samp("default_max_inventory") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          10 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('default_min_days') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_min_days" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_min_days") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_min_days") as distinct_count,
+          count(distinct "default_min_days") = count(*) as is_unique,
+          cast(min("default_min_days") as varchar) as min,
+          cast(max("default_min_days") as varchar) as max,
+          avg("default_min_days") as avg,
+          stddev_pop("default_min_days") as std_dev_population,
+          stddev_samp("default_min_days") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          11 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('default_min_qty') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_min_qty" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_min_qty") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_min_qty") as distinct_count,
+          count(distinct "default_min_qty") = count(*) as is_unique,
+          cast(min("default_min_qty") as varchar) as min,
+          cast(max("default_min_qty") as varchar) as max,
+          avg("default_min_qty") as avg,
+          stddev_pop("default_min_qty") as std_dev_population,
+          stddev_samp("default_min_qty") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          12 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('default_price_90') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_price_90" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_price_90") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_price_90") as distinct_count,
+          count(distinct "default_price_90") = count(*) as is_unique,
+          cast(min("default_price_90") as varchar) as min,
+          cast(max("default_price_90") as varchar) as max,
+          avg("default_price_90") as avg,
+          stddev_pop("default_price_90") as std_dev_population,
+          stddev_samp("default_price_90") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          13 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('default_price_30') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_price_30" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_price_30") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_price_30") as distinct_count,
+          count(distinct "default_price_30") = count(*) as is_unique,
+          cast(min("default_price_30") as varchar) as min,
+          cast(max("default_price_30") as varchar) as max,
+          avg("default_price_30") as avg,
+          stddev_pop("default_price_30") as std_dev_population,
+          stddev_samp("default_price_30") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          14 as _column_position
+        from source_data
+
+        union all
+      
+        
+        select 
+          lower('default_repack_quantity') as column_name,
+          nullif(lower('integer'), '') as data_type,
+          cast(count(*) as numeric) as row_count,
+          sum(case when "default_repack_quantity" is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion,
+          count(distinct "default_repack_quantity") / cast(count(*) as numeric) as distinct_proportion,
+          count(distinct "default_repack_quantity") as distinct_count,
+          count(distinct "default_repack_quantity") = count(*) as is_unique,
+          cast(min("default_repack_quantity") as varchar) as min,
+          cast(max("default_repack_quantity") as varchar) as max,
+          avg("default_repack_quantity") as avg,
+          stddev_pop("default_repack_quantity") as std_dev_population,
+          stddev_samp("default_repack_quantity") as std_dev_sample,
+          cast(current_timestamp as varchar) as profiled_at,
+          15 as _column_position
+        from source_data
+
         
       
     )
