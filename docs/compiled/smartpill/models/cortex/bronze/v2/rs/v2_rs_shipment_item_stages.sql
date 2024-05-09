@@ -5,6 +5,8 @@ with q as (
 	) as id_row_number
     from "datawarehouse"."raw"._airbyte_raw_cortex_v2_rs_shipment_item_stages
     
+        where _airbyte_emitted_at > (select COALESCE(max(_airbyte_emitted_at), '2024-01-01') from "datawarehouse".cortex."v2_rs_shipment_item_stages")
+    
 
 )
 select

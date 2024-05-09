@@ -71,7 +71,7 @@ final as (
 SELECT
     patient_id_cp, salesforce_contact_id, bulk_action, STRING_AGG(error_type, ', ') AS error_type,
     'now()' as execution_date,
-    '2024-04-02 17:25:39.937964+00:00'::timestamp as batch_timestamp,
+    '2024-05-09 16:22:18.806294+00:00'::timestamp as batch_timestamp,
     FALSE as its_fixed
 FROM final
 GROUP BY patient_id_cp, salesforce_contact_id, bulk_action, execution_date, batch_timestamp

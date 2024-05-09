@@ -6,6 +6,8 @@ with q as (
 	) as id_row_number
     from  "datawarehouse"."raw"._airbyte_raw_cortex_v2_rs_shipment_items
     
+        where _airbyte_emitted_at > (select max(_airbyte_emitted_at) from "datawarehouse".cortex."v2_rs_shipment_items")
+    
 )
 select
     cast(jsonb_extract_path_text(_airbyte_data, 'id') as bigint) as id,
