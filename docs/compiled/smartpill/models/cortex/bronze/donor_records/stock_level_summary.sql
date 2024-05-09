@@ -34,6 +34,7 @@ cast(jsonb_extract_path_text(_airbyte_data, 'projected_confidence') as decimal(7
 cast(jsonb_extract_path_text(_airbyte_data, 'z_score') as decimal(7,3)) as z_score,
 cast(jsonb_extract_path_text(_airbyte_data, 'combined_confidence') as decimal(7,6)) as combined_confidence,
 cast(jsonb_extract_path_text(_airbyte_data, 'stock_level_decision') as varchar(191)) as stock_level_decision,
+cast(jsonb_extract_path_text(_airbyte_data, 'stock_level_override') as varchar(191)) as stock_level_override,
 cast(jsonb_extract_path_text(_airbyte_data, 'display_stock_level') as varchar(191)) as display_stock_level,
 cast(jsonb_extract_path_text(_airbyte_data, 'has_advisory') as boolean) as has_advisory,
 cast(jsonb_extract_path_text(_airbyte_data, 'adv_order_drug') as boolean) as adv_order_drug,
