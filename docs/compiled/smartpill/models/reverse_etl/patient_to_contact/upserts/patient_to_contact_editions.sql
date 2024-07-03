@@ -67,6 +67,8 @@ or p.phone2 is distinct from psf.contact_gp_phone2__c
 
 or p.refills_used is distinct from psf.contact_gp_refills_used__c::numeric(5,2)
 or p.tracking_coupon is distinct from psf.contact_gp_tracking_coupon__c
+
+or DATE(p.birth_date) is distinct from DATE(psf.contact_birthdate)
 	) then 1 else 0 end as need_update
 
 	from patients p
@@ -125,6 +127,8 @@ or p.phone2 is distinct from psf.contact_gp_phone2__c
 
 or p.refills_used is distinct from psf.contact_gp_refills_used__c::numeric(5,2)
 or p.tracking_coupon is distinct from psf.contact_gp_tracking_coupon__c
+
+or DATE(p.birth_date) is distinct from DATE(psf.contact_birthdate)
 	) then 1 else 0 end as need_update
 	
 	from patients p
