@@ -33,5 +33,5 @@ cast(jsonb_extract_path_text(_airbyte_data, 'min_expiry_months') as int) as min_
 cast(jsonb_extract_path_text(_airbyte_data, 'min_qty') as decimal(6,3)) as min_qty,
 cast(jsonb_extract_path_text(_airbyte_data, 'inventory_counted_at') as timestamp) as inventory_counted_at,
 cast(jsonb_extract_path_text(_airbyte_data, 'created_at') as timestamp) as created_at,
-cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at,
+cast(jsonb_extract_path_text(_airbyte_data, 'updated_at') as timestamp) as updated_at
 from "datawarehouse"."raw"._airbyte_raw_cortex_dynamic_acceptance_summary
